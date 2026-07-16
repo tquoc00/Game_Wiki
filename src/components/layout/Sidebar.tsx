@@ -121,6 +121,25 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           </Link>
         )}
 
+        {/* TFT Meta Tier List Special Banner Link */}
+        {gameSlug === 'tft' && (
+          <Link
+            href="/wiki/tft"
+            onClick={onClose}
+            className={`flex items-center justify-between rounded-xl px-3.5 py-2.5 text-xs font-bold uppercase tracking-wider transition-all duration-200 mb-3 ${
+              pathname === '/wiki/tft'
+                ? 'bg-purple-500/20 text-purple-300 border-l-2 border-purple-400 pl-3'
+                : 'bg-purple-500/10 text-purple-300 border border-purple-500/30 hover:bg-purple-500/20 hover:text-purple-200'
+            }`}
+          >
+            <div className="flex items-center gap-2.5">
+              <Sparkles size={16} className="text-purple-400 animate-pulse" />
+              <span>📊 Meta Tier List & Comps</span>
+            </div>
+            <ChevronRight size={12} className="text-purple-400" />
+          </Link>
+        )}
+
         <Link
           href={`/wiki/${gameSlug}`}
           onClick={onClose}

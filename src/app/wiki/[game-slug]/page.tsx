@@ -15,7 +15,8 @@ export async function generateStaticParams() {
   return [
     { 'game-slug': 'lien-minh-huyen-thoai' },
     { 'game-slug': 'elden-ring' },
-    { 'game-slug': 'valorant' },
+    { 'game-slug': 'black-myth-wukong' },
+    { 'game-slug': 'tft' },
   ];
 }
 
@@ -50,6 +51,12 @@ export default async function GameWikiListPage({
       name: 'Elden Ring',
       slug: 'elden-ring',
       description: 'Bách khoa toàn thư về trùm, vũ khí, phép thuật và nhiệm vụ trong Elden Ring.',
+    },
+    'tft': {
+      id: 'tft',
+      name: 'Đấu Trường Chân Lý',
+      slug: 'tft',
+      description: 'Bảng xếp hạng đội hình Meta, Tộc/Hệ, Tướng và Công thức ghép đồ TFT mới nhất.',
     },
   };
 
