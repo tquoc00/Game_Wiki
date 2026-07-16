@@ -76,10 +76,10 @@ export default async function WikiRevisionDetailPage({ params }: RevisionDetailP
               </span>
 
               <RestoreButton
-                articleId={revision.articleId}
-                revisionTitle={revision.title}
-                revisionSummary={revision.summary}
-                revisionContent={revision.content}
+                title={revision.title}
+                content={revision.content}
+                categoryId={revision.categoryId || ''}
+                revisionDate={formatDate(revision.createdAt)}
                 gameSlug={gameSlug}
                 slug={slug}
               />

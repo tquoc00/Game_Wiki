@@ -190,6 +190,32 @@ export default async function GameWikiListPage({
         </div>
       )}
 
+      {/* Featured Banner for Elden Ring Questlines Hub */}
+      {gameSlug === 'elden-ring' && (
+        <div className="mb-8 rounded-2xl border border-amber-500/30 bg-gradient-to-r from-amber-950/40 via-zinc-900 to-zinc-950 p-6 shadow-xl relative overflow-hidden">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-2">
+                <span className="rounded-full bg-amber-500/20 border border-amber-500/40 px-2.5 py-0.5 text-[10px] font-bold text-amber-400 uppercase tracking-wider">
+                  Bách Khoa Questlines
+                </span>
+                <span className="text-xs text-amber-300 font-semibold">&bull; 16+ Chuỗi Nhiệm Vụ & Kết Thúc</span>
+              </div>
+              <h2 className="text-xl font-extrabold text-white uppercase tracking-tight">⚔️ Tra Cứu Tất Cả Questline Elden Ring</h2>
+              <p className="text-xs text-zinc-400 max-w-2xl font-sans leading-relaxed">
+                Hướng dẫn từng bước tất cả nhiệm vụ NPC (Ranni, Millicent, Alexander, Fia, Varré, Hyetta...) và các kết thúc game với tính năng lưu tiến trình cá nhân.
+              </p>
+            </div>
+            <Link
+              href="/wiki/elden-ring/quests"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-zinc-950 shadow-lg shadow-amber-500/20 transition duration-300 shrink-0"
+            >
+              <Sparkles size={15} /> MỞ THƯ VIỆN QUESTLINE
+            </Link>
+          </div>
+        </div>
+      )}
+
       {/* Search Input for Game Wiki */}
       <div className="max-w-md mb-8">
         <form action={`/wiki/${gameSlug}`} method="GET" className="relative">
@@ -278,11 +304,7 @@ export default async function GameWikiListPage({
       {totalPages > 1 && (
         <div className="mt-12 flex items-center justify-center gap-6 font-sans">
           <Link
-            href={`/wiki/${gameSlug}?${new URLSearchParams({
-              ...(search && { search }),
-              ...(category && { category }),
-              page: String(currentPage - 1),
-            }).toString()}`}
+            href={`/wiki/${gameSlug}?page=${currentPage - 1}${search ? `&search=${encodeURIComponent(search)}` : ''}${category ? `&category=${encodeURIComponent(category)}` : ''}`}
             className={`flex items-center gap-1.5 rounded-xl border border-zinc-800 px-4 py-2 text-xs font-semibold uppercase tracking-wider transition duration-300 ${
               currentPage === 1
                 ? 'pointer-events-none text-zinc-700 bg-transparent border-zinc-800/40 cursor-not-allowed'
@@ -298,11 +320,7 @@ export default async function GameWikiListPage({
           </span>
 
           <Link
-            href={`/wiki/${gameSlug}?${new URLSearchParams({
-              ...(search && { search }),
-              ...(category && { category }),
-              page: String(currentPage + 1),
-            }).toString()}`}
+            href={`/wiki/${gameSlug}?page=${currentPage + 1}${search ? `&search=${encodeURIComponent(search)}` : ''}${category ? `&category=${encodeURIComponent(category)}` : ''}`}
             className={`flex items-center gap-1.5 rounded-xl border border-zinc-800 px-4 py-2 text-xs font-semibold uppercase tracking-wider transition duration-300 ${
               currentPage === totalPages
                 ? 'pointer-events-none text-zinc-700 bg-transparent border-zinc-800/40 cursor-not-allowed'

@@ -66,14 +66,16 @@ export default async function WikiArticleEditPage({ params }: EditPageProps) {
 
         <div className="glass-card rounded-2xl p-6 md:p-8">
           <WikiForm
-            gameSlug={gameSlug}
+            mode="edit"
+            slug={slug}
             initialData={{
               title: article.title,
               summary: article.summary,
               content: article.content,
-              categoryId: article.categoryId,
+              categoryId: article.categoryId || '',
+              featuredImg: article.featuredImg || '',
+              published: article.published ?? true,
             }}
-            articleId={article.id}
           />
         </div>
       </div>
