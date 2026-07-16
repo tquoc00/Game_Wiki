@@ -10,6 +10,11 @@ interface EditPageProps {
 
 export const revalidate = 0; // Disable cache for edit pages
 
+export async function generateStaticParams() {
+  return [];
+}
+
+
 export default async function EditWikiPage({ params }: EditPageProps) {
   const { 'game-slug': gameSlug, slug } = await params;
 

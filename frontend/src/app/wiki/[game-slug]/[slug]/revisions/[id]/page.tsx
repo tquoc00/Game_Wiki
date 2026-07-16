@@ -12,6 +12,11 @@ interface RevisionDetailsPageProps {
 
 export const revalidate = 0; // Disable cache for revision view
 
+export async function generateStaticParams() {
+  return [];
+}
+
+
 export default async function WikiRevisionDetailsPage({ params }: RevisionDetailsPageProps) {
   const { 'game-slug': gameSlug, slug, id } = await params;
 

@@ -1,9 +1,10 @@
-import React from 'react';
-import Link from 'next/link';
-import WikiLayoutShell from '@/components/layout/WikiLayoutShell';
-import { ArrowLeft, Search, Shield, Swords, Coins, Sparkles } from 'lucide-react';
+'use client';
 
-export const revalidate = 3600;
+import React, { useState, useEffect, Suspense } from 'react';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import WikiLayoutShell from '@/components/layout/WikiLayoutShell';
+import { ArrowLeft, Search, Coins } from 'lucide-react';
 
 interface Item {
   id: string;
@@ -20,62 +21,74 @@ interface Item {
   image: string;
 }
 
-// Helper to strip HTML tags from DDragon item descriptions
 function stripHtml(html: string): string {
   if (!html) return '';
   return html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
-export default async function ItemsPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ search?: string; tag?: string }>;
-}) {
-  const { search = '', tag = '' } = await searchParams;
+function ItemsContent() {
+  const searchParams = useSearchParams();
+  const search = searchParams.get('search') || '';
+  const tag = searchParams.get('tag') || '';
 
-  let items: Item[] = [];
-  let version = '';
-  let errorMsg = '';
+  const [items, setItems] = useState<Item[]>([]);
+  const [version, setVersion] = useState('14.1.1');
+  const [loading, setLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState('');
 
-  try {
-    const res = await fetch('http://localhost:5000/api/ddragon/items', {
-      next: { revalidate: 3600 },
-    });
-    if (res.ok) {
-      const data = await res.json();
-      // Filter out non-purchasable or map-specific placeholders if needed
-      items = (data.items || []).filter((item: Item) => item.gold?.purchasable && item.name);
-      version = data.version || '';
-    } else {
-      errorMsg = 'Không thể tải danh sách trang bị từ Data Dragon.';
+  useEffect(() => {
+    async function fetchItems() {
+      try {
+        const verRes = await fetch('https://ddragon.leagueoflegends.com/api/versions.json');
+        let ver = '14.1.1';
+        if (verRes.ok) {
+          const versions = await verRes.json();
+          ver = versions[0] || '14.1.1';
+          setVersion(ver);
+        }
+
+        const itemsRes = await fetch(`https://ddragon.leagueoflegends.com/cdn/${ver}/data/vi_VN/item.json`);
+        if (itemsRes.ok) {
+          const data = await itemsRes.json();
+          const list: Item[] = Object.entries(data.data || {}).map(([id, item]: [string, any]) => ({
+            id,
+            name: item.name,
+            description: item.description,
+            plaintext: item.plaintext,
+            gold: item.gold,
+            tags: item.tags,
+            image: `https://ddragon.leagueoflegends.com/cdn/${ver}/img/item/${id}.png`,
+          })).filter((item) => item.gold?.purchasable && item.name);
+          setItems(list);
+        } else {
+          setErrorMsg('Không thể tải danh sách trang bị.');
+        }
+      } catch (err) {
+        console.error(err);
+        setErrorMsg('Lỗi kết nối dữ liệu.');
+      } finally {
+        setLoading(false);
+      }
     }
-  } catch (error) {
-    console.error('Error fetching items:', error);
-    errorMsg = 'Lỗi kết nối đến máy chủ dữ liệu.';
-  }
+    fetchItems();
+  }, []);
 
-  // Filter items by search query
   let filtered = items;
   if (search) {
     const q = search.toLowerCase();
     filtered = filtered.filter(
-      (item) =>
-        item.name.toLowerCase().includes(q) ||
-        item.plaintext.toLowerCase().includes(q)
+      (item) => item.name.toLowerCase().includes(q) || item.plaintext?.toLowerCase().includes(q)
     );
   }
 
-  // Filter by tag
   if (tag) {
     filtered = filtered.filter((item) => item.tags?.includes(tag));
   }
 
-  // Get unique tags for filter
-  const allTags = [...new Set(items.flatMap((i) => i.tags || []))].sort();
+  const allTags = Array.from(new Set(items.flatMap((i) => i.tags || []))).sort();
 
   return (
-    <WikiLayoutShell>
-      {/* Header */}
+    <>
       <div className="mb-8 border-b border-zinc-800/80 pb-6 font-sans">
         <div className="flex items-center gap-2 mb-1">
           <Link
@@ -98,7 +111,6 @@ export default async function ItemsPage({
           Tra cứu thông số, chi phí vàng và hiệu ứng của <strong className="text-cyan-400">{items.length}</strong> trang bị LMHT được cập nhật tự động từ server Riot Games (Patch {version}).
         </p>
 
-        {/* Tag Filters */}
         <div className="flex flex-wrap gap-2 mt-5">
           <Link
             href="/wiki/lien-minh-huyen-thoai/items"
@@ -126,7 +138,6 @@ export default async function ItemsPage({
         </div>
       </div>
 
-      {/* Search Field */}
       <div className="max-w-md mb-8 font-sans">
         <form action="/wiki/lien-minh-huyen-thoai/items" method="GET" className="relative">
           {tag && <input type="hidden" name="tag" value={tag} />}
@@ -146,8 +157,11 @@ export default async function ItemsPage({
         </form>
       </div>
 
-      {/* Error / Items Grid */}
-      {errorMsg ? (
+      {loading ? (
+        <div className="glass-card rounded-2xl p-16 text-center text-zinc-400">
+          Đang tải dữ liệu trang bị từ Riot Games...
+        </div>
+      ) : errorMsg ? (
         <div className="glass-card rounded-2xl p-12 text-center text-rose-400 border-rose-950 font-sans">
           {errorMsg}
         </div>
@@ -186,6 +200,16 @@ export default async function ItemsPage({
           ))}
         </div>
       )}
+    </>
+  );
+}
+
+export default function ItemsPage() {
+  return (
+    <WikiLayoutShell>
+      <Suspense fallback={<div className="p-12 text-center text-zinc-400 font-sans">Đang tải...</div>}>
+        <ItemsContent />
+      </Suspense>
     </WikiLayoutShell>
   );
 }

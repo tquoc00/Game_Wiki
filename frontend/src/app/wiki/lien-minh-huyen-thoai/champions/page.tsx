@@ -1,10 +1,11 @@
-import React from 'react';
-import Link from 'next/link';
-import WikiLayoutShell from '@/components/layout/WikiLayoutShell';
-import { Shield, Swords, Zap, Heart, ArrowLeft, Search, Flame, Compass } from 'lucide-react';
-import { getChampionMetaBuild, LaneRole } from '@/lib/lolMetaHelper';
+'use client';
 
-export const revalidate = 3600; // Revalidate every hour
+import React, { useState, useEffect, Suspense } from 'react';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import WikiLayoutShell from '@/components/layout/WikiLayoutShell';
+import { ArrowLeft, Search, Flame, Compass } from 'lucide-react';
+import { getChampionMetaBuild, LaneRole } from '@/lib/lolMetaHelper';
 
 interface Champion {
   id: string;
@@ -14,13 +15,7 @@ interface Champion {
   blurb: string;
   tags: string[];
   partype: string;
-  stats: {
-    hp: number;
-    armor: number;
-    attackdamage: number;
-    movespeed: number;
-    attackrange: number;
-  };
+  stats: Record<string, number>;
   image: {
     icon: string;
     splash: string;
@@ -55,40 +50,65 @@ const LANE_CONFIG: Record<LaneRole | 'ALL', { label: string; icon: string }> = {
   SUPPORT: { label: 'Hỗ Trợ (SUPPORT)', icon: '💚' },
 };
 
-export default async function ChampionsPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ search?: string; tag?: string; lane?: string }>;
-}) {
-  const { search = '', tag = '', lane = 'ALL' } = await searchParams;
+function ChampionsContent() {
+  const searchParams = useSearchParams();
+  const search = searchParams.get('search') || '';
+  const tag = searchParams.get('tag') || '';
+  const lane = searchParams.get('lane') || 'ALL';
 
-  let champions: Champion[] = [];
-  let version = '';
-  let errorMsg = '';
+  const [champions, setChampions] = useState<Champion[]>([]);
+  const [version, setVersion] = useState('14.1.1');
+  const [loading, setLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState('');
 
-  try {
-    const res = await fetch('http://localhost:5000/api/ddragon/champions', {
-      next: { revalidate: 3600 },
-    });
-    if (res.ok) {
-      const data = await res.json();
-      champions = data.champions || [];
-      version = data.version || '';
-    } else {
-      errorMsg = 'Không thể tải danh sách tướng từ Data Dragon.';
+  useEffect(() => {
+    async function fetchChampions() {
+      try {
+        const verRes = await fetch('https://ddragon.leagueoflegends.com/api/versions.json');
+        let ver = '14.1.1';
+        if (verRes.ok) {
+          const versions = await verRes.json();
+          ver = versions[0] || '14.1.1';
+          setVersion(ver);
+        }
+
+        const champRes = await fetch(`https://ddragon.leagueoflegends.com/cdn/${ver}/data/en_US/champion.json`);
+        if (champRes.ok) {
+          const data = await champRes.json();
+          const list: Champion[] = Object.values(data.data || {}).map((c: any) => ({
+            id: c.id,
+            key: c.key,
+            name: c.name,
+            title: c.title,
+            blurb: c.blurb,
+            tags: c.tags,
+            partype: c.partype,
+            stats: c.stats,
+            image: {
+              icon: `https://ddragon.leagueoflegends.com/cdn/${ver}/img/champion/${c.id}.png`,
+              splash: `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${c.id}_0.jpg`,
+              loading: `https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${c.id}_0.jpg`,
+            },
+          }));
+          setChampions(list);
+        } else {
+          setErrorMsg('Không thể tải danh sách tướng.');
+        }
+      } catch (err) {
+        console.error(err);
+        setErrorMsg('Lỗi kết nối dữ liệu.');
+      } finally {
+        setLoading(false);
+      }
     }
-  } catch (error) {
-    console.error('Error fetching champions:', error);
-    errorMsg = 'Lỗi kết nối đến máy chủ dữ liệu.';
-  }
+    fetchChampions();
+  }, []);
 
-  // Calculate Meta info for all champions
   const championsWithMeta = champions.map((champ) => {
     const meta = getChampionMetaBuild(champ.id, champ.tags, 'all');
     return { ...champ, meta };
   });
 
-  // Filter by search query
   let filtered = championsWithMeta;
   if (search) {
     const q = search.toLowerCase();
@@ -100,22 +120,19 @@ export default async function ChampionsPage({
     );
   }
 
-  // Filter by tag
   if (tag) {
     filtered = filtered.filter((c) => c.tags.includes(tag));
   }
 
-  // Filter by Lane/Position
   if (lane && lane !== 'ALL') {
     filtered = filtered.filter((c) => c.meta.lane === lane);
   }
 
-  const allTags = [...new Set(champions.flatMap((c) => c.tags))].sort();
+  const allTags = Array.from(new Set(champions.flatMap((c) => c.tags))).sort();
 
   return (
-    <WikiLayoutShell>
-      {/* 1. Header & Title */}
-      <div className="mb-6 border-b border-zinc-800/80 pb-6 space-y-4">
+    <>
+      <div className="mb-6 border-b border-zinc-800/80 pb-6 space-y-4 font-sans">
         <div className="flex items-center gap-2">
           <Link
             href="/wiki/lien-minh-huyen-thoai"
@@ -126,7 +143,7 @@ export default async function ChampionsPage({
           </Link>
           <span className="text-zinc-600">&bull;</span>
           <span className="text-[10px] tracking-widest font-mono text-cyan-400 uppercase">
-            COMMUNITYDRAGON & RIOT PATCH {version || '14.1'}
+            COMMUNITYDRAGON & RIOT PATCH {version}
           </span>
         </div>
 
@@ -142,7 +159,6 @@ export default async function ChampionsPage({
           </div>
         </div>
 
-        {/* 2. Lane Selector Bar (Skill-Capped Style) */}
         <div className="pt-2">
           <span className="text-[10px] font-extrabold text-zinc-400 uppercase tracking-wider block mb-2">
             Lọc Theo Vị Trí / Đường (Lane Metagame):
@@ -169,7 +185,6 @@ export default async function ChampionsPage({
           </div>
         </div>
 
-        {/* 3. Tag Filter Pills */}
         <div className="flex flex-wrap gap-2 pt-1">
           <Link
             href={`/wiki/lien-minh-huyen-thoai/champions?lane=${lane}${search ? `&search=${search}` : ''}`}
@@ -197,8 +212,7 @@ export default async function ChampionsPage({
         </div>
       </div>
 
-      {/* 4. Search Bar */}
-      <div className="max-w-md mb-8">
+      <div className="max-w-md mb-8 font-sans">
         <form action="/wiki/lien-minh-huyen-thoai/champions" method="GET" className="relative">
           {tag && <input type="hidden" name="tag" value={tag} />}
           {lane && <input type="hidden" name="lane" value={lane} />}
@@ -218,14 +232,17 @@ export default async function ChampionsPage({
         </form>
       </div>
 
-      {/* 5. Error & Grid Render */}
-      {errorMsg ? (
+      {loading ? (
+        <div className="glass-card rounded-2xl p-16 text-center text-zinc-400 font-sans">
+          Đang tải dữ liệu 170+ tướng từ Riot Games...
+        </div>
+      ) : errorMsg ? (
         <div className="glass-card rounded-2xl p-12 text-center text-rose-400 border-rose-900 font-sans">
           {errorMsg}
         </div>
       ) : filtered.length === 0 ? (
-        <div className="glass-card rounded-2xl p-16 text-center border-zinc-800 space-y-4">
-          <p className="text-sm text-zinc-400 font-sans">
+        <div className="glass-card rounded-2xl p-16 text-center border-zinc-800 space-y-4 font-sans">
+          <p className="text-sm text-zinc-400">
             Không tìm thấy tướng nào phù hợp với vị trí/hệ tướng đã chọn.
           </p>
           <Link
@@ -237,21 +254,19 @@ export default async function ChampionsPage({
         </div>
       ) : (
         <>
-          <div className="flex items-center justify-between mb-4">
-            <p className="text-xs text-zinc-400 font-sans font-semibold uppercase tracking-wider">
+          <div className="flex items-center justify-between mb-4 font-sans">
+            <p className="text-xs text-zinc-400 font-semibold uppercase tracking-wider">
               Hiển thị <span className="text-cyan-400 font-bold">{filtered.length}</span> / {champions.length} tướng ({LANE_CONFIG[lane as LaneRole | 'ALL']?.label})
             </p>
           </div>
 
-          {/* Champion Tier Grid */}
-          <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+          <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 font-sans">
             {filtered.map((champ) => (
               <Link
                 key={champ.id}
                 href={`/wiki/lien-minh-huyen-thoai/champions/${champ.id}`}
                 className="group glass-card rounded-2xl border-zinc-800/80 overflow-hidden flex flex-col hover:border-cyan-500/50 transition-all duration-300 hover:-translate-y-1 shadow-xl"
               >
-                {/* Champion Art */}
                 <div className="relative h-52 w-full overflow-hidden bg-zinc-950">
                   <img
                     src={champ.image.loading}
@@ -261,7 +276,6 @@ export default async function ChampionsPage({
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent" />
 
-                  {/* Meta Tier Badge */}
                   <div className="absolute top-2 left-2 flex items-center gap-1 bg-zinc-950/90 border border-amber-500/40 px-2 py-0.5 rounded-md shadow-lg">
                     <Flame size={10} className="text-amber-400" />
                     <span className="text-[10px] font-black text-amber-300">
@@ -269,7 +283,6 @@ export default async function ChampionsPage({
                     </span>
                   </div>
 
-                  {/* Primary Tags */}
                   <div className="absolute top-2 right-2 flex flex-col gap-1">
                     {champ.tags.map((t) => (
                       <span
@@ -284,7 +297,6 @@ export default async function ChampionsPage({
                   </div>
                 </div>
 
-                {/* Champion Info */}
                 <div className="p-3 flex-1 flex flex-col justify-between space-y-2">
                   <div>
                     <div className="flex items-center justify-between">
@@ -300,7 +312,6 @@ export default async function ChampionsPage({
                     </p>
                   </div>
 
-                  {/* Role & Winrate stats */}
                   <div className="border-t border-zinc-800/80 pt-2 flex items-center justify-between text-[9px]">
                     <span className="text-cyan-400 font-bold uppercase truncate">
                       {champ.meta.role.split(' ')[0]}
@@ -315,6 +326,16 @@ export default async function ChampionsPage({
           </div>
         </>
       )}
+    </>
+  );
+}
+
+export default function ChampionsPage() {
+  return (
+    <WikiLayoutShell>
+      <Suspense fallback={<div className="p-12 text-center text-zinc-400 font-sans">Đang tải...</div>}>
+        <ChampionsContent />
+      </Suspense>
     </WikiLayoutShell>
   );
 }

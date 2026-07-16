@@ -6,6 +6,11 @@ import { ArrowLeft } from 'lucide-react';
 
 export const revalidate = 3600;
 
+export async function generateStaticParams() {
+  return [{ championId: 'Ahri' }];
+}
+
+
 interface ChampionDetail {
   id: string;
   key: string;

@@ -11,6 +11,15 @@ interface SearchParams {
 
 export const revalidate = 0; // Disable caching to fetch live updates
 
+export async function generateStaticParams() {
+  return [
+    { 'game-slug': 'lien-minh-huyen-thoai' },
+    { 'game-slug': 'elden-ring' },
+    { 'game-slug': 'valorant' },
+  ];
+}
+
+
 export default async function GameWikiListPage({
   params,
   searchParams,

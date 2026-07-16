@@ -10,6 +10,11 @@ interface PageProps {
 
 export const revalidate = 0; // Live updates
 
+export async function generateStaticParams() {
+  return [];
+}
+
+
 export default async function WikiArticlePage({ params }: PageProps) {
   const { 'game-slug': gameSlug, slug } = await params;
 

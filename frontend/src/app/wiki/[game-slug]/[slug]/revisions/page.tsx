@@ -10,6 +10,11 @@ interface RevisionsPageProps {
 
 export const revalidate = 0; // Disable cache for history pages
 
+export async function generateStaticParams() {
+  return [];
+}
+
+
 export default async function WikiRevisionsPage({ params }: RevisionsPageProps) {
   const { 'game-slug': gameSlug, slug } = await params;
 
