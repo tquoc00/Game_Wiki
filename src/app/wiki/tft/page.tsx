@@ -408,18 +408,50 @@ export default function TFTMetaTFTExactPage() {
         }
 
         if (data.items && data.items.length > 0) {
-          const validItems = data.items
-            .filter((i: any) => i.name && i.desc && !i.name.includes('Trait:') && !i.name.includes('Augment'))
-            .slice(0, 18)
-            .map((i: any) => ({
-              name: i.name,
-              recipe: 'Trang bị hoàn chỉnh Mùa 17',
-              desc: i.desc.replace(/<[^>]*>/g, ' '),
-              icon: i.icon ? getCDragonImageUrl(i.icon) : '🛡️',
-            }));
+          const STANDARD_ITEM_MAP: Record<string, { nameVN: string; recipe: string; icon: string }> = {
+            "Infinity Edge": { nameVN: "Vô Cực Kiếm", recipe: "Kiếm B.F + Găng Tay", icon: "🗡️" },
+            "Guinsoo's Rageblade": { nameVN: "Cuồng Đao Guinsoo", recipe: "Cung Gỗ + Gậy Quá Khổ", icon: "⚡" },
+            "Rabadon's Deathcap": { nameVN: "Mũ Phù Thủy Rabadon", recipe: "Gậy Quá Khổ + Gậy Quá Khổ", icon: "🧙" },
+            "Warmog's Armor": { nameVN: "Giáp Máu Warmog", recipe: "Đai Lưng + Đai Lưng", icon: "❤️" },
+            "Blue Buff": { nameVN: "Bùa Xanh", recipe: "Nước Mắt + Nước Mắt", icon: "💧" },
+            "Bloodthirster": { nameVN: "Huyết Kiếm", recipe: "Kiếm B.F + Áo Choàng Bạc", icon: "🩸" },
+            "Bramble Vest": { nameVN: "Áo Choàng Gai", recipe: "Giáp Lưới + Giáp Lưới", icon: "🛡️" },
+            "Dragon's Claw": { nameVN: "Vuốt Rồng", recipe: "Áo Choàng Bạc + Áo Choàng Bạc", icon: "🐉" },
+            "Last Whisper": { nameVN: "Cung Xanh", recipe: "Cung Gỗ + Găng Tay", icon: "🏹" },
+            "Spear of Shojin": { nameVN: "Ngọn Giáo Shojin", recipe: "Kiếm B.F + Nước Mắt", icon: "🔱" },
+            "Statikk Shiv": { nameVN: "Dao Điện Statikk", recipe: "Cung Gỗ + Nước Mắt", icon: "⚡" },
+            "Gargoyle Stoneplate": { nameVN: "Thạch Giáp Dực Quang", recipe: "Giáp Lưới + Áo Choàng Bạc", icon: "🧱" },
+            "Titan's Resolve": { nameVN: "Quyền Nay Chiến Thần", recipe: "Cung Gỗ + Giáp Lưới", icon: "🛡️" },
+            "Giant Slayer": { nameVN: "Diệt Khổng Lồ", recipe: "Kiếm B.F + Cung Gỗ", icon: "⚡" },
+            "Thief's Gloves": { nameVN: "Găng Tay Đạo Tặc", recipe: "Găng Tay + Găng Tay", icon: "🥊" },
+            "Morellonomicon": { nameVN: "Quỷ Thư Morello", recipe: "Gậy Quá Khổ + Đai Lưng", icon: "🔥" },
+            "Sunfire Cape": { nameVN: "Áo Choàng Lửa", recipe: "Giáp Lưới + Đai Lưng", icon: "☀️" },
+            "Redemption": { nameVN: "Dây Chuyền Chuộc Tội", recipe: "Nước Mắt + Đai Lưng", icon: "💚" },
+            "Crownguard": { nameVN: "Vương Miện Hoàng Gia", recipe: "Gậy Quá Khổ + Giáp Lưới", icon: "👑" },
+            "Sterak's Gage": { nameVN: "Móng Vuốt Sterak", recipe: "Kiếm B.F + Đai Lưng", icon: "🥊" },
+            "Adaptive Helm": { nameVN: "Mũ Thích Nghi", recipe: "Nước Mắt + Áo Choàng Bạc", icon: "🪖" },
+            "Jeweled Gauntlet": { nameVN: "Găng Bảo Thạch", recipe: "Gậy Quá Khổ + Găng Tay", icon: "💎" },
+            "Edge of Night": { nameVN: "Áo Choàng Bóng Đêm", recipe: "Kiếm B.F + Giáp Lưới", icon: "🌙" },
+            "Ionic Spark": { nameVN: "Nỏ Sét", recipe: "Gậy Quá Khổ + Áo Choàng Bạc", icon: "⚡" },
+          };
 
-          if (validItems.length > 0) {
-            setLiveItems(validItems);
+          const uniqueMatched = new Map<string, any>();
+
+          data.items.forEach((i: any) => {
+            if (i.name && STANDARD_ITEM_MAP[i.name] && !uniqueMatched.has(i.name)) {
+              const meta = STANDARD_ITEM_MAP[i.name];
+              uniqueMatched.set(i.name, {
+                name: `${meta.nameVN} (${i.name})`,
+                recipe: meta.recipe,
+                desc: i.desc.replace(/<[^>]*>/g, ' ').replace(/@[^@]*@/g, '').trim(),
+                icon: i.icon ? getCDragonImageUrl(i.icon) : meta.icon,
+              });
+            }
+          });
+
+          const parsedItems = Array.from(uniqueMatched.values());
+          if (parsedItems.length > 0) {
+            setLiveItems(parsedItems);
           }
         }
 
