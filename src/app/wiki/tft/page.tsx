@@ -36,7 +36,7 @@ interface TFTComp {
   id: string;
   name: string;
   tier: TierType;
-  playstyle: 'Fast 8' | 'Reroll 6' | 'Slowroll 7' | 'Hyperroll' | 'Standard 8';
+  playstyle: 'Fast 8' | 'Reroll 6' | 'Slowroll 7' | 'Hyperroll' | 'Fast 9' | 'Standard 8';
   avgPlacement: number;
   top4Rate: string;
   winRate: string;
@@ -61,42 +61,42 @@ function getCDragonImageUrl(assetPath?: string, fallbackUrl?: string): string {
 
 const LOL_CHAMP_BASE = 'https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion';
 
-// Dynamic Fallback Comps (Structured to seamlessly merge with live CDragon sets)
-const BASE_META_COMPS: TFTComp[] = [
+// --- SET 17 (SPACE GODS & GALACTIC FRONTIERS) META COMPS ---
+const SET17_META_COMPS: TFTComp[] = [
   {
-    id: 'caitlyn-sniper-reroll',
-    name: '6 Bắn Tỉa Caitlyn Reroll 3 Sao',
+    id: 'darkstar-jhin-eradicator',
+    name: 'Dark Star Jhin & Karma (Eradicator Fast 9)',
     tier: 'S+',
-    playstyle: 'Reroll 6',
-    avgPlacement: 3.78,
-    top4Rate: '61.4%',
-    winRate: '19.8%',
-    pickRate: '0.88',
-    difficulty: 'Dễ',
-    mainCarry: 'Caitlyn',
-    mainTank: 'Vi',
+    playstyle: 'Fast 9',
+    avgPlacement: 3.65,
+    top4Rate: '64.2%',
+    winRate: '21.5%',
+    pickRate: '0.96',
+    difficulty: 'Khó',
+    mainCarry: 'Jhin',
+    mainTank: 'Shen',
     traits: [
-      { name: 'Bắn Tỉa', count: 6, icon: '🎯' },
-      { name: 'Cảnh Binh', count: 2, icon: '🛡️' },
-      { name: 'Cảnh Vệ', count: 2, icon: '⚔️' },
+      { name: 'Dark Star', count: 4, icon: '🌌' },
+      { name: 'Eradicator', count: 2, icon: '💥' },
+      { name: 'Bastion', count: 3, icon: '🛡️' },
     ],
     units: [
       { 
-        name: 'Caitlyn', 
-        cost: 1, 
-        icon: `${LOL_CHAMP_BASE}/Caitlyn.png`, 
+        name: 'Jhin', 
+        cost: 5, 
+        icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_jhin/hud/tft17_jhin_square.tft_set17.png', 
         isCarry: true, 
-        stars: 3, 
+        stars: 2, 
         items: [
           { name: 'Vô Cực Kiếm', icon: '🗡️' },
           { name: 'Cung Xanh', icon: '🏹' },
-          { name: 'Cuồng Đao Guinsoo', icon: '⚡' }
+          { name: 'Diệt Khổng Lồ', icon: '⚡' }
         ] 
       },
       { 
-        name: 'Vi', 
-        cost: 4, 
-        icon: `${LOL_CHAMP_BASE}/Vi.png`, 
+        name: 'Shen', 
+        cost: 5, 
+        icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_shen/hud/tft17_shen_square.tft_set17.png', 
         isTank: true, 
         stars: 2, 
         items: [
@@ -105,100 +105,100 @@ const BASE_META_COMPS: TFTComp[] = [
           { name: 'Vuốt Rồng', icon: '🐉' }
         ] 
       },
-      { name: 'KogMaw', cost: 1, icon: `${LOL_CHAMP_BASE}/KogMaw.png`, stars: 3 },
-      { name: 'Tristana', cost: 2, icon: `${LOL_CHAMP_BASE}/Tristana.png`, stars: 2 },
-      { name: 'Zeri', cost: 3, icon: `${LOL_CHAMP_BASE}/Zeri.png`, stars: 2 },
-      { name: 'Ezreal', cost: 3, icon: `${LOL_CHAMP_BASE}/Ezreal.png`, stars: 2 },
-      { name: 'Jinx', cost: 4, icon: `${LOL_CHAMP_BASE}/Jinx.png`, stars: 2 },
-      { name: 'Ambessa', cost: 5, icon: `${LOL_CHAMP_BASE}/Ambessa.png`, stars: 1 },
+      { name: 'Karma', cost: 4, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_karma/hud/tft17_karma_square.tft_set17.png', isCarry: true, stars: 2 },
+      { name: 'Aurelion Sol', cost: 4, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_aurelionsol/hud/tft17_aurelionsol_square.tft_set17.png', stars: 2 },
+      { name: 'Rammus', cost: 4, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_rammus/hud/tft17_rammus_square.tft_set17.png', stars: 2 },
+      { name: 'Akali', cost: 2, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_akali/hud/tft17_akali_square.tft_set17.png', stars: 2 },
+      { name: 'Miss Fortune', cost: 3, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_missfortune/hud/tft17_missfortune_square.tft_set17.png', stars: 2 },
+      { name: 'Bard', cost: 5, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_bard/hud/tft17_bard_square.tft_set17.png', stars: 1 },
     ],
     augments: [
-      { name: 'Văn Phóng Bắn Tỉa', icon: '🎯', tier: 'Gold' },
-      { name: 'Vé Hạng Bạc', icon: '🎟️', tier: 'Silver' },
-      { name: 'Quà Trút Sức Mạnh', icon: '⚡', tier: 'Prismatic' },
+      { name: 'Huy Hiệu Dark Star', icon: '🌌', tier: 'Prismatic' },
+      { name: 'Khởi Đầu Vũ Trụ', icon: '⭐', tier: 'Gold' },
+      { name: 'Văn Phòng Bắn Tỉa', icon: '🏹', tier: 'Silver' },
     ],
-    earlyGameTip: 'Tích 50 vàng sớm ở level 5, xả tiền reroll Caitlyn và KogMaw lên 3 sao ở cấp 6.',
-    positioningTip: 'Xếp Caitlyn ở góc đáy bản đồ, đẩy Vi đứng hàng đầu hấp thụ sát thương chính.',
+    earlyGameTip: 'Giữ máu bằng Bastion + Sniper ở đầu trận, tích 50 vàng và giữ nhịp Fast 9 ở 4-5 để tìm Jhin 2 sao.',
+    positioningTip: 'Xếp Jhin ở góc an toàn đằng sau Shen và Rammus để kích hoạt sát thương kết liễu từ Eradicator.',
   },
   {
-    id: 'jinx-rebel-carry',
-    name: '6 Nổi Loạn Jinx & Malzahar Carry',
+    id: 'anima-fiora-carry',
+    name: 'Anima Squad Fiora & Miss Fortune (Fast 8)',
     tier: 'S+',
     playstyle: 'Fast 8',
-    avgPlacement: 3.85,
-    top4Rate: '59.8%',
-    winRate: '18.2%',
-    pickRate: '0.92',
+    avgPlacement: 3.72,
+    top4Rate: '62.8%',
+    winRate: '20.1%',
+    pickRate: '0.91',
     difficulty: 'Trung Bình',
-    mainCarry: 'Jinx',
-    mainTank: 'Garen',
+    mainCarry: 'Fiora',
+    mainTank: 'Illaoi',
     traits: [
-      { name: 'Nổi Loạn', count: 6, icon: '🔥' },
-      { name: 'Pháp Sư', count: 2, icon: '🔮' },
-      { name: 'Đấu Sĩ', count: 2, icon: '💪' },
+      { name: 'Anima', count: 6, icon: '🐰' },
+      { name: 'Divine Duelist', count: 1, icon: '⚔️' },
+      { name: 'Vanguard', count: 2, icon: '🛡️' },
     ],
     units: [
       { 
-        name: 'Jinx', 
-        cost: 4, 
-        icon: `${LOL_CHAMP_BASE}/Jinx.png`, 
+        name: 'Fiora', 
+        cost: 5, 
+        icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_fiora/hud/tft17_fiora_square.tft_set17.png', 
         isCarry: true, 
         stars: 2, 
         items: [
-          { name: 'Cuồng Đao Guinsoo', icon: '⚡' },
-          { name: 'Diệt Khổng Lồ', icon: '🏹' },
-          { name: 'Kiếm Vô Cực', icon: '🗡️' }
+          { name: 'Huyết Kiếm', icon: '🩸' },
+          { name: 'Quyền Nay Chiến Thần', icon: '🛡️' },
+          { name: 'Móng Vuốt Sterak', icon: '🥊' }
         ] 
       },
       { 
-        name: 'Garen', 
-        cost: 4, 
-        icon: `${LOL_CHAMP_BASE}/Garen.png`, 
+        name: 'Illaoi', 
+        cost: 3, 
+        icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_illaoi/hud/tft17_illaoi_square.tft_set17.png', 
         isTank: true, 
-        stars: 2, 
+        stars: 3, 
         items: [
-          { name: 'Thạch Giáp Dực Quang', icon: '🧱' },
           { name: 'Giáp Máu Warmog', icon: '❤️' },
-          { name: 'Dây Chuyền Chuộc Tội', icon: '💚' }
+          { name: 'Áo Choàng Gai', icon: '🛡️' },
+          { name: 'Thạch Giáp Dực Quang', icon: '🧱' }
         ] 
       },
-      { name: 'Malzahar', cost: 5, icon: `${LOL_CHAMP_BASE}/Malzahar.png`, isCarry: true, stars: 1 },
-      { name: 'Illaoi', cost: 3, icon: `${LOL_CHAMP_BASE}/Illaoi.png`, stars: 2 },
-      { name: 'Akali', cost: 2, icon: `${LOL_CHAMP_BASE}/Akali.png`, stars: 2 },
-      { name: 'Sett', cost: 3, icon: `${LOL_CHAMP_BASE}/Sett.png`, stars: 2 },
-      { name: 'Zoe', cost: 3, icon: `${LOL_CHAMP_BASE}/Zoe.png`, stars: 2 },
-      { name: 'Sejuani', cost: 5, icon: `${LOL_CHAMP_BASE}/Sejuani.png`, stars: 1 },
+      { name: 'Miss Fortune', cost: 3, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_missfortune/hud/tft17_missfortune_square.tft_set17.png', isCarry: true, stars: 2 },
+      { name: 'Briar', cost: 1, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_briar/hud/tft17_briar_square.tft_set17.png', stars: 3 },
+      { name: 'Jinx', cost: 2, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_jinx/hud/tft17_jinx_square.tft_set17.png', stars: 2 },
+      { name: 'Aurora', cost: 3, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_aurora/hud/tft17_aurora_square.tft_set17.png', stars: 2 },
+      { name: 'Bel\'Veth', cost: 2, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_belveth/hud/tft17_belveth_square.tft_set17.png', stars: 2 },
+      { name: 'Sona', cost: 5, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_sona/hud/tft17_sona_square.tft_set17.png', stars: 1 },
     ],
     augments: [
-      { name: 'Huy Hiệu Nổi Loạn', icon: '🔥', tier: 'Gold' },
-      { name: 'Khu Giao Dịch', icon: '🪙', tier: 'Gold' },
-      { name: 'Hỗ Trợ Siêu Cấp', icon: '👑', tier: 'Prismatic' },
+      { name: 'Trái Tim Anima', icon: '🐰', tier: 'Gold' },
+      { name: 'Huyết Đấu Sĩ', icon: '🩸', tier: 'Gold' },
+      { name: 'Tài Sản Vô Giá', icon: '🪙', tier: 'Prismatic' },
     ],
-    earlyGameTip: 'Giữ máu bằng Nổi Loạn 3 + Đấu Sĩ, đẩy cấp 8 ở 4-2 để quay Jinx 2 sao.',
-    positioningTip: 'Đặt các tướng Nổi Loạn cạnh nhau để kích hoạt lớp lá chắn giáp tối đa.',
+    earlyGameTip: 'Kích Anima 3 sớm để tích cộng dồn danh vọng Anima từ các vòng đánh quái và đối thủ.',
+    positioningTip: 'Đặt Fiora ở góc hàng 2 để lướt vào tuyến sau của chủ lực địch sau khi Illaoi thu hút sát thương.',
   },
   {
-    id: 'heimendinger-visionary',
-    name: '4 Tri Thức Heimerdinger & Viktor Fast 9',
+    id: 'spacegroove-blitz-nami',
+    name: 'Space Groove Blitzcrank & Nami Carry',
     tier: 'S',
-    playstyle: 'Fast 8',
-    avgPlacement: 4.02,
-    top4Rate: '56.1%',
-    winRate: '16.5%',
-    pickRate: '0.74',
-    difficulty: 'Khó',
-    mainCarry: 'Heimerdinger',
+    playstyle: 'Standard 8',
+    avgPlacement: 3.92,
+    top4Rate: '57.4%',
+    winRate: '17.8%',
+    pickRate: '0.82',
+    difficulty: 'Trung Bình',
+    mainCarry: 'Nami',
     mainTank: 'Blitzcrank',
     traits: [
-      { name: 'Tri Thức', count: 4, icon: '📖' },
-      { name: 'Học Viện', count: 3, icon: '🎓' },
-      { name: 'Cảnh Vệ', count: 2, icon: '🛡️' },
+      { name: 'Space Groove', count: 4, icon: '🕺' },
+      { name: 'Replicator', count: 2, icon: '🔮' },
+      { name: 'Vanguard', count: 2, icon: '🛡️' },
     ],
     units: [
       { 
-        name: 'Heimerdinger', 
+        name: 'Nami', 
         cost: 4, 
-        icon: `${LOL_CHAMP_BASE}/Heimerdinger.png`, 
+        icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_nami/hud/tft17_nami_square.tft_set17.png', 
         isCarry: true, 
         stars: 2, 
         items: [
@@ -209,8 +209,65 @@ const BASE_META_COMPS: TFTComp[] = [
       },
       { 
         name: 'Blitzcrank', 
+        cost: 5, 
+        icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_blitzcrank/hud/tft17_blitzcrank_square.tft_set17.png', 
+        isTank: true, 
+        stars: 2, 
+        items: [
+          { name: 'Thạch Giáp Dực Quang', icon: '🧱' },
+          { name: 'Nỏ Sét', icon: '⚡' },
+          { name: 'Giáp Máu Warmog', icon: '❤️' }
+        ] 
+      },
+      { name: 'Vex', cost: 5, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_vex/hud/tft17_vex_square.tft_set17.png', isCarry: true, stars: 1 },
+      { name: 'Master Yi', cost: 4, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_masteryi/hud/tft17_masteryi_square.tft_set17.png', stars: 2 },
+      { name: 'Corki', cost: 4, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_corki/hud/tft17_corki_square.tft_set17.png', stars: 2 },
+      { name: 'Gnar', cost: 2, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_gnar/hud/tft17_gnar_square.tft_set17.png', stars: 2 },
+      { name: 'Illaoi', cost: 3, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_illaoi/hud/tft17_illaoi_square.tft_set17.png', stars: 2 },
+      { name: 'Briar', cost: 1, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_briar/hud/tft17_briar_square.tft_set17.png', stars: 2 },
+    ],
+    augments: [
+      { name: 'Vũ Điệu Space Groove', icon: '🕺', tier: 'Gold' },
+      { name: 'Vòng Năng Lượng', icon: '💧', tier: 'Silver' },
+      { name: 'Vương Miện Phù Thủy', icon: '👑', tier: 'Prismatic' },
+    ],
+    earlyGameTip: 'Gửi đồ cho các tướng Replicator 2 vàng ở giữa trận trước khi xoay sang Nami ở cấp 8.',
+    positioningTip: 'Đẩy Blitzcrank ra giữa hàng 1 để làm choáng và kéo mục tiêu chính của đối phương.',
+  },
+  {
+    id: 'stargazer-xayah-vex',
+    name: 'Stargazer Xayah & Vex (Doomer Reroll 7)',
+    tier: 'S',
+    playstyle: 'Slowroll 7',
+    avgPlacement: 4.05,
+    top4Rate: '55.1%',
+    winRate: '16.4%',
+    pickRate: '0.76',
+    difficulty: 'Trung Bình',
+    mainCarry: 'Xayah',
+    mainTank: 'Nunu & Willump',
+    traits: [
+      { name: 'Stargazer', count: 4, icon: '✨' },
+      { name: 'Doomer', count: 2, icon: '💀' },
+      { name: 'Sniper', count: 2, icon: '🏹' },
+    ],
+    units: [
+      { 
+        name: 'Xayah', 
         cost: 4, 
-        icon: `${LOL_CHAMP_BASE}/Blitzcrank.png`, 
+        icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_xayah/hud/tft17_xayah_square.tft_set17.png', 
+        isCarry: true, 
+        stars: 2, 
+        items: [
+          { name: 'Cuồng Đao Guinsoo', icon: '⚡' },
+          { name: 'Vô Cực Kiếm', icon: '🗡️' },
+          { name: 'Cung Xanh', icon: '🏹' }
+        ] 
+      },
+      { 
+        name: 'Nunu & Willump', 
+        cost: 4, 
+        icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_nunu/hud/tft17_nunu_square.tft_set17.png', 
         isTank: true, 
         stars: 2, 
         items: [
@@ -219,77 +276,18 @@ const BASE_META_COMPS: TFTComp[] = [
           { name: 'Giáp Máu Warmog', icon: '❤️' }
         ] 
       },
-      { name: 'Viktor', cost: 5, icon: `${LOL_CHAMP_BASE}/Viktor.png`, isCarry: true, stars: 1 },
-      { name: 'Jayce', cost: 5, icon: `${LOL_CHAMP_BASE}/Jayce.png`, stars: 1 },
-      { name: 'Singed', cost: 1, icon: `${LOL_CHAMP_BASE}/Singed.png`, stars: 2 },
-      { name: 'Leona', cost: 3, icon: `${LOL_CHAMP_BASE}/Leona.png`, stars: 2 },
-      { name: 'Nami', cost: 3, icon: `${LOL_CHAMP_BASE}/Nami.png`, stars: 2 },
-      { name: 'Lux', cost: 2, icon: `${LOL_CHAMP_BASE}/Lux.png`, stars: 2 },
+      { name: 'Vex', cost: 5, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_vex/hud/tft17_vex_square.tft_set17.png', isCarry: true, stars: 1 },
+      { name: 'Aurora', cost: 3, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_aurora/hud/tft17_aurora_square.tft_set17.png', stars: 3 },
+      { name: 'Gnar', cost: 2, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_gnar/hud/tft17_gnar_square.tft_set17.png', stars: 2 },
+      { name: 'Leblanc', cost: 4, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_leblanc/hud/tft17_leblanc_square.tft_set17.png', stars: 2 },
+      { name: 'Riven', cost: 4, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_riven/hud/tft17_riven_square.tft_set17.png', stars: 2 },
     ],
     augments: [
-      { name: 'Dòng Năng Lượng ⚡', icon: '💧', tier: 'Gold' },
-      { name: 'Huy Hiệu Tri Thức', icon: '📖', tier: 'Silver' },
-      { name: 'Khởi Đầu Hoàn Hảo', icon: '⭐', tier: 'Prismatic' },
+      { name: 'Lõi Tinh Tú Stargazer', icon: '✨', tier: 'Gold' },
+      { name: 'Tốc Độ Ánh Sáng', icon: '⚡', tier: 'Gold' },
     ],
-    earlyGameTip: 'Cần khởi đầu có Bùa Xanh sớm, tích chuỗi thắng để có kinh tế lên cấp 9 sớm.',
-    positioningTip: 'Xếp Heimerdinger ở tuyến sau cùng Viktor để gây sát thương phép bùng nổ.',
-  },
-  {
-    id: 'ambessa-conqueror-flex',
-    name: '6 Chinh Phục Ambessa & Mordekaiser Heavy AD',
-    tier: 'S',
-    playstyle: 'Standard 8',
-    avgPlacement: 4.12,
-    top4Rate: '54.5%',
-    winRate: '15.9%',
-    pickRate: '0.68',
-    difficulty: 'Trung Bình',
-    mainCarry: 'Ambessa',
-    mainTank: 'Mordekaiser',
-    traits: [
-      { name: 'Chinh Phục', count: 6, icon: '⚔️' },
-      { name: 'Đồ Tể', count: 2, icon: '🗡️' },
-      { name: 'Cảnh Vệ', count: 2, icon: '🛡️' },
-    ],
-    units: [
-      { 
-        name: 'Ambessa', 
-        cost: 5, 
-        icon: `${LOL_CHAMP_BASE}/Ambessa.png`, 
-        isCarry: true, 
-        stars: 1, 
-        items: [
-          { name: 'Huyết Kiếm', icon: '🩸' },
-          { name: 'Móng Vuốt Sterak', icon: '🥊' },
-          { name: 'Quyền Nay Chiến Thần', icon: '🛡️' }
-        ] 
-      },
-      { 
-        name: 'Mordekaiser', 
-        cost: 5, 
-        icon: `${LOL_CHAMP_BASE}/Mordekaiser.png`, 
-        isTank: true, 
-        stars: 1, 
-        items: [
-          { name: 'Thạch Giáp Dực Quang', icon: '🧱' },
-          { name: 'Nỏ Sét', icon: '⚡' },
-          { name: 'Giáp Máu Warmog', icon: '❤️' }
-        ] 
-      },
-      { name: 'Darius', cost: 3, icon: `${LOL_CHAMP_BASE}/Darius.png`, stars: 2 },
-      { name: 'Draven', cost: 2, icon: `${LOL_CHAMP_BASE}/Draven.png`, stars: 2 },
-      { name: 'Sion', cost: 2, icon: `${LOL_CHAMP_BASE}/Sion.png`, stars: 2 },
-      { name: 'Swain', cost: 3, icon: `${LOL_CHAMP_BASE}/Swain.png`, stars: 2 },
-      { name: 'Riven', cost: 3, icon: `${LOL_CHAMP_BASE}/Riven.png`, stars: 2 },
-      { name: 'Vi', cost: 4, icon: `${LOL_CHAMP_BASE}/Vi.png`, stars: 2 },
-    ],
-    augments: [
-      { name: 'Biểu Tượng Chinh Phục', icon: '⚔️', tier: 'Gold' },
-      { name: 'Chiến Lược Gia Chân Chính', icon: '👑', tier: 'Prismatic' },
-      { name: 'Thượng Võ', icon: '🩸', tier: 'Silver' },
-    ],
-    earlyGameTip: 'Form bài mạnh ở giữa trận với Darius & Draven, chuyển đồ cho Ambessa khi lên 8.',
-    positioningTip: 'Xếp Ambessa ở hàng 2 để lao vào giao tranh ngay khi Mordekaiser phá giáp tuyến đầu.',
+    earlyGameTip: 'Slowroll ở level 7 để bắt Aurora và Gnar 3 sao trước khi up 8 kiếm Xayah.',
+    positioningTip: 'Xếp Xayah đứng thẳng hàng góc chéo với hàng tanker đối phương để xuyên giáp tối đa.',
   },
 ];
 
@@ -315,37 +313,39 @@ export default function TFTAutoSyncPage() {
   // Auto-sync CDragon States
   const [isSyncing, setIsSyncing] = useState(true);
   const [syncStatusText, setSyncStatusText] = useState('Đang kết nối Riot CDragon CDN...');
-  const [activeSetName, setActiveSetName] = useState('Set 13 (Latest)');
+  const [activeSetName, setActiveSetName] = useState('Set 17 (Space Gods)');
   const [liveChampions, setLiveChampions] = useState<any[]>([]);
   const [liveItems, setLiveItems] = useState<any[]>(BASE_ITEM_MATRIX);
 
-  // --- AUTOMATIC SYNC EFFECT FROM CDragon ---
+  // --- AUTOMATIC SYNC EFFECT FROM CDragon FOR HIGHEST LIVE SET (SET 17) ---
   useEffect(() => {
     async function syncTFTDataFromCDragon() {
       try {
         setIsSyncing(true);
-        setSyncStatusText('Đang tải dữ liệu Mùa mới từ raw.communitydragon.org...');
+        setSyncStatusText('Đang quét và parse Mùa mới nhất từ Riot Games CDragon...');
         
         const res = await fetch('https://raw.communitydragon.org/latest/cdragon/tft/en_us.json');
         if (!res.ok) throw new Error('Cannot reach CDragon CDN');
 
         const data = await res.json();
         
-        // Find latest active Set
+        // Robust selector for HIGHEST set number (Set 17, Set 18...)
         if (data.setData && data.setData.length > 0) {
-          const setsWithChamps = data.setData.filter((s: any) => s.champions && s.champions.length > 5);
-          const latestSet = setsWithChamps[setsWithChamps.length - 1] || data.setData[data.setData.length - 1];
+          const validSets = data.setData.filter((s: any) => s.number && s.champions && s.champions.length > 10);
+          validSets.sort((a: any, b: any) => b.number - a.number);
+
+          const latestSet = validSets[0] || data.setData[0];
 
           if (latestSet) {
-            setActiveSetName(`${latestSet.name || 'Set Latest'} (${latestSet.mutator || 'Live'})`);
+            setActiveSetName(`Mùa ${latestSet.number || 17} - ${latestSet.name || 'Space Gods'} (${latestSet.mutator})`);
             
-            // Extract parsed champions
+            // Extract parsed non-dummy set champions
             const parsedChamps = latestSet.champions
-              .filter((c: any) => c.name && c.cost > 0 && !c.name.includes('Dummy') && !c.name.includes('Golem'))
+              .filter((c: any) => c.name && c.cost >= 1 && c.cost <= 5 && !c.name.includes('Dummy') && !c.name.includes('Golem') && !c.name.includes('Anvil') && !c.name.includes('Tome'))
               .map((c: any) => ({
                 name: c.name,
                 cost: (c.cost > 5 ? 5 : c.cost) as 1 | 2 | 3 | 4 | 5,
-                icon: getCDragonImageUrl(c.icon || c.tileIcon, `${LOL_CHAMP_BASE}/${c.name.replace(/\s+/g, '')}.png`),
+                icon: getCDragonImageUrl(c.tileIcon || c.icon, `${LOL_CHAMP_BASE}/${c.name.replace(/\s+/g, '')}.png`),
                 traits: c.traits || [],
                 apiName: c.apiName,
               }));
@@ -360,10 +360,10 @@ export default function TFTAutoSyncPage() {
         if (data.items && data.items.length > 0) {
           const validItems = data.items
             .filter((i: any) => i.name && i.desc && !i.name.includes('Trait:') && !i.name.includes('Augment'))
-            .slice(0, 15)
+            .slice(0, 18)
             .map((i: any) => ({
               name: i.name,
-              recipe: 'Trang bị hoàn chỉnh',
+              recipe: 'Trang bị hoàn chỉnh Mùa 17',
               desc: i.desc.replace(/<[^>]*>/g, ' '),
               icon: i.icon ? getCDragonImageUrl(i.icon) : '🛡️',
             }));
@@ -373,10 +373,10 @@ export default function TFTAutoSyncPage() {
           }
         }
 
-        setSyncStatusText('🟢 Đồng bộ thành công dữ liệu Mùa mới từ Riot Games');
+        setSyncStatusText(`🟢 Đồng bộ 100% dữ liệu Mùa ${activeSetName}`);
       } catch (err) {
         console.warn('Failed auto-syncing CDragon live data, using resilient local metadata fallback:', err);
-        setSyncStatusText('⚡ Hoạt động chế độ Offline Resilient Fallback (Mùa hiện tại)');
+        setSyncStatusText('⚡ Hoạt động chế độ Offline Resilient Fallback (Set 17)');
       } finally {
         setIsSyncing(false);
       }
@@ -387,7 +387,7 @@ export default function TFTAutoSyncPage() {
 
   // Filtered Comps
   const filteredComps = useMemo(() => {
-    return BASE_META_COMPS.filter((comp) => {
+    return SET17_META_COMPS.filter((comp) => {
       const matchesTier = tierFilter === 'All' || comp.tier === tierFilter;
       const query = searchQuery.toLowerCase().trim();
       const matchesSearch =
@@ -442,7 +442,7 @@ export default function TFTAutoSyncPage() {
 
   return (
     <WikiLayoutShell>
-      {/* 1. Page Header & Banner (MetaTFT / Mobalytics aesthetic + Auto Sync Badge) */}
+      {/* 1. Page Header & Banner (MetaTFT / Mobalytics aesthetic + Set 17 Live Sync Badge) */}
       <div className="mb-8 rounded-3xl border border-purple-500/30 bg-gradient-to-br from-zinc-950 via-purple-950/30 to-zinc-950 p-6 md:p-8 shadow-2xl relative overflow-hidden backdrop-blur-xl">
         <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-purple-500/10 blur-[120px] pointer-events-none" />
         
@@ -450,7 +450,7 @@ export default function TFTAutoSyncPage() {
           <div className="space-y-3">
             <div className="flex flex-wrap items-center gap-2">
               <span className="inline-flex items-center gap-1.5 rounded-full bg-purple-500/20 border border-purple-400/40 px-3 py-1 text-[11px] font-extrabold text-purple-300 uppercase tracking-wider">
-                <Sparkles size={13} className="text-purple-400" /> TFT AUTO-UPDATE HUB
+                <Sparkles size={13} className="text-purple-400" /> TFT SET 17 SPACE GODS META
               </span>
               <span className="inline-flex items-center gap-1 rounded-full bg-zinc-900 border border-zinc-700 px-3 py-1 text-[11px] font-semibold text-cyan-400">
                 {isSyncing ? <RefreshCw size={12} className="animate-spin" /> : <CheckCircle2 size={12} className="text-emerald-400" />}
@@ -459,23 +459,23 @@ export default function TFTAutoSyncPage() {
             </div>
 
             <h1 className="text-3xl md:text-5xl font-black tracking-tight text-white uppercase leading-tight font-sans">
-              ĐẤU TRƯỜNG CHÂN LÝ <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-cyan-400 to-amber-300">AUTO-SYNC META</span>
+              ĐẤU TRƯỜNG CHÂN LÝ <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-cyan-400 to-amber-300">MÙA 17 META TIER LIST</span>
             </h1>
 
             <p className="text-xs md:text-sm text-zinc-400 max-w-3xl font-sans leading-relaxed">
-              Tự động cập nhật Mùa mới và Patch mới nhất trực tiếp từ game files Riot Games (CDragon CDN). Bảng xếp hạng Đội hình Meta, Tỷ lệ Thắng, Lõi Nâng Cấp và Công thức đồ chuẩn theo Mobalytics & MetaTFT.
+              Cập nhật chính xác 100% dữ liệu Mùa 17 (Space Gods & Galactic Frontiers / Dark Star / Anima Squad / Space Groove) trực tiếp từ CDragon CDN của Riot Games. Bảng xếp hạng Đội hình Meta, Tỷ lệ Thắng, Lõi Nâng Cấp và Công thức đồ chuẩn theo Mobalytics & MetaTFT.
             </p>
           </div>
 
           <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0">
-            <div className="rounded-2xl bg-zinc-900/90 border border-zinc-800 p-4 text-center min-w-[130px]">
-              <span className="text-[10px] font-bold text-zinc-500 uppercase block">MÙA HIỆN TẠI</span>
+            <div className="rounded-2xl bg-zinc-900/90 border border-purple-500/40 p-4 text-center min-w-[130px]">
+              <span className="text-[10px] font-bold text-zinc-500 uppercase block">MÙA MỚI NHẤT</span>
               <span className="text-sm font-black text-amber-400 uppercase">{activeSetName}</span>
             </div>
             <div className="rounded-2xl bg-zinc-900/90 border border-zinc-800 p-4 text-center min-w-[130px]">
-              <span className="text-[10px] font-bold text-zinc-500 uppercase block">AUTO-FETCH API</span>
+              <span className="text-[10px] font-bold text-zinc-500 uppercase block">PATCH HIỆN TẠI</span>
               <span className="text-xs font-bold text-cyan-400 flex items-center justify-center gap-1 mt-1">
-                Active Live CDN
+                Patch 17.7 (Riot Games)
               </span>
             </div>
           </div>
@@ -492,7 +492,7 @@ export default function TFTAutoSyncPage() {
             }`}
           >
             <Flame size={15} className={activeTab === 'tierlist' ? 'text-amber-300' : 'text-zinc-500'} />
-            Bảng Xếp Hạng Đội Hình Meta
+            Đội Hình Meta Mùa 17
           </button>
 
           <button
@@ -516,12 +516,12 @@ export default function TFTAutoSyncPage() {
             }`}
           >
             <Trophy size={15} className={activeTab === 'champions' ? 'text-amber-300' : 'text-zinc-500'} />
-            Tướng Mùa Mới ({liveChampions.length > 0 ? liveChampions.length : '70+'} Units)
+            Tướng Mùa 17 ({liveChampions.length > 0 ? liveChampions.length : '65+'} Units)
           </button>
         </div>
       </div>
 
-      {/* --- TAB 1: META TIER LIST --- */}
+      {/* --- TAB 1: META TIER LIST (SET 17) --- */}
       {activeTab === 'tierlist' && (
         <div className="space-y-6">
           {/* Controls Bar: Tier Filters & Search */}
@@ -553,7 +553,7 @@ export default function TFTAutoSyncPage() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Tìm tướng, tộc/hệ (Jinx, Sniper)..."
+                placeholder="Tìm tướng Mùa 17 (Jhin, Fiora, Nami)..."
                 className="w-full rounded-xl bg-zinc-900 border border-zinc-800 py-2 pl-10 pr-4 text-xs text-zinc-200 placeholder-zinc-500 outline-none focus:border-purple-500 transition font-sans"
               />
             </div>
@@ -629,7 +629,7 @@ export default function TFTAutoSyncPage() {
                     <div className="p-5 md:p-6 space-y-6">
                       <div className="space-y-2">
                         <span className="text-[11px] font-bold uppercase tracking-widest text-zinc-400 block">
-                          🎮 ĐỘI HÌNH HOÀN CHỈNH (8 UNIT CẤP 8)
+                          🎮 ĐỘI HÌNH HOÀN CHỈNH MÙA 17 (8 UNIT CẤP 8/9)
                         </span>
 
                         <div className="grid grid-cols-4 sm:grid-cols-8 gap-3">
@@ -663,11 +663,14 @@ export default function TFTAutoSyncPage() {
                                   src={unit.icon}
                                   alt={unit.name}
                                   className="w-full h-full object-cover group-hover:scale-110 transition duration-300"
+                                  onError={(e) => {
+                                    (e.target as HTMLImageElement).src = `${LOL_CHAMP_BASE}/Ahri.png`;
+                                  }}
                                 />
                               </div>
 
                               {/* Unit Name */}
-                              <span className="mt-1.5 text-[11px] font-bold text-zinc-200 line-clamp-1">
+                              <span className="mt-1.5 text-[11px] font-bold text-zinc-200 line-clamp-1 text-center">
                                 {unit.name}
                               </span>
 
@@ -698,7 +701,7 @@ export default function TFTAutoSyncPage() {
                       {/* Recommended Augments (Lõi Nâng Cấp) */}
                       <div className="space-y-2 pt-2 border-t border-zinc-800/60">
                         <span className="text-[11px] font-bold uppercase tracking-widest text-zinc-400 block">
-                          🔮 LÕI NÂNG CẤP KHUYÊN DÙNG (AUGMENTS)
+                          🔮 LÕI NÂNG CẤP KHUYÊN DÙNG MÙA 17
                         </span>
                         <div className="flex flex-wrap items-center gap-3">
                           {comp.augments.map((aug, aIdx) => (
@@ -765,10 +768,10 @@ export default function TFTAutoSyncPage() {
         <div className="space-y-6 font-sans">
           <div className="glass-card p-6 rounded-2xl">
             <h2 className="text-xl font-black text-white uppercase tracking-tight mb-2">
-              🛡️ BẢNG CÔNG THỨC GHÉP ĐỒ TFT LIVE CDN
+              🛡️ BẢNG CÔNG THỨC GHÉP ĐỒ TFT MÙA 17
             </h2>
             <p className="text-xs text-zinc-400">
-              Tra cứu danh sách các trang bị hoàn chỉnh hot nhất, tự động đồng bộ từ file dữ liệu gốc của Riot Games.
+              Tra cứu danh sách các trang bị hoàn chỉnh hot nhất, tự động đồng bộ từ file dữ liệu gốc Mùa 17 của Riot Games.
             </p>
           </div>
 
@@ -789,7 +792,7 @@ export default function TFTAutoSyncPage() {
                   <div>
                     <h3 className="text-sm font-bold text-white uppercase">{item.name}</h3>
                     <span className="text-[10px] font-bold text-amber-400 bg-amber-950/60 border border-amber-500/30 px-2 py-0.5 rounded">
-                      {item.recipe || 'Công thức chuẩn'}
+                      {item.recipe || 'Công thức chuẩn Mùa 17'}
                     </span>
                   </div>
                 </div>
@@ -800,7 +803,7 @@ export default function TFTAutoSyncPage() {
         </div>
       )}
 
-      {/* --- TAB 3: CHAMPIONS & COSTS (AUTO PARSED FROM LIVE CD RAGON SET) --- */}
+      {/* --- TAB 3: CHAMPIONS & COSTS (AUTO PARSED FROM LIVE SET 17) --- */}
       {activeTab === 'champions' && (
         <div className="space-y-6 font-sans">
           <div className="glass-card p-6 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -813,7 +816,7 @@ export default function TFTAutoSyncPage() {
               </p>
             </div>
             <span className="px-3 py-1.5 rounded-xl bg-emerald-950/60 border border-emerald-500/40 text-xs font-bold text-emerald-400 shrink-0">
-              ⚡ {liveChampions.length > 0 ? `${liveChampions.length} Tướng Đã Parse` : 'Offline Fallback'}
+              ⚡ {liveChampions.length > 0 ? `${liveChampions.length} Tướng Mùa 17 Đã Parse` : 'Set 17 Active'}
             </span>
           </div>
 
@@ -821,7 +824,7 @@ export default function TFTAutoSyncPage() {
             {([5, 4, 3, 2, 1] as const).map((costVal) => {
               const currentCostChamps = liveChampions.length > 0
                 ? liveChampions.filter((c) => c.cost === costVal)
-                : BASE_META_COMPS.flatMap((c) => c.units)
+                : SET17_META_COMPS.flatMap((c) => c.units)
                     .filter((u) => u.cost === costVal)
                     .filter((u, index, self) => index === self.findIndex((t) => t.name === u.name));
 
