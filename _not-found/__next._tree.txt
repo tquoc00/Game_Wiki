@@ -1,3 +1,3 @@
 :HL["/Game_Wiki/_next/static/chunks/2t6qy0knep6vx.css","style"]
-:HL["/Game_Wiki/_next/static/chunks/1jvzzq7os7ioa.css","style"]
-0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"/_not-found","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}},"staleTime":300,"buildId":"dwIdkiI3hG3o-zENCqATD"}
+:HL["/Game_Wiki/_next/static/chunks/3dkhr2iro8k7n.css","style"]
+0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"/_not-found","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}},"staleTime":300,"buildId":"qUAvvI3vurWww2I_bi0CW"}
