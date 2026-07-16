@@ -31,8 +31,6 @@ jobs:
 
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
-        with:
-          static_site_generator: next
 
       - name: Install Frontend Dependencies
         working-directory: ./frontend
@@ -52,3 +50,5 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          artifact_name: github-pages
