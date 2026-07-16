@@ -102,6 +102,25 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           </Link>
         )}
 
+        {/* Elden Ring Questlines Special Banner Link */}
+        {gameSlug === 'elden-ring' && (
+          <Link
+            href="/wiki/elden-ring/quests"
+            onClick={onClose}
+            className={`flex items-center justify-between rounded-xl px-3.5 py-2.5 text-xs font-bold uppercase tracking-wider transition-all duration-200 mb-3 ${
+              pathname === '/wiki/elden-ring/quests'
+                ? 'bg-amber-500/20 text-amber-400 border-l-2 border-amber-400 pl-3'
+                : 'bg-amber-500/10 text-amber-300 border border-amber-500/30 hover:bg-amber-500/20 hover:text-amber-200'
+            }`}
+          >
+            <div className="flex items-center gap-2.5">
+              <Sparkles size={16} className="text-amber-400 animate-pulse" />
+              <span>📜 Questline NPC & Endings</span>
+            </div>
+            <ChevronRight size={12} className="text-amber-400" />
+          </Link>
+        )}
+
         <Link
           href={`/wiki/${gameSlug}`}
           onClick={onClose}

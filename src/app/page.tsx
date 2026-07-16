@@ -124,10 +124,16 @@ export default async function HomePage() {
               <Smartphone size={16} /> Mở Thư Viện Game
             </Link>
             <Link
+              href="/wiki/elden-ring/quests"
+              className="inline-flex items-center gap-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-amber-500/50 hover:text-amber-400 px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-zinc-200 transition duration-300"
+            >
+              <Sparkles size={16} className="text-amber-400" /> Questlines Elden Ring
+            </Link>
+            <Link
               href="/wiki/lien-minh-huyen-thoai/champions"
               className="inline-flex items-center gap-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-amber-500/50 hover:text-amber-400 px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-zinc-200 transition duration-300"
             >
-              <Star size={16} className="text-amber-400" /> Thư Viện 170+ Tướng Riot
+              <Star size={16} className="text-amber-400" /> 170+ Tướng Riot
             </Link>
           </div>
         </div>

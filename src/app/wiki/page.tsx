@@ -204,17 +204,24 @@ export default async function WikiCatalogPage() {
           </div>
 
           {/* Smartphone Bottom Home Dock Bar */}
-          <div className="mt-12 pt-6 border-t border-zinc-800/60 flex items-center justify-center">
-            <div className="inline-flex items-center gap-6 bg-zinc-900/90 border border-zinc-800/80 rounded-2xl px-6 py-3 shadow-xl backdrop-blur-md">
+          <div className="mt-12 pt-6 border-t border-zinc-800/60 flex flex-wrap items-center justify-center gap-3">
+            <div className="inline-flex flex-wrap items-center gap-4 sm:gap-6 bg-zinc-900/90 border border-zinc-800/80 rounded-2xl px-5 py-3 shadow-xl backdrop-blur-md">
               <span className="text-[11px] font-bold text-zinc-400 flex items-center gap-1.5">
                 <Star size={14} className="text-amber-400 fill-amber-400" /> WIGAKI LAUNCHER DOCK
               </span>
-              <span className="h-4 w-px bg-zinc-800" />
+              <span className="h-4 w-px bg-zinc-800 hidden sm:inline-block" />
+              <Link
+                href="/wiki/elden-ring/quests"
+                className="text-[11px] font-bold text-amber-400 hover:text-amber-300 transition flex items-center gap-1"
+              >
+                📜 Elden Ring Questlines Hub &rarr;
+              </Link>
+              <span className="h-4 w-px bg-zinc-800 hidden sm:inline-block" />
               <Link
                 href="/wiki/lien-minh-huyen-thoai/champions"
                 className="text-[11px] font-bold text-cyan-400 hover:text-cyan-300 transition"
               >
-                Mở thư viện 170+ Tướng Riot &rarr;
+                170+ Tướng Riot &rarr;
               </Link>
             </div>
           </div>
