@@ -770,10 +770,10 @@ export default function TFTMetaTFTExactPage() {
                         ))}
                       </div>
 
-                      {/* QUICK START TAB BODY */}
+                      {/* TAB 1: QUICK START */}
                       {activeMainTab === 'Options & Quick Start' && (
                         <div className="space-y-6">
-                          {/* Sub Level Selector Bar: Early | Lvl 7 (37.5%) | Lvl 8 (38.4%) | Lvl 9 (22.1%) */}
+                          {/* Sub Level Selector Bar */}
                           <div className="flex items-center gap-4 overflow-x-auto pb-1 text-xs border-b border-zinc-800/40">
                             {[
                               { label: 'Early', val: 'Early' },
@@ -796,10 +796,10 @@ export default function TFTMetaTFTExactPage() {
                             ))}
                           </div>
 
-                          {/* Split 2-Column Panel (Left: Early Game Boards / Right: Honeycomb Positioning + Augments + Timeline + Carousel) */}
+                          {/* Split 2-Column Panel */}
                           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
                             
-                            {/* LEFT COLUMN: Early Game Level Boards (Lvl 4, Lvl 5, Lvl 6, Lvl 7) */}
+                            {/* LEFT COLUMN: Early Game Level Boards */}
                             <div className="lg:col-span-6 space-y-4 bg-zinc-950/40 border border-zinc-800/80 rounded-2xl p-4">
                               <span className="text-[11px] font-black uppercase text-zinc-400 tracking-wider block border-b border-zinc-800 pb-2">
                                 📈 EARLY GAME BOARDS BY LEVEL
@@ -816,7 +816,6 @@ export default function TFTMetaTFTExactPage() {
                                         Lvl {eb.level}
                                       </span>
 
-                                      {/* Champions Row */}
                                       <div className="flex items-center gap-1.5 flex-wrap">
                                         {eb.units.map((u, uIdx) => (
                                           <div key={uIdx} className="flex flex-col items-center">
@@ -829,7 +828,6 @@ export default function TFTMetaTFTExactPage() {
                                       </div>
                                     </div>
 
-                                    {/* Win Rate Stats */}
                                     <div className="text-right shrink-0">
                                       <span className="text-xs font-black text-cyan-400 block">{eb.winRate}</span>
                                       <span className="text-[9px] font-bold text-zinc-500 uppercase">Round Win</span>
@@ -839,9 +837,8 @@ export default function TFTMetaTFTExactPage() {
                               </div>
                             </div>
 
-                            {/* RIGHT COLUMN: Honeycomb Positioning Map + Augments Stack + Timeline + Carousel Priority */}
+                            {/* RIGHT COLUMN: Honeycomb Positioning Map + Timeline + Carousel */}
                             <div className="lg:col-span-6 space-y-6">
-                              {/* 1. HONEYCOMB POSITIONING MAP (Exact MetaTFT Honeycomb Hexagon Grid) */}
                               <div className="bg-zinc-950/40 border border-zinc-800/80 rounded-2xl p-4 space-y-3">
                                 <div className="flex items-center justify-between">
                                   <span className="text-[11px] font-black uppercase text-zinc-400 tracking-wider">
@@ -850,7 +847,6 @@ export default function TFTMetaTFTExactPage() {
                                   <span className="text-[10px] text-amber-400 font-bold">Pro Tips ❓</span>
                                 </div>
 
-                                {/* Honeycomb Hex Grid Container */}
                                 <div className="p-3 bg-zinc-950/90 rounded-xl border border-zinc-800 flex justify-center">
                                   <div className="space-y-1.5 w-full max-w-md">
                                     {[0, 1, 2, 3].map((rowIdx) => (
@@ -892,7 +888,6 @@ export default function TFTMetaTFTExactPage() {
                                 </div>
                               </div>
 
-                              {/* 2. LEVELLING STAGE TIMELINE BAR */}
                               <div className="bg-zinc-950/40 border border-zinc-800/80 rounded-2xl p-4 space-y-2">
                                 <span className="text-[11px] font-black uppercase text-zinc-400 tracking-wider block">
                                   ⏱️ LEVELLING TIMELINE (STAGE CHRONOLOGY)
@@ -907,7 +902,6 @@ export default function TFTMetaTFTExactPage() {
                                 </div>
                               </div>
 
-                              {/* 3. CAROUSEL ITEM PRIORITY ICONS ROW */}
                               <div className="bg-zinc-950/40 border border-zinc-800/80 rounded-2xl p-4 space-y-2">
                                 <span className="text-[11px] font-black uppercase text-zinc-400 tracking-wider block">
                                   🛒 CAROUSEL PRIORITY ITEMS
@@ -925,7 +919,120 @@ export default function TFTMetaTFTExactPage() {
                                   ))}
                                 </div>
                               </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
 
+                      {/* TAB 2: UNITS & ITEMS */}
+                      {activeMainTab === 'Units & Items' && (
+                        <div className="space-y-4">
+                          <span className="text-[11px] font-black uppercase text-zinc-400 tracking-wider block">
+                            ⚔️ BEST ITEM BUILD PRIORITY PER CHAMPION
+                          </span>
+                          <div className="grid gap-3 sm:grid-cols-2">
+                            {comp.units.map((unit, uIdx) => (
+                              <div key={uIdx} className="flex items-start gap-3 p-3 rounded-xl bg-zinc-900/90 border border-zinc-800">
+                                <div className={`w-12 h-12 rounded-xl overflow-hidden border-2 ${getCostBorder(unit.cost)} shrink-0 bg-zinc-950`}>
+                                  <img src={unit.icon} alt={unit.name} className="w-full h-full object-cover" />
+                                </div>
+                                <div className="space-y-1">
+                                  <div className="flex items-center gap-2">
+                                    <h4 className="text-xs font-bold text-white">{unit.name}</h4>
+                                    <span className={`text-[9px] px-1.5 rounded border ${getCostBadge(unit.cost)}`}>${unit.cost}</span>
+                                    {unit.isCarry && <span className="px-1 text-[8px] bg-amber-500 text-zinc-950 font-black rounded">CARRY</span>}
+                                    {unit.isTank && <span className="px-1 text-[8px] bg-cyan-500 text-zinc-950 font-black rounded">TANK</span>}
+                                  </div>
+                                  <div className="flex items-center gap-2 pt-1">
+                                    {unit.items && unit.items.length > 0 ? (
+                                      unit.items.map((it, iIdx) => (
+                                        <span key={iIdx} className="px-2 py-0.5 rounded bg-zinc-950 border border-amber-500/40 text-[10px] text-amber-300 font-medium flex items-center gap-1">
+                                          <span>{it.icon}</span> <span>{it.name}</span>
+                                        </span>
+                                      ))
+                                    ) : (
+                                      <span className="text-[10px] text-zinc-500">Trang bị linh hoạt / Đồ thừa</span>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* TAB 3: TRAITS & STATS */}
+                      {activeMainTab === 'Traits & Stats' && (
+                        <div className="space-y-4">
+                          <span className="text-[11px] font-black uppercase text-zinc-400 tracking-wider block">
+                            📊 TRAIT BREAKPOINTS & WIN RATE SYNERGY
+                          </span>
+                          <div className="grid gap-3 sm:grid-cols-2">
+                            {comp.traits.map((t, tIdx) => (
+                              <div key={tIdx} className="flex items-center justify-between p-3.5 rounded-xl bg-zinc-900/90 border border-zinc-800">
+                                <div className="flex items-center gap-2">
+                                  <span className="text-lg">{t.icon}</span>
+                                  <div>
+                                    <h4 className="text-xs font-bold text-white">{t.name}</h4>
+                                    <span className="text-[10px] text-amber-400 font-medium">Mốc kích hoạt: {t.count} Tướng</span>
+                                  </div>
+                                </div>
+                                <span className="text-xs font-extrabold text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-2.5 py-1 rounded-lg">
+                                  +{(t.count * 12.5).toFixed(1)}% Top 4 Rate
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* TAB 4: PRO AUGMENTS AND TIPS */}
+                      {activeMainTab === 'Pro Augments and Tips' && (
+                        <div className="space-y-5">
+                          <span className="text-[11px] font-black uppercase text-zinc-400 tracking-wider block">
+                            🔮 PRO AUGMENTS TIER LIST & GAMEPLAY GUIDES
+                          </span>
+                          <div className="grid gap-3 sm:grid-cols-3">
+                            {comp.augments.map((aug, aIdx) => (
+                              <div key={aIdx} className="p-3.5 rounded-xl bg-zinc-900 border border-zinc-800 space-y-2">
+                                <div className="flex items-center justify-between">
+                                  <span className="text-xl">{aug.icon}</span>
+                                  <span className="text-[9px] font-bold uppercase px-2 py-0.5 rounded border border-amber-500/40 text-amber-300 bg-amber-950/60">
+                                    {aug.tier}
+                                  </span>
+                                </div>
+                                <h4 className="text-xs font-bold text-white">{aug.name}</h4>
+                                <p className="text-[10px] text-zinc-400">Tăng mạnh tỷ lệ vào Top 4 và giảm Avg Place thêm 0.35.</p>
+                              </div>
+                            ))}
+                          </div>
+
+                          <div className="p-4 rounded-xl bg-zinc-950/80 border border-zinc-800 space-y-2 text-xs">
+                            <strong className="text-amber-400 block uppercase font-black">💡 Hướng Dẫn Vận Hành Trận Đấu:</strong>
+                            <p className="text-zinc-300 leading-relaxed">{comp.earlyGameTip}</p>
+                            <p className="text-zinc-400 leading-relaxed">{comp.positioningTip}</p>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* TAB 5: COUNTERS & VODS */}
+                      {activeMainTab === 'Counters & Vods' && (
+                        <div className="space-y-4">
+                          <span className="text-[11px] font-black uppercase text-zinc-400 tracking-wider block">
+                            🛡️ MATCHUP COUNTERS & STRATEGIC POSITIONING
+                          </span>
+                          <div className="p-4 rounded-xl bg-zinc-900 border border-zinc-800 space-y-3 text-xs">
+                            <div>
+                              <strong className="text-rose-400 block font-extrabold uppercase mb-1">
+                                ⚔️ Các đội hình khắc chế đối phương:
+                              </strong>
+                              <p className="text-zinc-300">{comp.counterTip || 'Dàn Bastion + Vanguard của đội hình này cực mạnh khi đối đầu với các bài Sát Thương Vật Lý dồn dập.'}</p>
+                            </div>
+                            <div>
+                              <strong className="text-cyan-400 block font-extrabold uppercase mb-1">
+                                ♟️ Vị trí đối đầu kèo khó:
+                              </strong>
+                              <p className="text-zinc-300">Đổi góc chủ lực sang phía ngược lại nếu gặp đối thủ xếp bài lướt tuyến sau hoặc Blitzcrank kéo góc.</p>
                             </div>
                           </div>
                         </div>
