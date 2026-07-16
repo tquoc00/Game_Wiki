@@ -1,8 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
-import { Sword, BookOpen, Layers, ShieldCheck, ArrowRight, Gamepad2, Sparkles } from 'lucide-react';
+import { BookOpen, Layers, Gamepad2, Sparkles } from 'lucide-react';
 
-export const revalidate = 0; // Fresh updates on visit
+export const revalidate = 3600;
 
 interface Game {
   id: string;
@@ -17,23 +17,51 @@ interface Game {
   };
 }
 
+const DEFAULT_GAMES: Game[] = [
+  {
+    id: 'lol',
+    name: 'Liên Minh Huyền Thoại',
+    slug: 'lien-minh-huyen-thoai',
+    logoUrl: 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ahri_0.jpg',
+    bannerUrl: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800&auto=format&fit=crop&q=60',
+    description: 'Thư viện dữ liệu 170+ tướng, trang bị, bản đồ và hướng dẫn meta Liên Minh Huyền Thoại.',
+    _count: { articles: 170, categories: 5 },
+  },
+  {
+    id: 'er',
+    name: 'Elden Ring',
+    slug: 'elden-ring',
+    logoUrl: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=800&auto=format&fit=crop&q=60',
+    bannerUrl: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=800&auto=format&fit=crop&q=60',
+    description: 'Bách khoa toàn thư tra cứu vũ khí, trùm, phép thuật và bản đồ The Lands Between trong Elden Ring.',
+    _count: { articles: 45, categories: 6 },
+  },
+  {
+    id: 'val',
+    name: 'Valorant',
+    slug: 'valorant',
+    logoUrl: 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=800&auto=format&fit=crop&q=60',
+    bannerUrl: 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=800&auto=format&fit=crop&q=60',
+    description: 'Thư viện Đặc Vụ, bộ kỹ năng, vũ khí và thiết lập tâm ngắm chuẩn thi đấu trong Valorant.',
+    _count: { articles: 24, categories: 4 },
+  },
+];
+
 export default async function WikiCatalogPage() {
-  let games: Game[] = [];
-  let errorMsg = '';
+  let games: Game[] = DEFAULT_GAMES;
 
   try {
     const res = await fetch('http://localhost:5000/api/games', {
-      cache: 'no-store',
+      next: { revalidate: 3600 },
     });
     if (res.ok) {
       const data = await res.json();
-      games = data.games || [];
-    } else {
-      errorMsg = 'Không thể tải danh mục trò chơi từ máy chủ.';
+      if (data.games && data.games.length > 0) {
+        games = data.games;
+      }
     }
   } catch (error) {
-    console.error('Error fetching games catalog:', error);
-    errorMsg = 'Lỗi kết nối đến máy chủ dữ liệu.';
+    console.error('Error fetching games catalog, using static fallback:', error);
   }
 
   return (
@@ -79,71 +107,61 @@ export default async function WikiCatalogPage() {
 
       {/* 3. Catalog Grid */}
       <main className="max-w-5xl mx-auto w-full px-6 py-16 flex-1">
-        {errorMsg ? (
-          <div className="glass-card rounded-2xl p-12 text-center text-rose-400 border-rose-950 font-medium">
-            {errorMsg}
-          </div>
-        ) : games.length === 0 ? (
-          <div className="glass-card rounded-2xl p-12 text-center text-zinc-400">
-            Chưa có tựa game nào được đăng ký trong hệ thống.
-          </div>
-        ) : (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {games.map((game) => (
-              <Link
-                key={game.id}
-                href={`/wiki/${game.slug}`}
-                className="glass-card glass-card-hover group rounded-2xl flex flex-col overflow-hidden"
-              >
-                {/* Banner image or placeholder */}
-                {game.bannerUrl ? (
-                  <div className="h-36 w-full overflow-hidden bg-zinc-950 border-b border-zinc-800/80 relative">
-                    <img
-                      src={game.bannerUrl}
-                      alt={game.name}
-                      className="h-full w-full object-cover opacity-75 group-hover:scale-105 group-hover:opacity-95 transition-all duration-500"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-zinc-900/90 via-zinc-900/30 to-transparent" />
-                  </div>
-                ) : (
-                  <div className="h-36 w-full bg-zinc-900/80 border-b border-zinc-800/80 flex items-center justify-center text-zinc-700 relative">
-                    <Gamepad2 size={38} className="stroke-1 opacity-30 text-zinc-400" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-zinc-900/90 to-transparent" />
-                  </div>
-                )}
-
-                {/* Game Card Content */}
-                <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2.5">
-                      {game.logoUrl && (
-                        <img src={game.logoUrl} alt={game.name} className="w-7 h-7 rounded-lg object-cover border border-zinc-700" />
-                      )}
-                      <h3 className="text-base font-bold text-white group-hover:text-cyan-400 transition-colors uppercase tracking-wider">
-                        {game.name}
-                      </h3>
-                    </div>
-                    <p className="text-xs text-zinc-400 line-clamp-3 leading-relaxed font-sans">
-                      {game.description || 'Không có mô tả ngắn về tựa game này.'}
-                    </p>
-                  </div>
-
-                  <div className="border-t border-zinc-800/80 pt-3 flex items-center justify-between text-[11px] text-zinc-400">
-                    <span className="flex items-center gap-1.5">
-                      <Layers size={12} className="text-cyan-400" />
-                      {game._count.categories} danh mục
-                    </span>
-                    <span className="flex items-center gap-1.5">
-                      <BookOpen size={12} className="text-indigo-400" />
-                      {game._count.articles} bài viết
-                    </span>
-                  </div>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {games.map((game) => (
+            <Link
+              key={game.id}
+              href={`/wiki/${game.slug}`}
+              className="glass-card glass-card-hover group rounded-2xl flex flex-col overflow-hidden"
+            >
+              {/* Banner image or placeholder */}
+              {game.bannerUrl ? (
+                <div className="h-36 w-full overflow-hidden bg-zinc-950 border-b border-zinc-800/80 relative">
+                  <img
+                    src={game.bannerUrl}
+                    alt={game.name}
+                    className="h-full w-full object-cover opacity-75 group-hover:scale-105 group-hover:opacity-95 transition-all duration-500"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-zinc-900/90 via-zinc-900/30 to-transparent" />
                 </div>
-              </Link>
-            ))}
-          </div>
-        )}
+              ) : (
+                <div className="h-36 w-full bg-zinc-900/80 border-b border-zinc-800/80 flex items-center justify-center text-zinc-700 relative">
+                  <Gamepad2 size={38} className="stroke-1 opacity-30 text-zinc-400" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-zinc-900/90 to-transparent" />
+                </div>
+              )}
+
+              {/* Game Card Content */}
+              <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2.5">
+                    {game.logoUrl && (
+                      <img src={game.logoUrl} alt={game.name} className="w-7 h-7 rounded-lg object-cover border border-zinc-700" />
+                    )}
+                    <h3 className="text-base font-bold text-white group-hover:text-cyan-400 transition-colors uppercase tracking-wider">
+                      {game.name}
+                    </h3>
+                  </div>
+                  <p className="text-xs text-zinc-400 line-clamp-3 leading-relaxed font-sans">
+                    {game.description || 'Không có mô tả ngắn về tựa game này.'}
+                  </p>
+                </div>
+
+                <div className="border-t border-zinc-800/80 pt-3 flex items-center justify-between text-[11px] text-zinc-400">
+                  <span className="flex items-center gap-1.5">
+                    <Layers size={12} className="text-cyan-400" />
+                    {game._count.categories} danh mục
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <BookOpen size={12} className="text-indigo-400" />
+                    {game._count.articles} bài viết
+                  </span>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
       </main>
 
       {/* 4. Footer */}

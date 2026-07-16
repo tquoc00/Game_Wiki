@@ -5,7 +5,7 @@ const isExport = process.env.NEXT_EXPORT === 'true' || process.env.GITHUB_ACTION
 const nextConfig: NextConfig = {
   ...(isExport ? { output: "export" } : {}),
   basePath: isExport ? "/Game_Wiki" : "",
-  assetPrefix: isExport ? "/Game_Wiki/" : undefined,
+  trailingSlash: true,
   images: {
     unoptimized: true,
   },

@@ -9,7 +9,7 @@ interface SearchParams {
   page?: string;
 }
 
-export const revalidate = 0; // Disable caching to fetch live updates
+export const revalidate = 3600; // Static pre-render with hourly revalidation
 
 export async function generateStaticParams() {
   return [
@@ -22,15 +22,13 @@ export async function generateStaticParams() {
 
 export default async function GameWikiListPage({
   params,
-  searchParams,
 }: {
   params: Promise<{ 'game-slug': string }>;
-  searchParams: Promise<SearchParams>;
 }) {
   const { 'game-slug': gameSlug } = await params;
-  const { search = '', category = '', page = '1' } = await searchParams;
-
-  const currentPage = parseInt(page, 10) || 1;
+  const search = '';
+  const category = '';
+  const currentPage = 1;
   const limit = 6;
 
   let gameInfo: any = null;
@@ -64,7 +62,7 @@ export default async function GameWikiListPage({
   try {
     // 1. Fetch game details
     const gameRes = await fetch(`http://localhost:5000/api/games/${gameSlug}`, {
-      cache: 'no-store',
+      next: { revalidate: 3600 },
     });
 
     if (gameRes.ok) {
@@ -81,12 +79,10 @@ export default async function GameWikiListPage({
           gameSlug,
           page: String(currentPage),
           limit: String(limit),
-          ...(search && { search }),
-          ...(category && { category }),
         });
 
         const articlesRes = await fetch(`http://localhost:5000/api/articles?${articlesQuery.toString()}`, {
-          cache: 'no-store',
+          next: { revalidate: 3600 },
         });
 
         if (articlesRes.ok) {
@@ -102,15 +98,12 @@ export default async function GameWikiListPage({
       // 3. Fetch categories to identify active category
       try {
         const categoriesRes = await fetch(`http://localhost:5000/api/categories?gameSlug=${gameSlug}`, {
-          cache: 'no-store',
+          next: { revalidate: 3600 },
         });
 
         if (categoriesRes.ok) {
           const categoriesData = await categoriesRes.json();
           const categoriesList = categoriesData.categories || [];
-          if (category) {
-            activeCategory = categoriesList.find((cat: any) => cat.slug === category) || null;
-          }
         }
       } catch {
         // Fallback for categories fetch fail

@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { BookOpen, ArrowRight, ShieldCheck, Database, Users, Sparkles, Gamepad2, Cpu, Compass } from 'lucide-react';
 
-export const revalidate = 0; // Fresh updates on visit
+export const revalidate = 3600; // Static pre-render with hourly revalidation
 
 export default async function HomePage() {
   // Fetch recent articles & count from backend API
@@ -12,7 +12,7 @@ export default async function HomePage() {
 
   try {
     const articlesRes = await fetch('http://localhost:5000/api/articles?limit=3', {
-      cache: 'no-store'
+      next: { revalidate: 3600 }
     });
     if (articlesRes.ok) {
       const articlesData = await articlesRes.json();
@@ -25,7 +25,7 @@ export default async function HomePage() {
 
   try {
     const gamesRes = await fetch('http://localhost:5000/api/games', {
-      cache: 'no-store'
+      next: { revalidate: 3600 }
     });
     if (gamesRes.ok) {
       const gamesData = await gamesRes.json();
