@@ -10,7 +10,6 @@ export async function generateStaticParams() {
   return [{ championId: 'Ahri' }];
 }
 
-
 interface ChampionDetail {
   id: string;
   key: string;
@@ -45,36 +44,93 @@ export default async function ChampionDetailPage({
   const { championId } = await params;
 
   let champion: ChampionDetail | null = null;
-  let version = '';
+  let version = '14.1.1';
   let itemsMap: Record<string, any> = {};
   let errorMsg = '';
 
   try {
-    // 1. Fetch champion detail from API
-    const res = await fetch(`http://localhost:5000/api/ddragon/champions/${championId}`, {
-      next: { revalidate: 3600 },
-    });
-    if (res.ok) {
-      const data = await res.json();
-      champion = data.champion;
-      version = data.version;
-    } else {
+    // 1. Get latest version
+    const verRes = await fetch('https://ddragon.leagueoflegends.com/api/versions.json');
+    if (verRes.ok) {
+      const versions = await verRes.json();
+      version = versions[0] || '14.1.1';
+    }
+
+    // 2. Fetch directly from Riot Data Dragon
+    const champRes = await fetch(
+      `https://ddragon.leagueoflegends.com/cdn/${version}/data/vi_VN/champion/${championId}.json`
+    );
+
+    if (champRes.ok) {
+      const data = await champRes.json();
+      const rawChamp = data.data?.[championId];
+      if (rawChamp) {
+        champion = {
+          id: rawChamp.id,
+          key: rawChamp.key,
+          name: rawChamp.name,
+          title: rawChamp.title,
+          lore: rawChamp.lore || rawChamp.blurb,
+          tags: rawChamp.tags || [],
+          partype: rawChamp.partype || 'Năng lượng',
+          info: rawChamp.info || { attack: 5, defense: 5, magic: 5, difficulty: 5 },
+          stats: rawChamp.stats || {},
+          image: {
+            icon: `https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${rawChamp.id}.png`,
+            splash: `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${rawChamp.id}_0.jpg`,
+            loading: `https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${rawChamp.id}_0.jpg`,
+          },
+          skins: (rawChamp.skins || []).map((s: any) => ({
+            id: s.id,
+            num: s.num,
+            name: s.name === 'default' ? rawChamp.name : s.name,
+            splash: `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${rawChamp.id}_${s.num}.jpg`,
+            loading: `https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${rawChamp.id}_${s.num}.jpg`,
+          })),
+          spells: (rawChamp.spells || []).map((sp: any) => ({
+            id: sp.id,
+            name: sp.name,
+            description: sp.description,
+            cooldown: sp.cooldownBurn,
+            cost: sp.costBurn,
+            range: sp.rangeBurn,
+            image: `https://ddragon.leagueoflegends.com/cdn/${version}/img/spell/${sp.image.full}`,
+          })),
+          passive: rawChamp.passive
+            ? {
+                name: rawChamp.passive.name,
+                description: rawChamp.passive.description,
+                image: `https://ddragon.leagueoflegends.com/cdn/${version}/img/passive/${rawChamp.passive.image.full}`,
+              }
+            : null,
+          allytips: rawChamp.allytips || [],
+          enemytips: rawChamp.enemytips || [],
+        };
+      }
+    }
+
+    if (!champion) {
       errorMsg = `Không tìm thấy tướng: ${championId}`;
     }
 
-    // 2. Fetch items map for build display
-    const itemsRes = await fetch(`http://localhost:5000/api/ddragon/items`, {
-      next: { revalidate: 3600 },
-    });
+    // 3. Fetch items map from DDragon
+    const itemsRes = await fetch(`https://ddragon.leagueoflegends.com/cdn/${version}/data/vi_VN/item.json`);
     if (itemsRes.ok) {
       const itemsData = await itemsRes.json();
-      (itemsData.items || []).forEach((item: any) => {
-        itemsMap[item.id] = item;
+      Object.entries(itemsData.data || {}).forEach(([id, item]: [string, any]) => {
+        itemsMap[id] = {
+          id,
+          name: item.name,
+          description: item.description,
+          plaintext: item.plaintext,
+          gold: item.gold,
+          image: `https://ddragon.leagueoflegends.com/cdn/${version}/img/item/${id}.png`,
+        };
       });
     }
   } catch (error) {
     console.error('Error fetching champion detail:', error);
-    errorMsg = 'Lỗi kết nối đến máy chủ dữ liệu.';
+    errorMsg = 'Lỗi kết nối dữ liệu từ Riot Games.';
   }
 
   if (errorMsg || !champion) {

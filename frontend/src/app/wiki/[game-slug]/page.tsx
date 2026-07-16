@@ -40,6 +40,27 @@ export default async function GameWikiListPage({
   let activeCategory: any = null;
   let errorMsg = '';
 
+  const DEFAULT_GAMES: Record<string, any> = {
+    'lien-minh-huyen-thoai': {
+      id: 'lol',
+      name: 'Liên Minh Huyền Thoại',
+      slug: 'lien-minh-huyen-thoai',
+      description: 'Thư viện dữ liệu tướng, trang bị, bản đồ và hướng dẫn meta Liên Minh Huyền Thoại.',
+    },
+    'elden-ring': {
+      id: 'er',
+      name: 'Elden Ring',
+      slug: 'elden-ring',
+      description: 'Bách khoa toàn thư về trùm, vũ khí, phép thuật và nhiệm vụ trong Elden Ring.',
+    },
+    'valorant': {
+      id: 'val',
+      name: 'Valorant',
+      slug: 'valorant',
+      description: 'Thư viện thông tin Đặc Vụ, vũ khí, bản đồ và mẹo thi đấu Valorant.',
+    },
+  };
+
   try {
     // 1. Fetch game details
     const gameRes = await fetch(`http://localhost:5000/api/games/${gameSlug}`, {
@@ -50,46 +71,54 @@ export default async function GameWikiListPage({
       const gameData = await gameRes.json();
       gameInfo = gameData.game;
     } else {
-      errorMsg = 'Không tìm thấy trò chơi yêu cầu.';
+      gameInfo = DEFAULT_GAMES[gameSlug] || null;
     }
 
     if (gameInfo) {
       // 2. Fetch scoped articles from backend
-      const articlesQuery = new URLSearchParams({
-        gameSlug,
-        page: String(currentPage),
-        limit: String(limit),
-        ...(search && { search }),
-        ...(category && { category }),
-      });
+      try {
+        const articlesQuery = new URLSearchParams({
+          gameSlug,
+          page: String(currentPage),
+          limit: String(limit),
+          ...(search && { search }),
+          ...(category && { category }),
+        });
 
-      const articlesRes = await fetch(`http://localhost:5000/api/articles?${articlesQuery.toString()}`, {
-        cache: 'no-store',
-      });
+        const articlesRes = await fetch(`http://localhost:5000/api/articles?${articlesQuery.toString()}`, {
+          cache: 'no-store',
+        });
 
-      if (articlesRes.ok) {
-        const data = await articlesRes.json();
-        articles = data.articles || [];
-        totalCount = data.pagination?.total || 0;
-        totalPages = data.pagination?.pages || 0;
+        if (articlesRes.ok) {
+          const data = await articlesRes.json();
+          articles = data.articles || [];
+          totalCount = data.pagination?.total || 0;
+          totalPages = data.pagination?.pages || 0;
+        }
+      } catch {
+        // Fallback for articles fetch fail
       }
 
       // 3. Fetch categories to identify active category
-      const categoriesRes = await fetch(`http://localhost:5000/api/categories?gameSlug=${gameSlug}`, {
-        cache: 'no-store',
-      });
+      try {
+        const categoriesRes = await fetch(`http://localhost:5000/api/categories?gameSlug=${gameSlug}`, {
+          cache: 'no-store',
+        });
 
-      if (categoriesRes.ok) {
-        const categoriesData = await categoriesRes.json();
-        const categoriesList = categoriesData.categories || [];
-        if (category) {
-          activeCategory = categoriesList.find((cat: any) => cat.slug === category) || null;
+        if (categoriesRes.ok) {
+          const categoriesData = await categoriesRes.json();
+          const categoriesList = categoriesData.categories || [];
+          if (category) {
+            activeCategory = categoriesList.find((cat: any) => cat.slug === category) || null;
+          }
         }
+      } catch {
+        // Fallback for categories fetch fail
       }
     }
   } catch (error) {
     console.error('Error fetching data from API for game wiki:', error);
-    errorMsg = 'Lỗi kết nối đến máy chủ dữ liệu.';
+    gameInfo = DEFAULT_GAMES[gameSlug] || null;
   }
 
   // Helper to format date
