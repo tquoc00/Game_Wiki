@@ -6,19 +6,10 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
+  contents: write
 
 jobs:
   build-and-deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -29,26 +20,18 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Setup GitHub Pages
-        uses: actions/configure-pages@v5
-
       - name: Install Frontend Dependencies
         working-directory: ./frontend
         run: npm install
 
-      - name: Build Next.js Static Site
+      - name: Build Next.js Static Export
         working-directory: ./frontend
         env:
           GITHUB_ACTIONS: "true"
         run: npm run build
 
-      - name: Upload Artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: "./frontend/out"
-
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          artifact_name: github-pages
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./frontend/out
