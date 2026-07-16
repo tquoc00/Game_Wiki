@@ -51,12 +51,6 @@ export default async function GameWikiListPage({
       slug: 'elden-ring',
       description: 'Bách khoa toàn thư về trùm, vũ khí, phép thuật và nhiệm vụ trong Elden Ring.',
     },
-    'valorant': {
-      id: 'val',
-      name: 'Valorant',
-      slug: 'valorant',
-      description: 'Thư viện thông tin Đặc Vụ, vũ khí, bản đồ và mẹo thi đấu Valorant.',
-    },
   };
 
   try {

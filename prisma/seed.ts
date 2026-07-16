@@ -1,12 +1,8 @@
 import 'dotenv/config';
-import { PrismaClient, Role } from '../src/generated/prisma';
-import { PrismaLibSql } from '@prisma/adapter-libsql';
+import { PrismaClient, Role } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 
-const adapter = new PrismaLibSql({
-  url: process.env.DATABASE_URL || 'file:./dev.db',
-});
-const prisma = new PrismaClient({ adapter });
+const prisma = new PrismaClient();
 
 async function main() {
   console.log('🌱 Starting database seeding for multi-game wiki...');
