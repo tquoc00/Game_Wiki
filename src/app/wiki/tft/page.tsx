@@ -6,7 +6,7 @@ import WikiLayoutShell from '@/components/layout/WikiLayoutShell';
 import { 
   Trophy, Sparkles, Flame, Shield, Search, Filter, Layers, Zap, Star, 
   ChevronDown, ChevronUp, ExternalLink, RefreshCw, Award, Swords, Compass, 
-  CheckCircle2, Globe, BarChart2, LayoutGrid, Eye, HelpCircle
+  CheckCircle2, Globe, BarChart2, LayoutGrid, Eye, HelpCircle, ArrowRight, TrendingUp
 } from 'lucide-react';
 
 // --- TYPES ---
@@ -27,7 +27,7 @@ interface TFTUnit {
   isTank?: boolean;
   stars?: 1 | 2 | 3;
   items?: TFTItem[];
-  row?: number; // 0 (front) to 3 (back) for Hex Board positioning
+  row?: number; // 0 (front) to 3 (back)
   col?: number; // 0 to 6
 }
 
@@ -35,6 +35,23 @@ interface TFTTrait {
   name: string;
   count: number;
   icon: string;
+}
+
+interface EarlyLevelBoard {
+  level: number; // 4, 5, 6, 7
+  winRate: string;
+  units: { name: string; cost: 1 | 2 | 3 | 4 | 5; icon: string }[];
+}
+
+interface LevellingTimeline {
+  level: number;
+  stage: string; // "3-1", "3-2", "3-6", "5-6", "6-5"
+}
+
+interface CarouselItem {
+  name: string;
+  icon: string;
+  count: number;
 }
 
 interface TFTComp {
@@ -46,12 +63,16 @@ interface TFTComp {
   top4Rate: string;
   winRate: string;
   pickRate: string;
-  difficulty: 'Dễ' | 'Trung Bình' | 'Khó';
+  difficulty: 'Easy' | 'Medium' | 'Hard';
+  levelCap: string; // e.g. "Lvl 7", "Lvl 8"
   mainCarry: string;
   mainTank: string;
   traits: TFTTrait[];
   units: TFTUnit[];
+  earlyBoards: EarlyLevelBoard[];
   augments: { name: string; icon: string; tier: 'Silver' | 'Gold' | 'Prismatic' }[];
+  levellingTimeline: LevellingTimeline[];
+  carouselPriority: CarouselItem[];
   earlyGameTip: string;
   positioningTip: string;
   counterTip?: string;
@@ -67,25 +88,162 @@ function getCDragonImageUrl(assetPath?: string, fallbackUrl?: string): string {
 
 const LOL_CHAMP_BASE = 'https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion';
 
-// --- SET 17 (SPACE GODS & GALACTIC FRONTIERS) META COMPS WITH HEX BOARD COORDINATES ---
+// --- SET 17 EXACT METATFT COMPS WITH EARLY LEVELING & HONEYCOMB HEX BOARDS ---
 const SET17_META_COMPS: TFTComp[] = [
   {
+    id: 'spacegroove-ornn',
+    name: 'Space Groove Ornn & Samira',
+    tier: 'S',
+    playstyle: 'Slowroll 7',
+    avgPlacement: 4.02,
+    pickRate: '0.13',
+    winRate: '18.2%',
+    top4Rate: '58.2%',
+    difficulty: 'Medium',
+    levelCap: 'Lvl 7',
+    mainCarry: 'Ornn',
+    mainTank: 'Nasus',
+    traits: [
+      { name: 'Space Groove', count: 5, icon: '🕺' },
+      { name: 'Vanguard', count: 2, icon: '🛡️' },
+      { name: 'Sniper', count: 2, icon: '🎯' },
+      { name: 'Replicator', count: 1, icon: '🔮' },
+      { name: 'Bastion', count: 1, icon: '🧱' },
+    ],
+    units: [
+      { 
+        name: 'Ornn', 
+        cost: 3, 
+        icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_ornn/hud/tft17_ornn_square.tft_set17.png', 
+        isCarry: true, 
+        stars: 3,
+        row: 0, col: 3,
+        items: [
+          { name: 'Thạch Giáp Dực Quang', icon: '🧱' },
+          { name: 'Giáp Máu Warmog', icon: '❤️' },
+          { name: 'Áo Choàng Gai', icon: '🛡️' }
+        ] 
+      },
+      { 
+        name: 'Samira', 
+        cost: 3, 
+        icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_samira/hud/tft17_samira_square.tft_set17.png', 
+        isCarry: true, 
+        stars: 3,
+        row: 3, col: 0,
+        items: [
+          { name: 'Vô Cực Kiếm', icon: '🗡️' },
+          { name: 'Cung Xanh', icon: '🏹' },
+          { name: 'Cuồng Đao Guinsoo', icon: '⚡' }
+        ] 
+      },
+      { 
+        name: 'Nami', 
+        cost: 4, 
+        icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_nami/hud/tft17_nami_square.tft_set17.png', 
+        isCarry: true, 
+        stars: 2,
+        row: 3, col: 4,
+        items: [
+          { name: 'Bùa Xanh', icon: '💧' },
+          { name: 'Mũ Phù Thủy Rabadon', icon: '🧙' }
+        ] 
+      },
+      { name: 'Blitzcrank', cost: 5, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_blitzcrank/hud/tft17_blitzcrank_square.tft_set17.png', isTank: true, stars: 2, row: 0, col: 1 },
+      { name: 'Jhin', cost: 5, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_jhin/hud/tft17_jhin_square.tft_set17.png', stars: 2, row: 3, col: 1 },
+      { name: 'Nasus', cost: 2, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_nasus/hud/tft17_nasus_square.tft_set17.png', stars: 2, row: 0, col: 0 },
+      { name: 'Ornn Copy', cost: 3, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_ornn/hud/tft17_ornn_square.tft_set17.png', stars: 3, row: 0, col: 4 },
+      { name: 'Samira Copy', cost: 3, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_samira/hud/tft17_samira_square.tft_set17.png', stars: 3, row: 3, col: 6 },
+    ],
+    earlyBoards: [
+      {
+        level: 4,
+        winRate: '49.7%',
+        units: [
+          { name: 'Briar', cost: 1, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_briar/hud/tft17_briar_square.tft_set17.png' },
+          { name: 'Rek\'Sai', cost: 2, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_reksai/hud/tft17_reksai_square.tft_set17.png' },
+          { name: 'Rek\'Sai', cost: 2, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_reksai/hud/tft17_reksai_square.tft_set17.png' },
+          { name: 'Bel\'Veth', cost: 2, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_belveth/hud/tft17_belveth_square.tft_set17.png' },
+        ],
+      },
+      {
+        level: 5,
+        winRate: '72.5%',
+        units: [
+          { name: 'Nasus', cost: 2, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_nasus/hud/tft17_nasus_square.tft_set17.png' },
+          { name: 'Teemo', cost: 2, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_teemo/hud/tft17_teemo_square.tft_set17.png' },
+          { name: 'Gwen', cost: 3, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_gwen/hud/tft17_gwen_square.tft_set17.png' },
+          { name: 'Ornn', cost: 3, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_ornn/hud/tft17_ornn_square.tft_set17.png' },
+          { name: 'Samira', cost: 3, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_samira/hud/tft17_samira_square.tft_set17.png' },
+        ],
+      },
+      {
+        level: 6,
+        winRate: '69.5%',
+        units: [
+          { name: 'Nasus', cost: 2, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_nasus/hud/tft17_nasus_square.tft_set17.png' },
+          { name: 'Teemo', cost: 2, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_teemo/hud/tft17_teemo_square.tft_set17.png' },
+          { name: 'Gwen', cost: 3, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_gwen/hud/tft17_gwen_square.tft_set17.png' },
+          { name: 'Ornn', cost: 3, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_ornn/hud/tft17_ornn_square.tft_set17.png' },
+          { name: 'Ornn', cost: 3, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_ornn/hud/tft17_ornn_square.tft_set17.png' },
+          { name: 'Samira', cost: 3, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_samira/hud/tft17_samira_square.tft_set17.png' },
+        ],
+      },
+      {
+        level: 7,
+        winRate: '64.1%',
+        units: [
+          { name: 'Nasus', cost: 2, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_nasus/hud/tft17_nasus_square.tft_set17.png' },
+          { name: 'Gwen', cost: 3, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_gwen/hud/tft17_gwen_square.tft_set17.png' },
+          { name: 'Ornn', cost: 3, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_ornn/hud/tft17_ornn_square.tft_set17.png' },
+          { name: 'Ornn', cost: 3, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_ornn/hud/tft17_ornn_square.tft_set17.png' },
+          { name: 'Samira', cost: 3, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_samira/hud/tft17_samira_square.tft_set17.png' },
+          { name: 'Samira', cost: 3, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_samira/hud/tft17_samira_square.tft_set17.png' },
+          { name: 'Nami', cost: 4, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_nami/hud/tft17_nami_square.tft_set17.png' },
+        ],
+      },
+    ],
+    augments: [
+      { name: 'Space Groove Crown', icon: '🕺', tier: 'Prismatic' },
+      { name: 'Heroic Grab Bag', icon: '🎒', tier: 'Gold' },
+      { name: 'Cybernetic Implants', icon: '🦾', tier: 'Gold' },
+      { name: 'Stand United', icon: '🤝', tier: 'Silver' },
+    ],
+    levellingTimeline: [
+      { level: 4, stage: '3-1' },
+      { level: 5, stage: '3-2' },
+      { level: 6, stage: '3-6' },
+      { level: 7, stage: '5-6' },
+      { level: 8, stage: '6-5' },
+    ],
+    carouselPriority: [
+      { name: 'Kiếm B.F', icon: '🗡️', count: 3 },
+      { name: 'Giáp Lưới', icon: '🛡️', count: 3 },
+      { name: 'Cung Gỗ', icon: '🏹', count: 2 },
+      { name: 'Nước Mắt', icon: '💧', count: 2 },
+      { name: 'Gậy Quá Khổ', icon: '🪄', count: 2 },
+      { name: 'Spatula', icon: '🍳', count: 1 },
+    ],
+    earlyGameTip: 'Tích 50 vàng ở cấp 7, slowroll Ornn và Samira lên 3 sao trước khi nâng cấp 8.',
+    positioningTip: 'Xếp Ornn & Nasus hàng đầu chắn sát thương, lùi Samira và Jhin xuống 2 góc đáy.',
+  },
+  {
     id: 'darkstar-jhin-eradicator',
-    name: 'Dark Star Jhin & Karma (Eradicator Fast 9)',
+    name: 'Dark Star Jhin & Karma (Eradicator)',
     tier: 'S+',
     playstyle: 'Fast 9',
     avgPlacement: 3.65,
-    top4Rate: '64.2%',
-    winRate: '21.5%',
     pickRate: '0.96',
-    difficulty: 'Khó',
+    winRate: '21.5%',
+    top4Rate: '64.2%',
+    difficulty: 'Hard',
+    levelCap: 'Lvl 9',
     mainCarry: 'Jhin',
     mainTank: 'Shen',
     traits: [
       { name: 'Dark Star', count: 4, icon: '🌌' },
       { name: 'Eradicator', count: 2, icon: '💥' },
       { name: 'Bastion', count: 3, icon: '🛡️' },
-      { name: 'Mecha', count: 2, icon: '🤖' },
     ],
     units: [
       { 
@@ -121,191 +279,62 @@ const SET17_META_COMPS: TFTComp[] = [
       { name: 'Miss Fortune', cost: 3, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_missfortune/hud/tft17_missfortune_square.tft_set17.png', stars: 2, row: 3, col: 1 },
       { name: 'Bard', cost: 5, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_bard/hud/tft17_bard_square.tft_set17.png', stars: 1, row: 2, col: 5 },
     ],
-    augments: [
-      { name: 'Huy Hiệu Dark Star', icon: '🌌', tier: 'Prismatic' },
-      { name: 'Khởi Đầu Vũ Trụ', icon: '⭐', tier: 'Gold' },
-      { name: 'Văn Phòng Bắn Tỉa', icon: '🏹', tier: 'Silver' },
-    ],
-    earlyGameTip: 'Giữ máu bằng Bastion + Sniper ở đầu trận, tích 50 vàng và giữ nhịp Fast 9 ở 4-5 để tìm Jhin 2 sao.',
-    positioningTip: 'Xếp Jhin ở góc an toàn đằng sau Shen và Rammus để kích hoạt sát thương kết liễu từ Eradicator.',
-    counterTip: 'Gặp bài Sát Thủ / Marauder lướt sau: đặt Akali hoặc Aurelion Sol chắn góc gần Jhin.',
-  },
-  {
-    id: 'anima-fiora-carry',
-    name: 'Anima Squad Fiora & Miss Fortune (Fast 8)',
-    tier: 'S+',
-    playstyle: 'Fast 8',
-    avgPlacement: 3.72,
-    top4Rate: '62.8%',
-    winRate: '20.1%',
-    pickRate: '0.91',
-    difficulty: 'Trung Bình',
-    mainCarry: 'Fiora',
-    mainTank: 'Illaoi',
-    traits: [
-      { name: 'Anima', count: 6, icon: '🐰' },
-      { name: 'Divine Duelist', count: 1, icon: '⚔️' },
-      { name: 'Vanguard', count: 2, icon: '🛡️' },
-      { name: 'Marauder', count: 2, icon: '🗡️' },
-    ],
-    units: [
-      { 
-        name: 'Fiora', 
-        cost: 5, 
-        icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_fiora/hud/tft17_fiora_square.tft_set17.png', 
-        isCarry: true, 
-        stars: 2,
-        row: 1, col: 2,
-        items: [
-          { name: 'Huyết Kiếm', icon: '🩸' },
-          { name: 'Quyền Nay Chiến Thần', icon: '🛡️' },
-          { name: 'Móng Vuốt Sterak', icon: '🥊' }
-        ] 
+    earlyBoards: [
+      {
+        level: 4,
+        winRate: '52.1%',
+        units: [
+          { name: 'Briar', cost: 1, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_briar/hud/tft17_briar_square.tft_set17.png' },
+          { name: 'Akali', cost: 2, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_akali/hud/tft17_akali_square.tft_set17.png' },
+          { name: 'Bel\'Veth', cost: 2, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_belveth/hud/tft17_belveth_square.tft_set17.png' },
+          { name: 'Illaoi', cost: 3, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_illaoi/hud/tft17_illaoi_square.tft_set17.png' },
+        ],
       },
-      { 
-        name: 'Illaoi', 
-        cost: 3, 
-        icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_illaoi/hud/tft17_illaoi_square.tft_set17.png', 
-        isTank: true, 
-        stars: 3,
-        row: 0, col: 3,
-        items: [
-          { name: 'Giáp Máu Warmog', icon: '❤️' },
-          { name: 'Áo Choàng Gai', icon: '🛡️' },
-          { name: 'Thạch Giáp Dực Quang', icon: '🧱' }
-        ] 
+      {
+        level: 5,
+        winRate: '68.4%',
+        units: [
+          { name: 'Akali', cost: 2, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_akali/hud/tft17_akali_square.tft_set17.png' },
+          { name: 'Miss Fortune', cost: 3, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_missfortune/hud/tft17_missfortune_square.tft_set17.png' },
+          { name: 'Illaoi', cost: 3, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_illaoi/hud/tft17_illaoi_square.tft_set17.png' },
+          { name: 'Karma', cost: 4, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_karma/hud/tft17_karma_square.tft_set17.png' },
+          { name: 'Rammus', cost: 4, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_rammus/hud/tft17_rammus_square.tft_set17.png' },
+        ],
       },
-      { name: 'Miss Fortune', cost: 3, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_missfortune/hud/tft17_missfortune_square.tft_set17.png', isCarry: true, stars: 2, row: 3, col: 6 },
-      { name: 'Briar', cost: 1, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_briar/hud/tft17_briar_square.tft_set17.png', stars: 3, row: 0, col: 1 },
-      { name: 'Jinx', cost: 2, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_jinx/hud/tft17_jinx_square.tft_set17.png', stars: 2, row: 3, col: 0 },
-      { name: 'Aurora', cost: 3, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_aurora/hud/tft17_aurora_square.tft_set17.png', stars: 2, row: 2, col: 5 },
-      { name: 'Bel\'Veth', cost: 2, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_belveth/hud/tft17_belveth_square.tft_set17.png', stars: 2, row: 1, col: 4 },
-      { name: 'Sona', cost: 5, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_sona/hud/tft17_sona_square.tft_set17.png', stars: 1, row: 3, col: 3 },
+      {
+        level: 6,
+        winRate: '65.2%',
+        units: [
+          { name: 'Akali', cost: 2, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_akali/hud/tft17_akali_square.tft_set17.png' },
+          { name: 'Miss Fortune', cost: 3, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_missfortune/hud/tft17_missfortune_square.tft_set17.png' },
+          { name: 'Karma', cost: 4, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_karma/hud/tft17_karma_square.tft_set17.png' },
+          { name: 'Rammus', cost: 4, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_rammus/hud/tft17_rammus_square.tft_set17.png' },
+          { name: 'Aurelion Sol', cost: 4, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_aurelionsol/hud/tft17_aurelionsol_square.tft_set17.png' },
+          { name: 'Bard', cost: 5, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_bard/hud/tft17_bard_square.tft_set17.png' },
+        ],
+      },
     ],
     augments: [
-      { name: 'Trái Tim Anima', icon: '🐰', tier: 'Gold' },
-      { name: 'Huyết Đấu Sĩ', icon: '🩸', tier: 'Gold' },
-      { name: 'Tài Sản Vô Giá', icon: '🪙', tier: 'Prismatic' },
+      { name: 'Dark Star Emblem', icon: '🌌', tier: 'Prismatic' },
+      { name: 'Cosmic Ascent', icon: '⭐', tier: 'Gold' },
+      { name: 'Sniper Crest', icon: '🏹', tier: 'Silver' },
     ],
-    earlyGameTip: 'Kích Anima 3 sớm để tích cộng dồn danh vọng Anima từ các vòng đánh quái và đối thủ.',
-    positioningTip: 'Đặt Fiora ở góc hàng 2 để lướt vào tuyến sau của chủ lực địch sau khi Illaoi thu hút sát thương.',
-    counterTip: 'Lưu ý lên Nỏ Sét hoặc Trang bị Giảm Kháng Phép để Miss Fortune hạ gục dàn Chống Chịu siêu cấp.',
-  },
-  {
-    id: 'spacegroove-blitz-nami',
-    name: 'Space Groove Blitzcrank & Nami Carry',
-    tier: 'S',
-    playstyle: 'Standard 8',
-    avgPlacement: 3.92,
-    top4Rate: '57.4%',
-    winRate: '17.8%',
-    pickRate: '0.82',
-    difficulty: 'Trung Bình',
-    mainCarry: 'Nami',
-    mainTank: 'Blitzcrank',
-    traits: [
-      { name: 'Space Groove', count: 4, icon: '🕺' },
-      { name: 'Replicator', count: 2, icon: '🔮' },
-      { name: 'Vanguard', count: 2, icon: '🛡️' },
+    levellingTimeline: [
+      { level: 4, stage: '2-1' },
+      { level: 5, stage: '2-5' },
+      { level: 6, stage: '3-2' },
+      { level: 7, stage: '4-1' },
+      { level: 8, stage: '4-5' },
+      { level: 9, stage: '5-2' },
     ],
-    units: [
-      { 
-        name: 'Nami', 
-        cost: 4, 
-        icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_nami/hud/tft17_nami_square.tft_set17.png', 
-        isCarry: true, 
-        stars: 2,
-        row: 3, col: 3,
-        items: [
-          { name: 'Bùa Xanh', icon: '💧' },
-          { name: 'Mũ Phù Thủy Rabadon', icon: '🧙' },
-          { name: 'Găng Bảo Thạch', icon: '💎' }
-        ] 
-      },
-      { 
-        name: 'Blitzcrank', 
-        cost: 5, 
-        icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_blitzcrank/hud/tft17_blitzcrank_square.tft_set17.png', 
-        isTank: true, 
-        stars: 2,
-        row: 0, col: 3,
-        items: [
-          { name: 'Thạch Giáp Dực Quang', icon: '🧱' },
-          { name: 'Nỏ Sét', icon: '⚡' },
-          { name: 'Giáp Máu Warmog', icon: '❤️' }
-        ] 
-      },
-      { name: 'Vex', cost: 5, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_vex/hud/tft17_vex_square.tft_set17.png', isCarry: true, stars: 1, row: 3, col: 5 },
-      { name: 'Master Yi', cost: 4, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_masteryi/hud/tft17_masteryi_square.tft_set17.png', stars: 2, row: 1, col: 1 },
-      { name: 'Corki', cost: 4, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_corki/hud/tft17_corki_square.tft_set17.png', stars: 2, row: 3, col: 1 },
-      { name: 'Gnar', cost: 2, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_gnar/hud/tft17_gnar_square.tft_set17.png', stars: 2, row: 0, col: 1 },
-      { name: 'Illaoi', cost: 3, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_illaoi/hud/tft17_illaoi_square.tft_set17.png', stars: 2, row: 0, col: 5 },
-      { name: 'Briar', cost: 1, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_briar/hud/tft17_briar_square.tft_set17.png', stars: 2, row: 1, col: 6 },
+    carouselPriority: [
+      { name: 'B.F Sword', icon: '🗡️', count: 3 },
+      { name: 'Recurve Bow', icon: '🏹', count: 3 },
+      { name: 'Sparring Gloves', icon: '🥊', count: 2 },
+      { name: 'Chain Vest', icon: '🛡️', count: 2 },
     ],
-    augments: [
-      { name: 'Vũ Điệu Space Groove', icon: '🕺', tier: 'Gold' },
-      { name: 'Vòng Năng Lượng', icon: '💧', tier: 'Silver' },
-      { name: 'Vương Miện Phù Thủy', icon: '👑', tier: 'Prismatic' },
-    ],
-    earlyGameTip: 'Gửi đồ cho các tướng Replicator 2 vàng ở giữa trận trước khi xoay sang Nami ở cấp 8.',
-    positioningTip: 'Đẩy Blitzcrank ra giữa hàng 1 để làm choáng và kéo mục tiêu chính của đối phương.',
-  },
-  {
-    id: 'stargazer-xayah-vex',
-    name: 'Stargazer Xayah & Vex (Doomer Reroll 7)',
-    tier: 'S',
-    playstyle: 'Slowroll 7',
-    avgPlacement: 4.05,
-    top4Rate: '55.1%',
-    winRate: '16.4%',
-    pickRate: '0.76',
-    difficulty: 'Trung Bình',
-    mainCarry: 'Xayah',
-    mainTank: 'Nunu & Willump',
-    traits: [
-      { name: 'Stargazer', count: 4, icon: '✨' },
-      { name: 'Doomer', count: 2, icon: '💀' },
-      { name: 'Sniper', count: 2, icon: '🏹' },
-    ],
-    units: [
-      { 
-        name: 'Xayah', 
-        cost: 4, 
-        icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_xayah/hud/tft17_xayah_square.tft_set17.png', 
-        isCarry: true, 
-        stars: 2,
-        row: 3, col: 6,
-        items: [
-          { name: 'Cuồng Đao Guinsoo', icon: '⚡' },
-          { name: 'Vô Cực Kiếm', icon: '🗡️' },
-          { name: 'Cung Xanh', icon: '🏹' }
-        ] 
-      },
-      { 
-        name: 'Nunu & Willump', 
-        cost: 4, 
-        icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_nunu/hud/tft17_nunu_square.tft_set17.png', 
-        isTank: true, 
-        stars: 2,
-        row: 0, col: 3,
-        items: [
-          { name: 'Áo Choàng Gai', icon: '🛡️' },
-          { name: 'Vuốt Rồng', icon: '🐉' },
-          { name: 'Giáp Máu Warmog', icon: '❤️' }
-        ] 
-      },
-      { name: 'Vex', cost: 5, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_vex/hud/tft17_vex_square.tft_set17.png', isCarry: true, stars: 1, row: 3, col: 0 },
-      { name: 'Aurora', cost: 3, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_aurora/hud/tft17_aurora_square.tft_set17.png', stars: 3, row: 2, col: 2 },
-      { name: 'Gnar', cost: 2, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_gnar/hud/tft17_gnar_square.tft_set17.png', stars: 2, row: 0, col: 1 },
-      { name: 'Leblanc', cost: 4, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_leblanc/hud/tft17_leblanc_square.tft_set17.png', stars: 2, row: 2, col: 4 },
-      { name: 'Riven', cost: 4, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_riven/hud/tft17_riven_square.tft_set17.png', stars: 2, row: 1, col: 3 },
-    ],
-    augments: [
-      { name: 'Lõi Tinh Tú Stargazer', icon: '✨', tier: 'Gold' },
-      { name: 'Tốc Độ Ánh Sáng', icon: '⚡', tier: 'Gold' },
-    ],
-    earlyGameTip: 'Slowroll ở level 7 để bắt Aurora và Gnar 3 sao trước khi up 8 kiếm Xayah.',
-    positioningTip: 'Xếp Xayah đứng thẳng hàng góc chéo với hàng tanker đối phương để xuyên giáp tối đa.',
+    earlyGameTip: 'Giữ máu bằng Bastion + Sniper ở đầu trận, Fast 9 ở 5-2 để tìm Jhin 2 sao.',
+    positioningTip: 'Xếp Jhin ở góc an toàn đằng sau Shen và Rammus.',
   },
 ];
 
@@ -322,14 +351,17 @@ const BASE_ITEM_MATRIX = [
   { name: 'Cung Xanh (Last Whisper)', recipe: 'Cung Gỗ + Găng Tay', desc: 'Đòn đánh giảm 30% Giáp của mục tiêu trong 3 giây.', icon: '🏹' },
 ];
 
-export default function TFTMetaTFTPage() {
+export default function TFTMetaTFTExactPage() {
   const [activeTab, setActiveTab] = useState<'tierlist' | 'champions' | 'items'>('tierlist');
   const [tierFilter, setTierFilter] = useState<'All' | TierType>('All');
   const [rankFilter, setRankFilter] = useState<RankFilter>('Diamond+');
   const [regionFilter, setRegionFilter] = useState<RegionFilter>('Global');
   const [searchQuery, setSearchQuery] = useState('');
-  const [expandedCompId, setExpandedCompId] = useState<string | null>(null);
-  const [activeViewMode, setActiveViewMode] = useState<Record<string, 'roster' | 'board'>>({});
+  
+  // Expanded card state & selected internal tab (Quick Start, Units & Items, etc.)
+  const [expandedCompId, setExpandedCompId] = useState<string | null>('spacegroove-ornn'); // Expanded by default like screenshot
+  const [compDetailTabs, setCompDetailTabs] = useState<Record<string, string>>({});
+  const [compLevelSubTabs, setCompLevelSubTabs] = useState<Record<string, string>>({});
 
   // Auto-sync CDragon States
   const [isSyncing, setIsSyncing] = useState(true);
@@ -343,7 +375,7 @@ export default function TFTMetaTFTPage() {
     async function syncTFTDataFromCDragon() {
       try {
         setIsSyncing(true);
-        setSyncStatusText('Đang quét và parse Mùa mới nhất từ Riot Games CDragon...');
+        setSyncStatusText('Đang quét và parse Mùa 17 từ Riot Games CDragon...');
         
         const res = await fetch('https://raw.communitydragon.org/latest/cdragon/tft/en_us.json');
         if (!res.ok) throw new Error('Cannot reach CDragon CDN');
@@ -391,10 +423,10 @@ export default function TFTMetaTFTPage() {
           }
         }
 
-        setSyncStatusText(`🟢 Live MetaTFT Sync: ${activeSetName}`);
+        setSyncStatusText(`🟢 MetaTFT Live Engine: ${activeSetName}`);
       } catch (err) {
         console.warn('Failed auto-syncing CDragon live data, using resilient local metadata fallback:', err);
-        setSyncStatusText('⚡ Hoạt động chế độ Offline Resilient Fallback (Set 17)');
+        setSyncStatusText('⚡ Offline Fallback Mode (Set 17)');
       } finally {
         setIsSyncing(false);
       }
@@ -418,10 +450,10 @@ export default function TFTMetaTFTPage() {
     });
   }, [tierFilter, searchQuery]);
 
-  // Cost Border color helper (MetaTFT precise palette)
+  // Cost Border color helper (Exact MetaTFT Palette)
   const getCostBorder = (cost: number) => {
     switch (cost) {
-      case 1: return 'border-zinc-600 bg-zinc-900/90';
+      case 1: return 'border-zinc-500/80 bg-zinc-900/90';
       case 2: return 'border-emerald-500 bg-emerald-950/40 shadow-emerald-950/20';
       case 3: return 'border-sky-500 bg-sky-950/40 shadow-sky-950/20';
       case 4: return 'border-purple-500 bg-purple-950/40 shadow-purple-950/20';
@@ -442,480 +474,440 @@ export default function TFTMetaTFTPage() {
     }
   };
 
-  // Tier Badge styling helper (MetaTFT exact badge colors)
+  // Tier Badge styling helper (MetaTFT exact round pink badge like screenshot)
   const getTierBadgeStyle = (tier: TierType) => {
     switch (tier) {
       case 'S+':
-        return 'bg-gradient-to-r from-amber-500 via-rose-500 to-purple-600 text-white shadow-lg shadow-amber-500/20 border border-amber-300/50';
+        return 'bg-rose-500 text-white font-black shadow-lg shadow-rose-500/30';
       case 'S':
-        return 'bg-cyan-500/20 text-cyan-300 border border-cyan-400/50 shadow-md shadow-cyan-500/10';
+        return 'bg-rose-500/90 text-white font-black shadow-md shadow-rose-500/20';
       case 'A':
-        return 'bg-purple-500/20 text-purple-300 border border-purple-400/50';
+        return 'bg-purple-600 text-white font-black';
       case 'B':
-        return 'bg-blue-500/20 text-blue-300 border border-blue-400/50';
+        return 'bg-blue-600 text-white font-black';
       default:
         return 'bg-zinc-800 text-zinc-300';
     }
   };
 
-  // Augment Tier Style helper (Silver, Gold, Prismatic)
-  const getAugmentTierStyle = (tier: 'Silver' | 'Gold' | 'Prismatic') => {
-    switch (tier) {
-      case 'Silver':
-        return 'border-zinc-400/60 bg-zinc-900 text-zinc-200 shadow-zinc-500/10';
-      case 'Gold':
-        return 'border-amber-400/80 bg-amber-950/40 text-amber-200 shadow-amber-500/20';
-      case 'Prismatic':
-        return 'border-cyan-400/80 bg-gradient-to-r from-cyan-950/60 via-purple-950/60 to-purple-950/60 text-cyan-200 shadow-cyan-500/30';
-      default:
-        return 'border-zinc-700 text-zinc-300';
-    }
-  };
-
-  // Placement Rating Color helper
-  const getPlacementColor = (avgPlace: number) => {
-    if (avgPlace <= 3.8) return 'text-emerald-400 bg-emerald-950/50 border-emerald-500/40';
-    if (avgPlace <= 4.2) return 'text-cyan-400 bg-cyan-950/50 border-cyan-500/40';
-    return 'text-amber-400 bg-amber-950/50 border-amber-500/40';
-  };
-
   return (
     <WikiLayoutShell>
-      {/* MetaTFT Premium Banner */}
-      <div className="mb-8 rounded-3xl border border-purple-500/30 bg border-zinc-900 bg-gradient-to-br from-zinc-950 via-zinc-900 to-purple-950/40 p-6 md:p-8 shadow-2xl relative overflow-hidden backdrop-blur-xl">
-        <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-purple-500/10 blur-[120px] pointer-events-none" />
-        
+      {/* 1. Header Banner & Nav Switcher */}
+      <div className="mb-6 rounded-3xl border border-zinc-800 bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950 p-6 md:p-8 shadow-2xl relative overflow-hidden">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="space-y-3">
+          <div className="space-y-2">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-purple-500/20 border border-purple-400/40 px-3 py-1 text-[11px] font-extrabold text-purple-300 uppercase tracking-wider">
-                <Sparkles size={13} className="text-purple-400" /> METATFT HUD ENGINE
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-rose-500/20 border border-rose-400/40 px-3 py-0.5 text-[11px] font-extrabold text-rose-300 uppercase">
+                <Sparkles size={12} /> METATFT HUD ENGINE
               </span>
-              <span className="inline-flex items-center gap-1 rounded-full bg-zinc-900/90 border border-zinc-700 px-3 py-1 text-[11px] font-semibold text-cyan-400">
+              <span className="inline-flex items-center gap-1 rounded-full bg-zinc-900 border border-zinc-700 px-3 py-0.5 text-[11px] font-semibold text-cyan-400">
                 {isSyncing ? <RefreshCw size={12} className="animate-spin" /> : <CheckCircle2 size={12} className="text-emerald-400" />}
                 {syncStatusText}
               </span>
             </div>
 
-            <h1 className="text-3xl md:text-5xl font-black tracking-tight text-white uppercase leading-tight font-sans">
-              METATFT <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-cyan-400 to-amber-300">TFT META DASHBOARD</span>
+            <h1 className="text-3xl md:text-4xl font-black text-white uppercase tracking-tight">
+              METATFT <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 via-purple-400 to-amber-300">COMPOSITIONS HUB</span>
             </h1>
 
-            <p className="text-xs md:text-sm text-zinc-400 max-w-3xl font-sans leading-relaxed">
-              Trang tra cứu Meta Đấu Trường Chân Lý chuẩn phong cách **MetaTFT & Mobalytics**. Phân tích sâu Tỷ lệ Thắng, Sơ đồ Vị trí Hex Board 28 ô, Lõi Nâng Cấp và Bối cảnh Đội hình Mùa 17.
+            <p className="text-xs text-zinc-400 font-sans max-w-2xl">
+              Giao diện chi tiết chuẩn **MetaTFT**: Honeycomb Board Hexagons 28 ô, Cây lên cấp Early (Lvl 4-7 Win Rates), Levelling Stage Timeline & Carousel Item Priority.
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0">
-            <div className="rounded-2xl bg-zinc-900/90 border border-purple-500/40 p-4 text-center min-w-[130px]">
-              <span className="text-[10px] font-bold text-zinc-500 uppercase block">CƠ SỞ DỮ LIỆU</span>
-              <span className="text-sm font-black text-amber-400 uppercase">354,210 Trận Rank</span>
-            </div>
-            <div className="rounded-2xl bg-zinc-900/90 border border-zinc-800 p-4 text-center min-w-[130px]">
-              <span className="text-[10px] font-bold text-zinc-500 uppercase block">PATCH HIỆN TẠI</span>
-              <span className="text-xs font-bold text-cyan-400 flex items-center justify-center gap-1 mt-1">
-                Patch 17.7 (Space Gods)
-              </span>
-            </div>
+          {/* Nav Switcher */}
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={() => setActiveTab('tierlist')}
+              className={`px-4 py-2 rounded-xl text-xs font-bold uppercase transition ${
+                activeTab === 'tierlist' ? 'bg-purple-600 text-white shadow-lg' : 'bg-zinc-900 text-zinc-400 hover:text-white'
+              }`}
+            >
+              Comps Tier List
+            </button>
+            <button
+              onClick={() => setActiveTab('items')}
+              className={`px-4 py-2 rounded-xl text-xs font-bold uppercase transition ${
+                activeTab === 'items' ? 'bg-purple-600 text-white shadow-lg' : 'bg-zinc-900 text-zinc-400 hover:text-white'
+              }`}
+            >
+              Items Matrix
+            </button>
+            <button
+              onClick={() => setActiveTab('champions')}
+              className={`px-4 py-2 rounded-xl text-xs font-bold uppercase transition ${
+                activeTab === 'champions' ? 'bg-purple-600 text-white shadow-lg' : 'bg-zinc-900 text-zinc-400 hover:text-white'
+              }`}
+            >
+              Set 17 Champions
+            </button>
           </div>
-        </div>
-
-        {/* Navigation Switcher Tabs (MetaTFT exact tab style) */}
-        <div className="mt-8 flex flex-wrap items-center gap-2 border-t border-zinc-800/80 pt-6">
-          <button
-            onClick={() => setActiveTab('tierlist')}
-            className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs font-bold uppercase tracking-wider transition duration-200 cursor-pointer ${
-              activeTab === 'tierlist'
-                ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-500/20'
-                : 'bg-zinc-900/80 text-zinc-400 hover:text-white hover:bg-zinc-800'
-            }`}
-          >
-            <Flame size={15} className={activeTab === 'tierlist' ? 'text-amber-300' : 'text-zinc-500'} />
-            Bảng Xếp Hạng Đội Hình Meta
-          </button>
-
-          <button
-            onClick={() => setActiveTab('items')}
-            className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs font-bold uppercase tracking-wider transition duration-200 cursor-pointer ${
-              activeTab === 'items'
-                ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-500/20'
-                : 'bg-zinc-900/80 text-zinc-400 hover:text-white hover:bg-zinc-800'
-            }`}
-          >
-            <Swords size={15} className={activeTab === 'items' ? 'text-amber-300' : 'text-zinc-500'} />
-            Trang Bị Khuyên Dùng
-          </button>
-
-          <button
-            onClick={() => setActiveTab('champions')}
-            className={`flex items-center gap-2 rounded-xl px-5 py-2.5 text-xs font-bold uppercase tracking-wider transition duration-200 cursor-pointer ${
-              activeTab === 'champions'
-                ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-500/20'
-                : 'bg-zinc-900/80 text-zinc-400 hover:text-white hover:bg-zinc-800'
-            }`}
-          >
-            <Trophy size={15} className={activeTab === 'champions' ? 'text-amber-300' : 'text-zinc-500'} />
-            Tướng Mùa 17 ({liveChampions.length > 0 ? liveChampions.length : '65+'} Units)
-          </button>
         </div>
       </div>
 
-      {/* --- TAB 1: META TIER LIST (METATFT DESIGN) --- */}
+      {/* --- TAB 1: META TIER LIST (EXACT METATFT SCREENSHOT REPLICATION) --- */}
       {activeTab === 'tierlist' && (
-        <div className="space-y-6">
-          {/* Controls Bar 1: Rank Selector & Region (MetaTFT Filter Toolbar) */}
-          <div className="glass-card p-4 rounded-2xl flex flex-wrap items-center justify-between gap-4 border border-zinc-800/80">
+        <div className="space-y-6 font-sans">
+          {/* Filter Bar */}
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 glass-card p-4 rounded-2xl border border-zinc-800">
             <div className="flex flex-wrap items-center gap-3">
-              {/* Rank Filter */}
-              <div className="flex items-center gap-2 bg-zinc-950 border border-zinc-800 px-3 py-1.5 rounded-xl">
+              <div className="flex items-center gap-2 bg-zinc-950 border border-zinc-800 px-3 py-1.5 rounded-xl text-xs font-bold text-zinc-300">
                 <Trophy size={14} className="text-amber-400" />
-                <span className="text-xs text-zinc-400 font-bold uppercase">Bậc Xếp Hạng:</span>
+                <span>Rank:</span>
                 <select
                   value={rankFilter}
                   onChange={(e) => setRankFilter(e.target.value as RankFilter)}
-                  className="bg-transparent text-xs font-bold text-zinc-200 outline-none cursor-pointer"
+                  className="bg-transparent text-white outline-none cursor-pointer"
                 >
-                  <option value="All Ranks" className="bg-zinc-900">Tất Cả Mức Rank</option>
-                  <option value="Diamond+" className="bg-zinc-900">Kim Cương+ (Diamond+)</option>
-                  <option value="Master+" className="bg-zinc-900">Cao Thủ+ (Master+)</option>
-                  <option value="Challenger" className="bg-zinc-900">Thách Đấu (Challenger)</option>
+                  <option value="Diamond+" className="bg-zinc-900">Diamond+</option>
+                  <option value="Master+" className="bg-zinc-900">Master+</option>
+                  <option value="Challenger" className="bg-zinc-900">Challenger</option>
+                  <option value="All Ranks" className="bg-zinc-900">All Ranks</option>
                 </select>
               </div>
 
-              {/* Region Filter */}
-              <div className="flex items-center gap-2 bg-zinc-950 border border-zinc-800 px-3 py-1.5 rounded-xl">
+              <div className="flex items-center gap-2 bg-zinc-950 border border-zinc-800 px-3 py-1.5 rounded-xl text-xs font-bold text-zinc-300">
                 <Globe size={14} className="text-cyan-400" />
-                <span className="text-xs text-zinc-400 font-bold uppercase">Khu Vực:</span>
+                <span>Region:</span>
                 <select
                   value={regionFilter}
                   onChange={(e) => setRegionFilter(e.target.value as RegionFilter)}
-                  className="bg-transparent text-xs font-bold text-zinc-200 outline-none cursor-pointer"
+                  className="bg-transparent text-white outline-none cursor-pointer"
                 >
-                  <option value="Global" className="bg-zinc-900">Toàn Cầu (Global)</option>
-                  <option value="VN" className="bg-zinc-900">Việt Nam (VN Server)</option>
-                  <option value="KR" className="bg-zinc-900">Hàn Quốc (KR)</option>
-                  <option value="NA" className="bg-zinc-900">Bắc Mỹ (NA)</option>
-                  <option value="EUW" className="bg-zinc-900">Tây Âu (EUW)</option>
+                  <option value="Global" className="bg-zinc-900">Global</option>
+                  <option value="VN" className="bg-zinc-900">VN Server</option>
+                  <option value="KR" className="bg-zinc-900">KR</option>
+                  <option value="NA" className="bg-zinc-900">NA</option>
                 </select>
               </div>
             </div>
 
-            {/* Tier Filter buttons */}
-            <div className="flex items-center gap-1.5">
-              <span className="text-xs font-bold text-zinc-400 uppercase mr-1">Tier:</span>
-              {(['All', 'S+', 'S', 'A', 'B'] as const).map((t) => (
-                <button
-                  key={t}
-                  onClick={() => setTierFilter(t)}
-                  className={`rounded-lg px-3 py-1 text-xs font-bold transition duration-200 cursor-pointer ${
-                    tierFilter === t
-                      ? 'bg-purple-600 text-white shadow'
-                      : 'bg-zinc-900 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800'
-                  }`}
-                >
-                  {t === 'All' ? 'Tất cả' : `Tier ${t}`}
-                </button>
-              ))}
-            </div>
-
-            {/* Search Input */}
             <div className="relative w-full md:w-64">
               <Search size={14} className="absolute left-3 top-2.5 text-zinc-500" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Tìm tướng, tộc hệ..."
-                className="w-full rounded-xl bg-zinc-900 border border-zinc-800 py-1.5 pl-9 pr-3 text-xs text-zinc-200 placeholder-zinc-500 outline-none focus:border-purple-500 transition font-sans"
+                placeholder="Search comps, champions..."
+                className="w-full rounded-xl bg-zinc-900 border border-zinc-800 py-1.5 pl-9 pr-3 text-xs text-zinc-200 placeholder-zinc-500 outline-none focus:border-purple-500"
               />
             </div>
           </div>
 
-          {/* MetaTFT Comps Cards */}
+          {/* MetaTFT Comp Cards List */}
           <div className="space-y-6">
-            {filteredComps.length === 0 ? (
-              <div className="glass-card p-12 rounded-2xl text-center text-zinc-400">
-                Không tìm thấy đội hình nào phù hợp với bộ lọc.
-              </div>
-            ) : (
-              filteredComps.map((comp) => {
-                const isExpanded = expandedCompId === comp.id;
-                const viewMode = activeViewMode[comp.id] || 'roster';
+            {filteredComps.map((comp) => {
+              const isExpanded = expandedCompId === comp.id;
+              const activeMainTab = compDetailTabs[comp.id] || 'Quick Start';
+              const activeSubTab = compLevelSubTabs[comp.id] || 'Early';
 
-                return (
-                  <div
-                    key={comp.id}
-                    className="glass-card rounded-2xl border border-zinc-800/80 hover:border-purple-500/40 transition-all duration-300 overflow-hidden"
+              return (
+                <div
+                  key={comp.id}
+                  className="rounded-2xl bg-[#1d1e20] border border-zinc-800/90 shadow-xl overflow-hidden text-zinc-200"
+                >
+                  {/* === TOP CARD HEADER BAR (Exact MetaTFT Screenshot Header) === */}
+                  <div 
+                    onClick={() => setExpandedCompId(isExpanded ? null : comp.id)}
+                    className="p-4 md:p-5 flex flex-col lg:flex-row lg:items-center justify-between gap-4 cursor-pointer hover:bg-zinc-800/40 transition"
                   >
-                    {/* Header Bar: Tier + Title + Synergies + Stats */}
-                    <div className="p-5 md:p-6 flex flex-col lg:flex-row lg:items-center justify-between gap-6 border-b border-zinc-800/60 bg-zinc-950/40">
-                      {/* Left: Tier Badge + Title */}
-                      <div className="flex items-start gap-4">
-                        <span className={`px-4 py-2 rounded-xl text-lg font-black tracking-wider ${getTierBadgeStyle(comp.tier)}`}>
+                    {/* Left Section: Tier + Name + Level Badge + Difficulty + Traits + Units Roster */}
+                    <div className="flex flex-col md:flex-row md:items-center gap-4">
+                      {/* Tier Badge & Comp Title */}
+                      <div className="flex items-center gap-3">
+                        <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-black ${getTierBadgeStyle(comp.tier)}`}>
                           {comp.tier}
                         </span>
 
-                        <div className="space-y-1.5">
-                          <div className="flex items-center gap-2 flex-wrap">
-                            <h2 className="text-lg font-extrabold text-white uppercase tracking-tight">{comp.name}</h2>
-                            <span className="rounded-md bg-purple-950/60 border border-purple-500/30 px-2 py-0.5 text-[10px] font-bold text-purple-300 uppercase">
-                              {comp.playstyle}
+                        <div>
+                          <h2 className="text-base font-extrabold text-white tracking-tight flex items-center gap-2">
+                            {comp.name}
+                          </h2>
+                          <div className="flex items-center gap-2 mt-1">
+                            <span className="px-2 py-0.5 rounded-md bg-zinc-900 border border-zinc-700 text-[10px] font-bold text-amber-400 flex items-center gap-1">
+                              <RefreshCw size={10} /> {comp.levelCap}
+                            </span>
+                            <span className="px-2 py-0.5 rounded-md bg-zinc-900 border border-zinc-800 text-[10px] font-medium text-amber-500/90">
+                              {comp.difficulty}
                             </span>
                           </div>
-
-                          {/* Traits list MetaTFT style */}
-                          <div className="flex flex-wrap items-center gap-1.5">
-                            {comp.traits.map((t, idx) => (
-                              <span
-                                key={idx}
-                                className="inline-flex items-center gap-1 rounded-lg bg-zinc-900 border border-zinc-800 px-2 py-0.5 text-[11px] font-semibold text-zinc-300"
-                              >
-                                <span>{t.icon}</span>
-                                <span>{t.count} {t.name}</span>
-                              </span>
-                            ))}
-                          </div>
                         </div>
                       </div>
 
-                      {/* Right: MetaTFT Stat Cards */}
-                      <div className="flex items-center gap-3 self-end lg:self-center">
-                        <div className={`rounded-xl border px-3.5 py-2 text-center min-w-[75px] ${getPlacementColor(comp.avgPlacement)}`}>
-                          <span className="text-[9px] font-bold uppercase block opacity-80">Thứ Hạng TB</span>
-                          <span className="text-base font-black">#{comp.avgPlacement}</span>
-                        </div>
-                        <div className="rounded-xl bg-zinc-900/90 border border-zinc-800 px-3.5 py-2 text-center min-w-[75px]">
-                          <span className="text-[9px] font-bold text-zinc-500 uppercase block">Top 4 %</span>
-                          <span className="text-base font-black text-cyan-400">{comp.top4Rate}</span>
-                        </div>
-                        <div className="rounded-xl bg-zinc-900/90 border border-zinc-800 px-3.5 py-2 text-center min-w-[75px]">
-                          <span className="text-[9px] font-bold text-zinc-500 uppercase block">Tỷ Lệ Thắng</span>
-                          <span className="text-base font-black text-amber-400">{comp.winRate}</span>
-                        </div>
-                        <div className="rounded-xl bg-zinc-900/90 border border-zinc-800 px-3.5 py-2 text-center min-w-[75px]">
-                          <span className="text-[9px] font-bold text-zinc-500 uppercase block">Pick Rate</span>
-                          <span className="text-base font-black text-zinc-300">{comp.pickRate}</span>
-                        </div>
+                      {/* Micro Traits Pills Horizontal Row */}
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        {comp.traits.map((t, idx) => (
+                          <span
+                            key={idx}
+                            className="inline-flex items-center gap-1 rounded-md bg-zinc-900/90 border border-zinc-800 px-2 py-0.5 text-[10px] font-bold text-zinc-300"
+                          >
+                            <span className="text-amber-400 text-[9px]">{t.count}</span>
+                            <span>{t.icon}</span>
+                          </span>
+                        ))}
+                      </div>
+
+                      {/* Main Champions Roster Line (Top Card Header) */}
+                      <div className="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0">
+                        {comp.units.map((unit, uIdx) => (
+                          <div key={uIdx} className="relative flex flex-col items-center shrink-0">
+                            {/* Stars */}
+                            {unit.stars && (
+                              <span className="text-[9px] text-amber-300 font-extrabold leading-none -mb-1 z-10">
+                                {'★'.repeat(unit.stars)}
+                              </span>
+                            )}
+
+                            {/* Avatar */}
+                            <div className={`w-10 h-10 rounded-lg overflow-hidden border-2 ${getCostBorder(unit.cost)} bg-zinc-950`}>
+                              <img
+                                src={unit.icon}
+                                alt={unit.name}
+                                className="w-full h-full object-cover"
+                                onError={(e) => {
+                                  (e.target as HTMLImageElement).src = `${LOL_CHAMP_BASE}/Ahri.png`;
+                                }}
+                              />
+                            </div>
+
+                            {/* Equipped 3 Item Badges attached right below unit portrait */}
+                            {unit.items && unit.items.length > 0 && (
+                              <div className="mt-0.5 flex items-center justify-center -space-x-1 z-10">
+                                {unit.items.map((it, iIdx) => (
+                                  <span
+                                    key={iIdx}
+                                    title={it.name}
+                                    className="w-3.5 h-3.5 rounded bg-zinc-900 border border-amber-500/60 text-[8px] flex items-center justify-center shadow"
+                                  >
+                                    {it.icon}
+                                  </span>
+                                ))}
+                              </div>
+                            )}
+
+                            <span className="text-[9px] text-zinc-400 font-medium truncate max-w-[42px] mt-0.5">
+                              {unit.name}
+                            </span>
+                          </div>
+                        ))}
                       </div>
                     </div>
 
-                    {/* Main Content: View Switcher (Roster vs Hex Board) */}
-                    <div className="p-5 md:p-6 space-y-6">
-                      <div className="flex items-center justify-between border-b border-zinc-800/60 pb-3">
-                        <span className="text-[11px] font-bold uppercase tracking-widest text-zinc-400 flex items-center gap-1.5">
-                          <BarChart2 size={13} className="text-purple-400" /> ĐỘI HÌNH & TRANG BỊ CHUẨN MÙA 17
-                        </span>
-
-                        {/* View Switcher Toggle */}
-                        <div className="flex items-center gap-1 bg-zinc-900 border border-zinc-800 p-1 rounded-xl">
-                          <button
-                            onClick={() => setActiveViewMode({ ...activeViewMode, [comp.id]: 'roster' })}
-                            className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase transition ${
-                              viewMode === 'roster' ? 'bg-purple-600 text-white' : 'text-zinc-400 hover:text-white'
-                            }`}
-                          >
-                            <LayoutGrid size={12} /> Hàng Tướng
-                          </button>
-                          <button
-                            onClick={() => setActiveViewMode({ ...activeViewMode, [comp.id]: 'board' })}
-                            className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase transition ${
-                              viewMode === 'board' ? 'bg-purple-600 text-white' : 'text-zinc-400 hover:text-white'
-                            }`}
-                          >
-                            <Eye size={12} /> Hex Board 28 Ô
-                          </button>
-                        </div>
+                    {/* Right Section: Exact MetaTFT Stat Totals (Avg Place, Pick Rate, Win Rate, Top 4) */}
+                    <div className="flex items-center gap-4 shrink-0 self-end lg:self-center">
+                      <div className="text-center">
+                        <span className="text-[10px] font-bold text-zinc-400 block">Avg Place</span>
+                        <span className="text-base font-black text-emerald-400">{comp.avgPlacement}</span>
+                      </div>
+                      <div className="text-center">
+                        <span className="text-[10px] font-bold text-zinc-400 block">Pick Rate</span>
+                        <span className="text-base font-black text-zinc-200">{comp.pickRate}</span>
+                      </div>
+                      <div className="text-center">
+                        <span className="text-[10px] font-bold text-zinc-400 block">Win Rate</span>
+                        <span className="text-base font-black text-emerald-400">{comp.winRate}</span>
+                      </div>
+                      <div className="text-center">
+                        <span className="text-[10px] font-bold text-zinc-400 block">Top 4 Rate</span>
+                        <span className="text-base font-black text-emerald-400">{comp.top4Rate}</span>
                       </div>
 
-                      {/* MODE 1: Champion Roster Grid */}
-                      {viewMode === 'roster' ? (
-                        <div className="grid grid-cols-4 sm:grid-cols-8 gap-3">
-                          {comp.units.map((unit, uIdx) => (
-                            <div
-                              key={uIdx}
-                              className={`relative group flex flex-col items-center p-2 rounded-xl border ${getCostBorder(unit.cost)} transition duration-200`}
-                            >
-                              {/* Carry / Tank Badge */}
-                              {unit.isCarry && (
-                                <span className="absolute -top-2 -right-1 z-10 px-1 rounded bg-amber-500 text-[9px] font-black text-zinc-950 shadow">
-                                  CARRY
-                                </span>
-                              )}
-                              {unit.isTank && (
-                                <span className="absolute -top-2 -right-1 z-10 px-1 rounded bg-cyan-500 text-[9px] font-black text-zinc-950 shadow">
-                                  TANK
-                                </span>
-                              )}
-
-                              {/* Star indicator */}
-                              {unit.stars && (
-                                <span className="text-[10px] text-amber-300 font-extrabold tracking-tighter leading-none mb-1">
-                                  {'★'.repeat(unit.stars)}
-                                </span>
-                              )}
-
-                              {/* Avatar image */}
-                              <div className="w-12 h-12 rounded-lg overflow-hidden border border-zinc-700/80 bg-zinc-950">
-                                <img
-                                  src={unit.icon}
-                                  alt={unit.name}
-                                  className="w-full h-full object-cover group-hover:scale-110 transition duration-300"
-                                  onError={(e) => {
-                                    (e.target as HTMLImageElement).src = `${LOL_CHAMP_BASE}/Ahri.png`;
-                                  }}
-                                />
-                              </div>
-
-                              {/* Unit Name */}
-                              <span className="mt-1.5 text-[11px] font-bold text-zinc-200 line-clamp-1 text-center">
-                                {unit.name}
-                              </span>
-
-                              {/* Cost badge */}
-                              <span className={`mt-0.5 text-[9px] font-bold px-1.5 py-0.2 rounded border ${getCostBadge(unit.cost)}`}>
-                                ${unit.cost}
-                              </span>
-
-                              {/* Items */}
-                              {unit.items && unit.items.length > 0 && (
-                                <div className="mt-1.5 flex items-center justify-center gap-1">
-                                  {unit.items.map((it, iIdx) => (
-                                    <span
-                                      key={iIdx}
-                                      title={it.name}
-                                      className="w-4 h-4 rounded bg-zinc-900 border border-amber-500/40 text-[9px] flex items-center justify-center"
-                                    >
-                                      {it.icon}
-                                    </span>
-                                  ))}
-                                </div>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        /* MODE 2: MetaTFT Hex Board 28-Cell Map Visualizer */
-                        <div className="rounded-2xl bg-zinc-950 border border-zinc-800/80 p-4 space-y-2">
-                          <span className="text-[10px] font-bold text-zinc-500 uppercase block mb-2 text-center">
-                            ♟️ SƠ ĐỒ XẾP BÀI METATFT (BÀN ĐẤU 4 HÀNG x 7 CỘT)
-                          </span>
-                          <div className="grid grid-rows-4 gap-2 max-w-2xl mx-auto">
-                            {[0, 1, 2, 3].map((rowIdx) => (
-                              <div key={rowIdx} className="grid grid-cols-7 gap-2">
-                                {[0, 1, 2, 3, 4, 5, 6].map((colIdx) => {
-                                  const placedUnit = comp.units.find((u) => u.row === rowIdx && u.col === colIdx);
-
-                                  return (
-                                    <div
-                                      key={colIdx}
-                                      className={`h-14 rounded-xl border flex flex-col items-center justify-center relative transition ${
-                                        placedUnit
-                                          ? `${getCostBorder(placedUnit.cost)} bg-zinc-900`
-                                          : 'border-zinc-800/50 bg-zinc-900/20'
-                                      }`}
-                                    >
-                                      {placedUnit ? (
-                                        <>
-                                          <img
-                                            src={placedUnit.icon}
-                                            alt={placedUnit.name}
-                                            className="w-8 h-8 rounded-md object-cover"
-                                            onError={(e) => {
-                                              (e.target as HTMLImageElement).src = `${LOL_CHAMP_BASE}/Ahri.png`;
-                                            }}
-                                          />
-                                          <span className="text-[9px] font-bold text-zinc-300 truncate w-full text-center px-0.5">
-                                            {placedUnit.name}
-                                          </span>
-                                        </>
-                                      ) : (
-                                        <span className="text-[9px] text-zinc-700 font-mono">
-                                          {rowIdx+1}-{colIdx+1}
-                                        </span>
-                                      )}
-                                    </div>
-                                  );
-                                })}
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Augments Section (MetaTFT Border Color Coding) */}
-                      <div className="space-y-2 pt-2 border-t border-zinc-800/60">
-                        <span className="text-[11px] font-bold uppercase tracking-widest text-zinc-400 block">
-                          🔮 LÕI NÂNG CẤP XẾP HẠNG CAO (AUGMENTS)
-                        </span>
-                        <div className="flex flex-wrap items-center gap-3">
-                          {comp.augments.map((aug, aIdx) => (
-                            <div
-                              key={aIdx}
-                              className={`flex items-center gap-2 rounded-xl border px-3 py-1.5 text-xs font-semibold ${getAugmentTierStyle(aug.tier)}`}
-                            >
-                              <span className="text-base">{aug.icon}</span>
-                              <span>{aug.name}</span>
-                              <span className="text-[9px] font-bold uppercase opacity-80 border px-1 rounded">
-                                {aug.tier}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Expand Button for Playstyle Details */}
-                      <div>
-                        <button
-                          onClick={() => setExpandedCompId(isExpanded ? null : comp.id)}
-                          className="flex items-center gap-1.5 text-xs font-bold text-purple-400 hover:text-purple-300 transition cursor-pointer"
-                        >
-                          {isExpanded ? (
-                            <>
-                              Thu gọn chi tiết <ChevronUp size={14} />
-                            </>
-                          ) : (
-                            <>
-                              Xem hướng dẫn xoay bài & counter địch <ChevronDown size={14} />
-                            </>
-                          )}
-                        </button>
-                      </div>
-
-                      {/* Expanded Strategy Guide Panel */}
-                      {isExpanded && (
-                        <div className="mt-4 rounded-xl bg-zinc-900/60 border border-zinc-800 p-4 space-y-3 font-sans text-xs text-zinc-300">
-                          <div>
-                            <strong className="text-cyan-400 uppercase tracking-wide block mb-1">
-                              🌱 Cách vận hành & Chuyển đổi bài (Transition Guide):
-                            </strong>
-                            <p>{comp.earlyGameTip}</p>
-                          </div>
-                          <div>
-                            <strong className="text-amber-400 uppercase tracking-wide block mb-1">
-                              ♟️ Mẹo Xếp Vị Trí Hex Board:
-                            </strong>
-                            <p>{comp.positioningTip}</p>
-                          </div>
-                          {comp.counterTip && (
-                            <div>
-                              <strong className="text-rose-400 uppercase tracking-wide block mb-1">
-                                🛡️ Mẹo Khắc Chế (Counter Strategy):
-                              </strong>
-                              <p>{comp.counterTip}</p>
-                            </div>
-                          )}
-                        </div>
-                      )}
+                      <button className="text-zinc-400 hover:text-white p-1">
+                        {isExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                      </button>
                     </div>
                   </div>
-                );
-              })
-            )}
+
+                  {/* === EXPANDED DETAILS PANEL (EXACT METATFT SCREENSHOT BODY) === */}
+                  {isExpanded && (
+                    <div className="border-t border-zinc-800/80 bg-[#17181a] p-4 md:p-6 space-y-6">
+                      {/* Main Detail Tabs Bar (Options & Quick Start | Units & Items | Traits & Stats | Pro Augments | Counters) */}
+                      <div className="flex flex-wrap items-center gap-6 border-b border-zinc-800/80 pb-3">
+                        {['Options & Quick Start', 'Units & Items', 'Traits & Stats', 'Pro Augments and Tips', 'Counters & Vods'].map((t) => (
+                          <button
+                            key={t}
+                            onClick={() => setCompDetailTabs({ ...compDetailTabs, [comp.id]: t })}
+                            className={`text-xs font-extrabold transition cursor-pointer ${
+                              activeMainTab === t
+                                ? 'text-amber-400 border-b-2 border-amber-400 pb-3 -mb-3'
+                                : 'text-zinc-400 hover:text-zinc-200'
+                            }`}
+                          >
+                            {t}
+                          </button>
+                        ))}
+                      </div>
+
+                      {/* QUICK START TAB BODY */}
+                      {activeMainTab === 'Options & Quick Start' && (
+                        <div className="space-y-6">
+                          {/* Sub Level Selector Bar: Early | Lvl 7 (37.5%) | Lvl 8 (38.4%) | Lvl 9 (22.1%) */}
+                          <div className="flex items-center gap-4 overflow-x-auto pb-1 text-xs border-b border-zinc-800/40">
+                            {[
+                              { label: 'Early', val: 'Early' },
+                              { label: 'Lvl 7 (37.5%)', val: 'Lvl 7' },
+                              { label: 'Lvl 8 (38.4%)', val: 'Lvl 8' },
+                              { label: 'Lvl 9 (22.1%)', val: 'Lvl 9' },
+                              { label: 'Lvl 10 (1.9%)', val: 'Lvl 10' },
+                            ].map((sub) => (
+                              <button
+                                key={sub.val}
+                                onClick={() => setCompLevelSubTabs({ ...compLevelSubTabs, [comp.id]: sub.val })}
+                                className={`font-bold px-3 py-1 rounded-lg transition ${
+                                  activeSubTab === sub.val
+                                    ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
+                                    : 'text-zinc-400 hover:text-white'
+                                }`}
+                              >
+                                {sub.label}
+                              </button>
+                            ))}
+                          </div>
+
+                          {/* Split 2-Column Panel (Left: Early Game Boards / Right: Honeycomb Positioning + Augments + Timeline + Carousel) */}
+                          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                            
+                            {/* LEFT COLUMN: Early Game Level Boards (Lvl 4, Lvl 5, Lvl 6, Lvl 7) */}
+                            <div className="lg:col-span-6 space-y-4 bg-zinc-950/40 border border-zinc-800/80 rounded-2xl p-4">
+                              <span className="text-[11px] font-black uppercase text-zinc-400 tracking-wider block border-b border-zinc-800 pb-2">
+                                📈 EARLY GAME BOARDS BY LEVEL
+                              </span>
+
+                              <div className="space-y-3">
+                                {comp.earlyBoards.map((eb, ebIdx) => (
+                                  <div
+                                    key={ebIdx}
+                                    className="flex items-center justify-between p-3 rounded-xl bg-zinc-900/80 border border-zinc-800/80 hover:border-zinc-700 transition"
+                                  >
+                                    <div className="flex items-center gap-3">
+                                      <span className="w-12 text-xs font-black text-zinc-400 bg-zinc-950 border border-zinc-800 px-2 py-1 rounded-lg text-center shrink-0">
+                                        Lvl {eb.level}
+                                      </span>
+
+                                      {/* Champions Row */}
+                                      <div className="flex items-center gap-1.5 flex-wrap">
+                                        {eb.units.map((u, uIdx) => (
+                                          <div key={uIdx} className="flex flex-col items-center">
+                                            <div className={`w-8 h-8 rounded-lg overflow-hidden border ${getCostBorder(u.cost)} bg-zinc-950`}>
+                                              <img src={u.icon} alt={u.name} className="w-full h-full object-cover" />
+                                            </div>
+                                            <span className="text-[8px] text-zinc-400 truncate max-w-[36px]">{u.name}</span>
+                                          </div>
+                                        ))}
+                                      </div>
+                                    </div>
+
+                                    {/* Win Rate Stats */}
+                                    <div className="text-right shrink-0">
+                                      <span className="text-xs font-black text-cyan-400 block">{eb.winRate}</span>
+                                      <span className="text-[9px] font-bold text-zinc-500 uppercase">Round Win</span>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+
+                            {/* RIGHT COLUMN: Honeycomb Positioning Map + Augments Stack + Timeline + Carousel Priority */}
+                            <div className="lg:col-span-6 space-y-6">
+                              {/* 1. HONEYCOMB POSITIONING MAP (Exact MetaTFT Honeycomb Hexagon Grid) */}
+                              <div className="bg-zinc-950/40 border border-zinc-800/80 rounded-2xl p-4 space-y-3">
+                                <div className="flex items-center justify-between">
+                                  <span className="text-[11px] font-black uppercase text-zinc-400 tracking-wider">
+                                    ♟️ POSITIONING BOARD (HONEYCOMB HEXAGONS)
+                                  </span>
+                                  <span className="text-[10px] text-amber-400 font-bold">Pro Tips ❓</span>
+                                </div>
+
+                                {/* Honeycomb Hex Grid Container */}
+                                <div className="p-3 bg-zinc-950/90 rounded-xl border border-zinc-800 flex justify-center">
+                                  <div className="space-y-1.5 w-full max-w-md">
+                                    {[0, 1, 2, 3].map((rowIdx) => (
+                                      <div 
+                                        key={rowIdx} 
+                                        className={`flex items-center justify-center gap-1.5 ${rowIdx % 2 === 1 ? 'pl-4' : ''}`}
+                                      >
+                                        {[0, 1, 2, 3, 4, 5, 6].map((colIdx) => {
+                                          const placedUnit = comp.units.find((u) => u.row === rowIdx && u.col === colIdx);
+
+                                          return (
+                                            <div
+                                              key={colIdx}
+                                              style={{
+                                                clipPath: 'polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)',
+                                              }}
+                                              className={`w-9 h-10 flex items-center justify-center transition relative ${
+                                                placedUnit
+                                                  ? 'bg-gradient-to-br from-amber-500/40 via-purple-600/40 to-cyan-500/40 border border-amber-400 p-0.5'
+                                                  : 'bg-zinc-900/50 border border-zinc-800/40'
+                                              }`}
+                                            >
+                                              {placedUnit ? (
+                                                <img
+                                                  src={placedUnit.icon}
+                                                  alt={placedUnit.name}
+                                                  className="w-full h-full object-cover"
+                                                  title={placedUnit.name}
+                                                />
+                                              ) : (
+                                                <div className="w-full h-full bg-zinc-900/30" />
+                                              )}
+                                            </div>
+                                          );
+                                        })}
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              </div>
+
+                              {/* 2. LEVELLING STAGE TIMELINE BAR */}
+                              <div className="bg-zinc-950/40 border border-zinc-800/80 rounded-2xl p-4 space-y-2">
+                                <span className="text-[11px] font-black uppercase text-zinc-400 tracking-wider block">
+                                  ⏱️ LEVELLING TIMELINE (STAGE CHRONOLOGY)
+                                </span>
+                                <div className="flex items-center justify-between flex-wrap gap-2 pt-1">
+                                  {comp.levellingTimeline.map((item, idx) => (
+                                    <div key={idx} className="flex items-center gap-1.5 bg-zinc-900 border border-zinc-800 px-2.5 py-1 rounded-lg">
+                                      <span className="text-[10px] font-black text-amber-400">Lvl {item.level}</span>
+                                      <span className="text-[9px] font-bold text-zinc-400">{item.stage}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+
+                              {/* 3. CAROUSEL ITEM PRIORITY ICONS ROW */}
+                              <div className="bg-zinc-950/40 border border-zinc-800/80 rounded-2xl p-4 space-y-2">
+                                <span className="text-[11px] font-black uppercase text-zinc-400 tracking-wider block">
+                                  🛒 CAROUSEL PRIORITY ITEMS
+                                </span>
+                                <div className="flex items-center gap-2 flex-wrap pt-1">
+                                  {comp.carouselPriority.map((cItem, cIdx) => (
+                                    <div
+                                      key={cIdx}
+                                      className="flex items-center gap-1.5 bg-zinc-900 border border-amber-500/30 px-2.5 py-1 rounded-lg text-xs"
+                                    >
+                                      <span>{cItem.icon}</span>
+                                      <span className="text-[9px] font-bold text-zinc-400">{cItem.name}</span>
+                                      <span className="text-[9px] font-extrabold text-amber-400">x{cItem.count}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
 
-      {/* --- TAB 2: ITEM FORMULAS MATRIX (METATFT MATRIX) --- */}
+      {/* --- TAB 2: ITEMS MATRIX --- */}
       {activeTab === 'items' && (
         <div className="space-y-6 font-sans">
           <div className="glass-card p-6 rounded-2xl">
@@ -955,7 +947,7 @@ export default function TFTMetaTFTPage() {
         </div>
       )}
 
-      {/* --- TAB 3: CHAMPIONS & COSTS --- */}
+      {/* --- TAB 3: CHAMPIONS --- */}
       {activeTab === 'champions' && (
         <div className="space-y-6 font-sans">
           <div className="glass-card p-6 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
