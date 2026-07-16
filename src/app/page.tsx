@@ -11,7 +11,7 @@ const GAME_APP_DOCK = [
     slug: 'lien-minh-huyen-thoai',
     tag: 'MOBA 5v5',
     iconUrl: 'https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/Ahri.png',
-    stat: '170+ Tướng',
+    stat: '170+',
     color: 'border-amber-500/40 text-amber-400 bg-amber-500/10',
   },
   {
@@ -19,8 +19,8 @@ const GAME_APP_DOCK = [
     name: 'Elden Ring',
     slug: 'elden-ring',
     tag: 'Action RPG',
-    iconUrl: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=300&auto=format&fit=crop&q=80',
-    stat: '45+ Trùm',
+    iconUrl: 'https://image.api.playstation.com/vulcan/ap/rnd/202110/2000/a35d944c93540ceec3662d515a0c3b88b0a996df.png',
+    stat: '45+',
     color: 'border-orange-500/40 text-orange-400 bg-orange-500/10',
   },
   {
@@ -28,8 +28,8 @@ const GAME_APP_DOCK = [
     name: 'Valorant',
     slug: 'valorant',
     tag: 'Tactical FPS',
-    iconUrl: 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=300&auto=format&fit=crop&q=80',
-    stat: '24+ Đặc Vụ',
+    iconUrl: 'https://images.contentstack.io/v3/assets/bltb6540373d5881c37/blt9098bc19d65ad33b/638e553a1523771e411b7dfb/V_Logomark_Red.png',
+    stat: '24+',
     color: 'border-rose-500/40 text-rose-400 bg-rose-500/10',
   },
   {
@@ -37,8 +37,8 @@ const GAME_APP_DOCK = [
     name: 'Genshin Impact',
     slug: 'genshin-impact',
     tag: 'Open-World',
-    iconUrl: 'https://images.unsplash.com/photo-1579373903781-fd5c0c30c4cd?w=300&auto=format&fit=crop&q=80',
-    stat: '80+ Nhân Vật',
+    iconUrl: 'https://image.api.playstation.com/vulcan/ap/rnd/202009/1603/B2fdx4lB57z5eXwzQfK7uM2y.png',
+    stat: '80+',
     color: 'border-cyan-500/40 text-cyan-400 bg-cyan-500/10',
   },
   {
@@ -46,8 +46,8 @@ const GAME_APP_DOCK = [
     name: 'Black Myth Wukong',
     slug: 'black-myth-wukong',
     tag: 'Soulslike',
-    iconUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=300&auto=format&fit=crop&q=80',
-    stat: '80+ Yêu Quái',
+    iconUrl: 'https://image.api.playstation.com/vulcan/ap/rnd/202312/0109/67b7e6573c0be83b27b876a3ff898f596353347b594b2db1.png',
+    stat: '80+',
     color: 'border-amber-600/40 text-amber-300 bg-amber-600/10',
   },
   {
@@ -55,8 +55,8 @@ const GAME_APP_DOCK = [
     name: 'Đấu Trường Chân Lý',
     slug: 'tft',
     tag: 'Auto Chess',
-    iconUrl: 'https://images.unsplash.com/photo-1614680376593-902f749f7cfc?w=300&auto=format&fit=crop&q=80',
-    stat: 'Đội Hình Meta',
+    iconUrl: 'https://images.contentstack.io/v3/assets/blt009e1b2f7370eccd/blt022a106a77d206f4/621528659d873c3f8c857790/TFT_Icon.png',
+    stat: 'META',
     color: 'border-purple-500/40 text-purple-400 bg-purple-500/10',
   },
 ];
@@ -111,7 +111,7 @@ export default async function HomePage() {
               href="/wiki"
               className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 px-4 py-2 text-xs font-bold text-white shadow-lg shadow-cyan-500/20 hover:scale-105 transition duration-200"
             >
-              <Smartphone size={15} /> KHO APP GAME
+              <Smartphone size={15} /> MỞ THƯ VIỆN
             </Link>
           </nav>
         </div>
@@ -127,14 +127,11 @@ export default async function HomePage() {
           </span>
 
           <h1 className="text-4xl md:text-6xl font-black tracking-tight leading-tight text-white uppercase">
-            TRA CỨU DỮ LIỆU GAME <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-300 to-indigo-400">
-              GIAO DIỆN APP ĐIỆN THOẠI
-            </span>
+            TRA CỨU THÔNG TIN CỦA NHIỀU TỰA GAME
           </h1>
 
           <p className="max-w-2xl mx-auto text-xs md:text-sm text-zinc-400 leading-relaxed font-sans">
-            Wigaki mang đến kho thông số 170+ tướng Riot, chỉ số vật phẩm, hướng dẫn leo rank và bách khoa toàn thư game với trải nghiệm như sử dụng ứng dụng di động native.
+            Tra cứu thông tin của nhiều tựa game: chỉ số 170+ tướng Riot, thông số vật phẩm, hướng dẫn chơi và bách khoa toàn thư game với giao diện ứng dụng tối giản.
           </p>
 
           <div className="pt-2 flex flex-wrap items-center justify-center gap-4">
@@ -142,13 +139,13 @@ export default async function HomePage() {
               href="/wiki"
               className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-white shadow-xl shadow-cyan-500/20 hover:scale-105 transition duration-300"
             >
-              <Smartphone size={16} /> Khám Phá Kho App Game
+              <Smartphone size={16} /> Mở Thư Viện Game
             </Link>
             <Link
               href="/wiki/lien-minh-huyen-thoai/champions"
               className="inline-flex items-center gap-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-amber-500/50 hover:text-amber-400 px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-zinc-200 transition duration-300"
             >
-              <Star size={16} className="text-amber-400" /> 170+ Tướng Riot LMHT
+              <Star size={16} className="text-amber-400" /> Thư Viện 170+ Tướng Riot
             </Link>
           </div>
         </div>
@@ -158,35 +155,34 @@ export default async function HomePage() {
       </section>
 
       {/* 3. Mobile Smartphone App Launcher Grid (App Store Dock) */}
-      <section className="max-w-7xl mx-auto w-full px-6 py-16">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
-          <div>
-            <span className="text-[11px] font-bold text-cyan-400 uppercase tracking-widest block mb-1">
-              📱 MOBILE APP LAUNCHER
-            </span>
-            <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-white uppercase text-left">
-              ỨNG DỤNG TRA CỨU GAME NỔI BẬT
-            </h2>
-            <p className="text-xs text-zinc-400 mt-1 font-sans">Chạm vào icon app để truy cập dữ liệu chuyên sâu lập tức</p>
+      <section className="max-w-5xl mx-auto w-full px-6 py-12">
+        <div className="rounded-3xl bg-zinc-950/60 border border-zinc-800/80 p-6 md:p-10 shadow-2xl relative overflow-hidden backdrop-blur-xl">
+          <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 pb-4 border-b border-zinc-800/60 gap-4">
+            <div>
+              <span className="text-[11px] font-bold text-cyan-400 uppercase tracking-widest block mb-1">
+                📱 MOBILE GAME LAUNCHER
+              </span>
+              <h2 className="text-xl md:text-2xl font-extrabold tracking-tight text-white uppercase text-left">
+                Tra cứu thông tin của nhiều tựa game
+              </h2>
+            </div>
+            <Link href="/wiki" className="group flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-cyan-400 hover:text-cyan-300 transition duration-200">
+              Mở Thư Viện đầy đủ
+              <ArrowRight size={14} className="transition-transform duration-200 group-hover:translate-x-1" />
+            </Link>
           </div>
-          <Link href="/wiki" className="group flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-cyan-400 hover:text-cyan-300 transition duration-200">
-            Mở toàn bộ danh mục App
-            <ArrowRight size={14} className="transition-transform duration-200 group-hover:translate-x-1" />
-          </Link>
-        </div>
 
-        {/* Smartphone Grid Cards */}
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {GAME_APP_DOCK.map((app) => (
-            <Link
-              key={app.id}
-              href={`/wiki/${app.slug}`}
-              className="group glass-card glass-card-hover rounded-3xl p-5 flex items-center justify-between transition-all duration-300 border border-zinc-800/80 hover:border-cyan-500/50 hover:shadow-xl hover:shadow-cyan-500/10"
-            >
-              <div className="flex items-center gap-4">
-                {/* App Squircle Icon */}
+          {/* Minimalist Smartphone Icon Grid */}
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-y-8 gap-x-4 md:gap-x-6 justify-items-center">
+            {GAME_APP_DOCK.map((app) => (
+              <Link
+                key={app.id}
+                href={`/wiki/${app.slug}`}
+                className="group flex flex-col items-center text-center w-full max-w-[100px] transition-transform duration-200 active:scale-95"
+              >
+                {/* Smartphone Squircle App Icon */}
                 <div className="relative">
-                  <div className="w-16 h-16 rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-700/80 shadow-lg group-hover:scale-105 transition-all duration-300">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-[22%] bg-zinc-900 border border-zinc-700/70 shadow-lg shadow-black/60 overflow-hidden group-hover:scale-110 group-hover:border-cyan-400 group-hover:shadow-cyan-500/30 transition-all duration-300 flex items-center justify-center">
                     <img
                       src={app.iconUrl}
                       alt={app.name}
@@ -194,32 +190,25 @@ export default async function HomePage() {
                       loading="lazy"
                     />
                   </div>
-                  <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-cyan-500 border-2 border-zinc-950"></span>
-                  </span>
-                </div>
 
-                {/* App Title & Badge */}
-                <div className="space-y-1 text-left">
-                  <span className={`inline-block rounded-md border px-2 py-0.5 text-[9px] font-extrabold uppercase tracking-wider ${app.color}`}>
-                    {app.tag}
-                  </span>
-                  <h3 className="text-sm font-extrabold text-white group-hover:text-cyan-400 transition-colors uppercase tracking-wide leading-snug">
-                    {app.name}
-                  </h3>
-                  <span className="text-[11px] font-semibold text-zinc-400 block font-sans">
+                  {/* Smartphone Red Badge */}
+                  <span className="absolute -top-1.5 -right-1.5 min-w-[20px] h-[20px] px-1 rounded-full bg-rose-600 text-[10px] font-black text-white flex items-center justify-center border-2 border-zinc-950 shadow-md">
                     {app.stat}
                   </span>
                 </div>
-              </div>
 
-              {/* Play / Open Button */}
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-zinc-900 border border-zinc-800 group-hover:border-cyan-500 group-hover:bg-cyan-500 text-zinc-400 group-hover:text-zinc-950 transition-all duration-300 shrink-0">
-                <Play size={14} className="fill-current" />
-              </div>
-            </Link>
-          ))}
+                {/* Smartphone App Label */}
+                <span className="mt-2 text-[12px] font-medium text-zinc-200 group-hover:text-cyan-400 group-hover:font-semibold line-clamp-2 leading-tight tracking-tight transition-colors drop-shadow">
+                  {app.name}
+                </span>
+
+                {/* Button Action Label */}
+                <span className="mt-1 text-[9px] font-extrabold text-cyan-400 group-hover:text-white uppercase tracking-wider bg-cyan-950/50 group-hover:bg-cyan-500 border border-cyan-500/30 px-2 py-0.5 rounded-md transition-colors">
+                  MỞ THƯ VIỆN
+                </span>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 

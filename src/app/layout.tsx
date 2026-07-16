@@ -10,8 +10,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Wigaki - Nền Tảng Wiki Trò Chơi Đa Nền Tảng",
-  description: "Cơ sở dữ liệu & thông tin trò chơi tổng hợp dành cho cộng đồng game thủ",
+  title: "Wigaki - Nền Tảng Wiki Trò Chơi",
+  description: "Tra cứu thông tin của nhiều tựa game",
 };
 
 export default function RootLayout({
