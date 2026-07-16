@@ -336,6 +336,314 @@ const SET17_META_COMPS: TFTComp[] = [
     earlyGameTip: 'Giữ máu bằng Bastion + Sniper ở đầu trận, Fast 9 ở 5-2 để tìm Jhin 2 sao.',
     positioningTip: 'Xếp Jhin ở góc an toàn đằng sau Shen và Rammus.',
   },
+  {
+    id: 'anima-fiora-carry',
+    name: 'Anima Squad Fiora & Miss Fortune',
+    tier: 'S+',
+    playstyle: 'Fast 8',
+    avgPlacement: 3.72,
+    pickRate: '0.91',
+    winRate: '20.1%',
+    top4Rate: '62.8%',
+    difficulty: 'Medium',
+    levelCap: 'Lvl 8',
+    mainCarry: 'Fiora',
+    mainTank: 'Illaoi',
+    traits: [
+      { name: 'Anima', count: 6, icon: '🐰' },
+      { name: 'Vanguard', count: 2, icon: '🛡️' },
+      { name: 'Marauder', count: 2, icon: '🗡️' },
+    ],
+    units: [
+      { 
+        name: 'Fiora', 
+        cost: 5, 
+        icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_fiora/hud/tft17_fiora_square.tft_set17.png', 
+        isCarry: true, 
+        stars: 2,
+        row: 1, col: 2,
+        items: [
+          { name: 'Huyết Kiếm', icon: '🩸' },
+          { name: 'Quyền Nay Chiến Thần', icon: '🛡️' },
+          { name: 'Móng Vuốt Sterak', icon: '🥊' }
+        ] 
+      },
+      { 
+        name: 'Illaoi', 
+        cost: 3, 
+        icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_illaoi/hud/tft17_illaoi_square.tft_set17.png', 
+        isTank: true, 
+        stars: 3,
+        row: 0, col: 3,
+        items: [
+          { name: 'Giáp Máu Warmog', icon: '❤️' },
+          { name: 'Áo Choàng Gai', icon: '🛡️' },
+          { name: 'Thạch Giáp Dực Quang', icon: '🧱' }
+        ] 
+      },
+      { name: 'Miss Fortune', cost: 3, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_missfortune/hud/tft17_missfortune_square.tft_set17.png', isCarry: true, stars: 2, row: 3, col: 6 },
+      { name: 'Briar', cost: 1, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_briar/hud/tft17_briar_square.tft_set17.png', stars: 3, row: 0, col: 1 },
+      { name: 'Jinx', cost: 2, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_jinx/hud/tft17_jinx_square.tft_set17.png', stars: 2, row: 3, col: 0 },
+      { name: 'Aurora', cost: 3, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_aurora/hud/tft17_aurora_square.tft_set17.png', stars: 2, row: 2, col: 5 },
+      { name: 'Bel\'Veth', cost: 2, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_belveth/hud/tft17_belveth_square.tft_set17.png', stars: 2, row: 1, col: 4 },
+      { name: 'Sona', cost: 5, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_sona/hud/tft17_sona_square.tft_set17.png', stars: 1, row: 3, col: 3 },
+    ],
+    earlyBoards: [
+      {
+        level: 4,
+        winRate: '54.0%',
+        units: [
+          { name: 'Briar', cost: 1, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_briar/hud/tft17_briar_square.tft_set17.png' },
+          { name: 'Jinx', cost: 2, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_jinx/hud/tft17_jinx_square.tft_set17.png' },
+          { name: 'Bel\'Veth', cost: 2, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_belveth/hud/tft17_belveth_square.tft_set17.png' },
+          { name: 'Illaoi', cost: 3, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_illaoi/hud/tft17_illaoi_square.tft_set17.png' },
+        ],
+      },
+    ],
+    augments: [
+      { name: 'Anima Heart', icon: '🐰', tier: 'Gold' },
+      { name: 'Cybernetic Combat', icon: '🩸', tier: 'Gold' },
+    ],
+    levellingTimeline: [
+      { level: 4, stage: '2-1' },
+      { level: 5, stage: '2-5' },
+      { level: 6, stage: '3-2' },
+      { level: 7, stage: '4-1' },
+      { level: 8, stage: '4-5' },
+    ],
+    carouselPriority: [
+      { name: 'Kiếm B.F', icon: '🗡️', count: 3 },
+      { name: 'Giáp Lưới', icon: '🛡️', count: 2 },
+    ],
+    earlyGameTip: 'Kích Anima 3 sớm để tích cộng dồn danh vọng Anima từ các vòng đánh quái.',
+    positioningTip: 'Đặt Fiora ở góc hàng 2 để lướt vào tuyến sau đối phương.',
+  },
+  {
+    id: 'stargazer-xayah-vex',
+    name: 'Stargazer Xayah & Vex',
+    tier: 'S',
+    playstyle: 'Slowroll 7',
+    avgPlacement: 4.05,
+    pickRate: '0.76',
+    winRate: '16.4%',
+    top4Rate: '55.1%',
+    difficulty: 'Medium',
+    levelCap: 'Lvl 7',
+    mainCarry: 'Xayah',
+    mainTank: 'Nunu & Willump',
+    traits: [
+      { name: 'Stargazer', count: 4, icon: '✨' },
+      { name: 'Doomer', count: 2, icon: '💀' },
+      { name: 'Sniper', count: 2, icon: '🏹' },
+    ],
+    units: [
+      { 
+        name: 'Xayah', 
+        cost: 4, 
+        icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_xayah/hud/tft17_xayah_square.tft_set17.png', 
+        isCarry: true, 
+        stars: 2,
+        row: 3, col: 6,
+        items: [
+          { name: 'Cuồng Đao Guinsoo', icon: '⚡' },
+          { name: 'Vô Cực Kiếm', icon: '🗡️' },
+          { name: 'Cung Xanh', icon: '🏹' }
+        ] 
+      },
+      { 
+        name: 'Nunu & Willump', 
+        cost: 4, 
+        icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_nunu/hud/tft17_nunu_square.tft_set17.png', 
+        isTank: true, 
+        stars: 2,
+        row: 0, col: 3,
+        items: [
+          { name: 'Áo Choàng Gai', icon: '🛡️' },
+          { name: 'Vuốt Rồng', icon: '🐉' },
+          { name: 'Giáp Máu Warmog', icon: '❤️' }
+        ] 
+      },
+      { name: 'Vex', cost: 5, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_vex/hud/tft17_vex_square.tft_set17.png', isCarry: true, stars: 1, row: 3, col: 0 },
+      { name: 'Aurora', cost: 3, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_aurora/hud/tft17_aurora_square.tft_set17.png', stars: 3, row: 2, col: 2 },
+      { name: 'Gnar', cost: 2, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_gnar/hud/tft17_gnar_square.tft_set17.png', stars: 2, row: 0, col: 1 },
+      { name: 'Leblanc', cost: 4, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_leblanc/hud/tft17_leblanc_square.tft_set17.png', stars: 2, row: 2, col: 4 },
+      { name: 'Riven', cost: 4, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_riven/hud/tft17_riven_square.tft_set17.png', stars: 2, row: 1, col: 3 },
+    ],
+    earlyBoards: [
+      {
+        level: 4,
+        winRate: '50.2%',
+        units: [
+          { name: 'Gnar', cost: 2, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_gnar/hud/tft17_gnar_square.tft_set17.png' },
+          { name: 'Aurora', cost: 3, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_aurora/hud/tft17_aurora_square.tft_set17.png' },
+        ],
+      },
+    ],
+    augments: [
+      { name: 'Stargazer Heart', icon: '✨', tier: 'Gold' },
+    ],
+    levellingTimeline: [
+      { level: 4, stage: '3-1' },
+      { level: 5, stage: '3-2' },
+      { level: 6, stage: '3-6' },
+      { level: 7, stage: '4-5' },
+    ],
+    carouselPriority: [
+      { name: 'Cung Gỗ', icon: '🏹', count: 3 },
+      { name: 'Kiếm B.F', icon: '🗡️', count: 2 },
+    ],
+    earlyGameTip: 'Slowroll ở level 7 để bắt Aurora và Gnar 3 sao trước khi up 8.',
+    positioningTip: 'Xếp Xayah đứng thẳng hàng góc chéo với hàng tanker đối phương.',
+  },
+  {
+    id: 'starguardian-lux-ahri',
+    name: 'Star Guardian Lux & Ahri (Arcane Burst)',
+    tier: 'S+',
+    playstyle: 'Fast 9',
+    avgPlacement: 3.58,
+    pickRate: '0.88',
+    winRate: '22.8%',
+    top4Rate: '65.4%',
+    difficulty: 'Hard',
+    levelCap: 'Lvl 9',
+    mainCarry: 'Lux',
+    mainTank: 'Neeko',
+    traits: [
+      { name: 'Star Guardian', count: 6, icon: '⭐' },
+      { name: 'Sorcerer', count: 4, icon: '🧙' },
+    ],
+    units: [
+      { 
+        name: 'Lux', 
+        cost: 4, 
+        icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_lux/hud/tft17_lux_square.tft_set17.png', 
+        isCarry: true, 
+        stars: 2,
+        row: 3, col: 3,
+        items: [
+          { name: 'Bùa Xanh', icon: '💧' },
+          { name: 'Mũ Phù Thủy Rabadon', icon: '🧙' },
+          { name: 'Găng Bảo Thạch', icon: '💎' }
+        ] 
+      },
+      { 
+        name: 'Neeko', 
+        cost: 3, 
+        icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_neeko/hud/tft17_neeko_square.tft_set17.png', 
+        isTank: true, 
+        stars: 3,
+        row: 0, col: 3,
+        items: [
+          { name: 'Thạch Giáp Dực Quang', icon: '🧱' },
+          { name: 'Giáp Máu Warmog', icon: '❤️' },
+          { name: 'Nỏ Sét', icon: '⚡' }
+        ] 
+      },
+      { name: 'Ahri', cost: 5, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_ahri/hud/tft17_ahri_square.tft_set17.png', isCarry: true, stars: 2, row: 3, col: 0 },
+      { name: 'Syndra', cost: 4, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_syndra/hud/tft17_syndra_square.tft_set17.png', stars: 2, row: 3, col: 6 },
+      { name: 'Zoe', cost: 2, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_zoe/hud/tft17_zoe_square.tft_set17.png', stars: 2, row: 2, col: 1 },
+      { name: 'Sona', cost: 5, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_sona/hud/tft17_sona_square.tft_set17.png', stars: 1, row: 2, col: 5 },
+    ],
+    earlyBoards: [
+      {
+        level: 4,
+        winRate: '56.1%',
+        units: [
+          { name: 'Zoe', cost: 2, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_zoe/hud/tft17_zoe_square.tft_set17.png' },
+          { name: 'Neeko', cost: 3, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_neeko/hud/tft17_neeko_square.tft_set17.png' },
+        ],
+      },
+    ],
+    augments: [
+      { name: 'Star Guardian Crown', icon: '⭐', tier: 'Prismatic' },
+      { name: 'Jeweled Lotus', icon: '💎', tier: 'Gold' },
+    ],
+    levellingTimeline: [
+      { level: 4, stage: '2-1' },
+      { level: 5, stage: '2-5' },
+      { level: 6, stage: '3-2' },
+      { level: 7, stage: '4-1' },
+      { level: 8, stage: '4-5' },
+      { level: 9, stage: '5-2' },
+    ],
+    carouselPriority: [
+      { name: 'Nước Mắt', icon: '💧', count: 3 },
+      { name: 'Gậy Quá Khổ', icon: '🪄', count: 3 },
+    ],
+    earlyGameTip: 'Fast 9 để tìm Ahri và Lux 2 sao. Sử dụng Bùa Xanh từ sớm để giữ chuỗi thắng.',
+    positioningTip: 'Đặt Lux ở chính giữa hàng cuối để chiếu cầu ánh sáng trúng nhiều mục tiêu nhất.',
+  },
+  {
+    id: 'cybernetic-lucian-senna',
+    name: 'Cybernetic Lucian & Senna Duo',
+    tier: 'A',
+    playstyle: 'Standard 8',
+    avgPlacement: 4.18,
+    pickRate: '0.64',
+    winRate: '15.1%',
+    top4Rate: '52.0%',
+    difficulty: 'Easy',
+    levelCap: 'Lvl 8',
+    mainCarry: 'Lucian',
+    mainTank: 'Vi',
+    traits: [
+      { name: 'Cybernetic', count: 5, icon: '🤖' },
+      { name: 'Blaster', count: 2, icon: '🔫' },
+    ],
+    units: [
+      { 
+        name: 'Lucian', 
+        cost: 4, 
+        icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_lucian/hud/tft17_lucian_square.tft_set17.png', 
+        isCarry: true, 
+        stars: 2,
+        row: 3, col: 1,
+        items: [
+          { name: 'Vô Cực Kiếm', icon: '🗡️' },
+          { name: 'Cung Xanh', icon: '🏹' }
+        ] 
+      },
+      { 
+        name: 'Vi', 
+        cost: 2, 
+        icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_vi/hud/tft17_vi_square.tft_set17.png', 
+        isTank: true, 
+        stars: 3,
+        row: 0, col: 2,
+        items: [
+          { name: 'Giáp Máu Warmog', icon: '❤️' },
+          { name: 'Áo Choàng Gai', icon: '🛡️' }
+        ] 
+      },
+      { name: 'Senna', cost: 4, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_senna/hud/tft17_senna_square.tft_set17.png', isCarry: true, stars: 2, row: 3, col: 5 },
+      { name: 'Fiora', cost: 5, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_fiora/hud/tft17_fiora_square.tft_set17.png', stars: 1, row: 1, col: 3 },
+    ],
+    earlyBoards: [
+      {
+        level: 4,
+        winRate: '48.5%',
+        units: [
+          { name: 'Vi', cost: 2, icon: 'https://raw.communitydragon.org/latest/game/assets/characters/tft17_vi/hud/tft17_vi_square.tft_set17.png' },
+        ],
+      },
+    ],
+    augments: [
+      { name: 'Cybernetic Uplink', icon: '🦾', tier: 'Silver' },
+    ],
+    levellingTimeline: [
+      { level: 4, stage: '2-1' },
+      { level: 5, stage: '2-5' },
+      { level: 6, stage: '3-2' },
+      { level: 7, stage: '4-1' },
+      { level: 8, stage: '4-5' },
+    ],
+    carouselPriority: [
+      { name: 'Kiếm B.F', icon: '🗡️', count: 2 },
+      { name: 'Găng Tay', icon: '🥊', count: 2 },
+    ],
+    earlyGameTip: 'Lên trang bị cho từng tướng Cybernetic để nhận thêm máu và sát thương.',
+    positioningTip: 'Xếp Lucian và Senna 2 góc đối diện.',
+  },
 ];
 
 // Fallback static items matrix
