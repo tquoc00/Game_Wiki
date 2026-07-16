@@ -1,1 +1,0 @@
-self.__SSG_MANIFEST=new Set(["\u002Fwiki\u002F[game-slug]\u002Fcreate","\u002Fwiki\u002Flien-minh-huyen-thoai\u002Fchampions\u002F[championId]"]);self.__SSG_MANIFEST_CB&&self.__SSG_MANIFEST_CB()
