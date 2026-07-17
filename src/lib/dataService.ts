@@ -455,6 +455,234 @@ export const ELDEN_RING_BELL_BEARINGS: EldenRingEntity[] = [
   },
 ];
 
+export const ELDEN_RING_EXTRA_SORCERIES: EldenRingEntity[] = [
+  {
+    id: 'er-sorceries-rellana-twin-moon',
+    name: "Rellana's Twin Moon",
+    image: 'https://eldenring.wiki.fextralife.com/file/Elden-Ring/rellanas_twin_moons_sorceries_elden_ring_shadow_of_the_erdtree_dlc_wiki_guide_200px.png',
+    description: 'Ma thuật tối cao của Rellana, Twin Moon Knight. Hóa thân thành hai vầng trăng khuyết đổ ập xuống mặt đất gây sát thương phép bùng nổ diện rộng.',
+    category: 'sorceries',
+    locationHint: 'Castle Ensis (Shadow of the Erdtree DLC - Đổi từ Remembrance of the Twin Moon Knight)',
+    mapLocationUrl: 'https://mapgenie.io/elden-ring/maps/the-lands-between?search=Rellana',
+    quote: 'Sorcery of Rellana, the Twin Moon Knight.',
+  },
+  {
+    id: 'er-sorceries-impenetrable-thorns',
+    name: 'Impenetrable Thorns',
+    image: 'https://eldenring.wiki.fextralife.com/file/Elden-Ring/impenetrable_thorns_sorceries_elden_ring_shadow_of_the_erdtree_dlc_wiki_guide_200px.png',
+    description: 'Triệu hồi gai nhọn màu đỏ thẫm đâm xuyên từ dưới đất lên, gây sát thương xuất huyết (Blood Loss) cực lớn lên mục tiêu.',
+    category: 'sorceries',
+    locationHint: 'Shadow Keep (Shadow of the Erdtree DLC - Nhặt tại thi thể tầng trên thành)',
+    mapLocationUrl: 'https://mapgenie.io/elden-ring/maps/the-lands-between?search=Shadow%20Keep',
+    quote: 'Scadutree sorcery of the Scadutree avatars.',
+  },
+  {
+    id: 'er-sorceries-fleeting-microcosm',
+    name: 'Fleeting Microcosm',
+    image: 'https://eldenring.wiki.fextralife.com/file/Elden-Ring/fleeting_microcosm_sorceries_elden_ring_shadow_of_the_erdtree_dlc_wiki_guide_200px.png',
+    description: 'Triệu hồi một tiểu vũ trụ ngân hà thu nhỏ phát nổ gây sóng xung kích trọng lực quét sạch kẻ thù.',
+    category: 'sorceries',
+    locationHint: 'Cathedral of Manus Metyr (Shadow of the Erdtree DLC - Đổi từ Count Ymir)',
+    mapLocationUrl: 'https://mapgenie.io/elden-ring/maps/the-lands-between?search=Cathedral%20of%20Manus%20Metyr',
+    quote: 'One of the finger sorceries of Count Ymir.',
+  },
+  {
+    id: 'er-sorceries-gravitational-missile',
+    name: 'Gravitational Missile',
+    image: 'https://eldenring.wiki.fextralife.com/file/Elden-Ring/gravitational_missile_sorceries_elden_ring_shadow_of_the_erdtree_dlc_wiki_guide_200px.png',
+    description: 'Bắn ra cầu năng lượng trọng lực tím hút kẻ thù vào tâm trước khi phát nổ dứt điểm.',
+    category: 'sorceries',
+    locationHint: 'Hinterland (Shadow of the Erdtree DLC - Thả ra bởi Commander Gaius)',
+    mapLocationUrl: 'https://mapgenie.io/elden-ring/maps/the-lands-between?search=Commander%20Gaius',
+    quote: 'Gravity sorcery used by Commander Gaius.',
+  },
+  {
+    id: 'er-sorceries-blades-of-stone',
+    name: 'Blades of Stone',
+    image: 'https://eldenring.wiki.fextralife.com/file/Elden-Ring/blades_of_stone_sorceries_elden_ring_shadow_of_the_erdtree_dlc_wiki_guide_200px.png',
+    description: 'Phép thuật trọng lực của Trùm Cuối DLC. Tạo ra vô số lưỡi đá sắc nhọn đâm vút từ lòng đất.',
+    category: 'sorceries',
+    locationHint: 'Enir-Ilim (Shadow of the Erdtree DLC - Đổi từ Remembrance of a God and a Lord)',
+    mapLocationUrl: 'https://mapgenie.io/elden-ring/maps/the-lands-between?search=Enir-Ilim',
+  },
+  {
+    id: 'er-sorceries-vortex-of-putrescence',
+    name: 'Vortex of Putrescence',
+    image: 'https://eldenring.wiki.fextralife.com/file/Elden-Ring/vortex_of_putrescence_sorceries_elden_ring_shadow_of_the_erdtree_dlc_wiki_guide_200px.png',
+    description: 'Phóng ra các làn sóng bùn ma thuật thối rữa màu lam thiêu đốt kẻ địch bằng ngọn lửa băng giá.',
+    category: 'sorceries',
+    locationHint: 'Stone Coffin Fissure (Shadow of the Erdtree DLC - Đổi từ Putrescent Knight)',
+    mapLocationUrl: 'https://mapgenie.io/elden-ring/maps/the-lands-between?search=Putrescent%20Knight',
+  },
+  {
+    id: 'er-sorceries-miriam-vanishing',
+    name: "Miriam's Vanishing",
+    image: 'https://eldenring.wiki.fextralife.com/file/Elden-Ring/miriams_vanishing_sorceries_elden_ring_shadow_of_the_erdtree_dlc_wiki_guide_200px.png',
+    description: 'Biến mất trong màn sương ảo ảnh và tức thời dịch chuyển đến vị trí bất ngờ đằng sau kẻ thù.',
+    category: 'sorceries',
+    locationHint: 'Cathedral of Manus Metyr (Shadow of the Erdtree DLC - Mua từ Count Ymir)',
+    mapLocationUrl: 'https://mapgenie.io/elden-ring/maps/the-lands-between?search=Count%20Ymir',
+  },
+  {
+    id: 'er-sorceries-glintstone-nail',
+    name: 'Glintstone Nail',
+    image: 'https://eldenring.wiki.fextralife.com/file/Elden-Ring/glintstone_nail_sorceries_elden_ring_shadow_of_the_erdtree_dlc_wiki_guide_200px.png',
+    description: 'Bắn ra đinh ma thuật đá phát sáng đuổi mục tiêu với tốc độ cao.',
+    category: 'sorceries',
+    locationHint: 'Cathedral of Manus Metyr (Shadow of the Erdtree DLC - Mua từ Count Ymir)',
+    mapLocationUrl: 'https://mapgenie.io/elden-ring/maps/the-lands-between?search=Cathedral%20of%20Manus%20Metyr',
+  },
+  {
+    id: 'er-sorceries-glintstone-nails',
+    name: 'Glintstone Nails',
+    image: 'https://eldenring.wiki.fextralife.com/file/Elden-Ring/glintstone_nails_sorceries_elden_ring_shadow_of_the_erdtree_dlc_wiki_guide_200px.png',
+    description: 'Bắn ra chùm 3 đinh ma thuật đá phát sáng truy đuổi mục tiêu song song.',
+    category: 'sorceries',
+    locationHint: 'Cathedral of Manus Metyr (Shadow of the Erdtree DLC - Mua từ Count Ymir sau chuỗi nhiệm vụ)',
+    mapLocationUrl: 'https://mapgenie.io/elden-ring/maps/the-lands-between?search=Cathedral%20of%20Manus%20Metyr',
+  },
+  {
+    id: 'er-sorceries-mantle-of-thorns',
+    name: 'Mantle of Thorns',
+    image: 'https://eldenring.wiki.fextralife.com/file/Elden-Ring/mantle_of_thorns_sorceries_elden_ring_shadow_of_the_erdtree_dlc_wiki_guide_200px.png',
+    description: 'Bao phủ cơ thể bằng lớp áo gai huyết tộc gây sát thương gai nhọn lên bất kỳ ai chạm vào.',
+    category: 'sorceries',
+    locationHint: 'Shadow Keep (Shadow of the Erdtree DLC)',
+    mapLocationUrl: 'https://mapgenie.io/elden-ring/maps/the-lands-between?search=Shadow%20Keep',
+  },
+];
+
+export const ELDEN_RING_EXTRA_INCANTATIONS: EldenRingEntity[] = [
+  {
+    id: 'er-incantations-flame-cleanse-me',
+    name: 'Flame, Cleanse Me',
+    image: 'https://eldenring.wiki.fextralife.com/file/Elden-Ring/flame_cleanse_me_incantation_elden_ring_wiki_guide_200px.png',
+    description: 'Phép thuật hỗ trợ quan trọng nhất game. Dùng ngọn lửa thanh tẩy độc tố (Poison) và tích tụ thối rữa (Scarlet Rot) trong cơ thể.',
+    category: 'incantations',
+    locationHint: 'Fire Monk Camp (Liurnia of the Lakes - Nhặt trên thi thể trại Tu sĩ Lửa)',
+    mapLocationUrl: 'https://mapgenie.io/elden-ring/maps/the-lands-between?search=Fire%20Monk%20Camp',
+    quote: 'One of the incantations of the Fire Monks.',
+  },
+  {
+    id: 'er-incantations-light-of-miquella',
+    name: 'Light of Miquella',
+    image: 'https://eldenring.wiki.fextralife.com/file/Elden-Ring/light_of_miquella_incantations_elden_ring_shadow_of_the_erdtree_dlc_wiki_guide_200px.png',
+    description: 'Phép thuật ánh sáng thần thánh của Miquella. Dội một luồng sáng thánh giáng xuống hủy diệt diện rộng.',
+    category: 'incantations',
+    locationHint: 'Enir-Ilim (Shadow of the Erdtree DLC - Đổi từ Remembrance of a God and a Lord)',
+    mapLocationUrl: 'https://mapgenie.io/elden-ring/maps/the-lands-between?search=Enir-Ilim',
+    quote: 'An incantation of Miquella the Kind.',
+  },
+  {
+    id: 'er-incantations-knights-lightning-spear',
+    name: "Knight's Lightning Spear",
+    image: 'https://eldenring.wiki.fextralife.com/file/Elden-Ring/knights_lightning_spear_incantations_elden_ring_shadow_of_the_erdtree_dlc_wiki_guide_200px.png',
+    description: 'Phép sét cổ đại nâng cấp của Hiệp Sĩ. Bắn thương sét chính kèm 4 tia sét bổ sung bay song song.',
+    category: 'incantations',
+    locationHint: 'Scadu Altus (Shadow of the Erdtree DLC - Nhặt tại Scorpion River Catacombs)',
+    mapLocationUrl: 'https://mapgenie.io/elden-ring/maps/the-lands-between?search=Scorpion%20River%20Catacombs',
+  },
+  {
+    id: 'er-incantations-fire-serpent',
+    name: 'Fire Serpent',
+    image: 'https://eldenring.wiki.fextralife.com/file/Elden-Ring/fire_serpent_incantations_elden_ring_shadow_of_the_erdtree_dlc_wiki_guide_200px.png',
+    description: 'Tạo ra rắn lửa rực cháy uốn lượn truy đuổi kẻ địch cực kỳ linh hoạt.',
+    category: 'incantations',
+    locationHint: 'Shadow Keep (Shadow of the Erdtree DLC - Nhặt tại khu tháp quan sát)',
+    mapLocationUrl: 'https://mapgenie.io/elden-ring/maps/the-lands-between?search=Shadow%20Keep',
+  },
+  {
+    id: 'er-incantations-midra-flame-of-frenzy',
+    name: "Midra's Flame of Frenzy",
+    image: 'https://eldenring.wiki.fextralife.com/file/Elden-Ring/midras_flame_of_frenzy_incantations_elden_ring_shadow_of_the_erdtree_dlc_wiki_guide_200px.png',
+    description: 'Phép ngọn lửa điên loạn của Midra, Lord of Frenzied Flame. Phun trào ngọn lửa vàng điên dại hủy diệt lý trí kẻ thù.',
+    category: 'incantations',
+    locationHint: 'Midra\'s Manse (Abyssal Woods - Đổi từ Remembrance of the Lord of Frenzied Flame)',
+    mapLocationUrl: 'https://mapgenie.io/elden-ring/maps/the-lands-between?search=Midra%27s%20Manse',
+  },
+  {
+    id: 'er-incantations-furious-blade-of-ansbach',
+    name: 'Furious Blade of Ansbach',
+    image: 'https://eldenring.wiki.fextralife.com/file/Elden-Ring/furious_blade_of_ansbach_incantations_elden_ring_shadow_of_the_erdtree_dlc_wiki_guide_200px.png',
+    description: 'Lưỡi kiếm huyết huyết Ma Tộc của Sir Ansbach. Vung đường chém máu hình lưỡi liềm gây chảy máu dồn dập.',
+    category: 'incantations',
+    locationHint: 'Enir-Ilim (Shadow of the Erdtree DLC - Nhận sau khi hoàn thành Quest Ansbach)',
+    mapLocationUrl: 'https://mapgenie.io/elden-ring/maps/the-lands-between?search=Ansbach',
+  },
+  {
+    id: 'er-incantations-minor-erdtree',
+    name: 'Minor Erdtree',
+    image: 'https://eldenring.wiki.fextralife.com/file/Elden-Ring/minor_erdtree_incantations_elden_ring_shadow_of_the_erdtree_dlc_wiki_guide_200px.png',
+    description: 'Triệu hồi cây thần Erdtree thu nhỏ liên tục hồi máu cho người thi triển và tất cả đồng đội xung quanh.',
+    category: 'incantations',
+    locationHint: 'Shaman Village (Shadow of the Erdtree DLC - Nhặt tại cánh đồng hoa)',
+    mapLocationUrl: 'https://mapgenie.io/elden-ring/maps/the-lands-between?search=Shaman%20Village',
+  },
+  {
+    id: 'er-incantations-spira',
+    name: 'Spira',
+    image: 'https://eldenring.wiki.fextralife.com/file/Elden-Ring/spira_incantations_elden_ring_shadow_of_the_erdtree_dlc_wiki_guide_200px.png',
+    description: 'Tạo ra luồng cột xoáy ánh sáng thánh bùng nổ liên tiếp ngay dưới chân đối phương.',
+    category: 'incantations',
+    locationHint: 'Enir-Ilim (Shadow of the Erdtree DLC - Nhặt tại ban công tháp cao)',
+    mapLocationUrl: 'https://mapgenie.io/elden-ring/maps/the-lands-between?search=Enir-Ilim',
+  },
+  {
+    id: 'er-incantations-pest-thread-spears',
+    name: 'Pest-Thread Spears',
+    image: 'https://eldenring.wiki.fextralife.com/file/Elden-Ring/pest-thread_spears_incantations_elden_ring_shadow_of_the_erdtree_dlc_wiki_guide_200px.png',
+    description: 'Bắn ra hai ngọn giáo tơ quỷ khổng lồ xuyên thấu qua thân xác các kẻ thù to lớn.',
+    category: 'incantations',
+    locationHint: 'Rauh Base (Shadow of the Erdtree DLC - Nhặt tại nhà hoang sát đầm lầy)',
+    mapLocationUrl: 'https://mapgenie.io/elden-ring/maps/the-lands-between?search=Rauh%20Base',
+  },
+  {
+    id: 'er-incantations-electrocharge',
+    name: 'Electrocharge',
+    image: 'https://eldenring.wiki.fextralife.com/file/Elden-Ring/electrocharge_incantations_elden_ring_shadow_of_the_erdtree_dlc_wiki_guide_200px.png',
+    description: 'Tích điện vào cơ thể liên tục phóng ra các tia sét nhỏ giật các mục tiêu đứng gần.',
+    category: 'incantations',
+    locationHint: 'Fog Rift Catacombs (Shadow of the Erdtree DLC - Nhặt tại khu bẫy chông)',
+    mapLocationUrl: 'https://mapgenie.io/elden-ring/maps/the-lands-between?search=Fog%20Rift%20Catacombs',
+  },
+  {
+    id: 'er-incantations-rain-of-fire',
+    name: 'Rain of Fire',
+    image: 'https://eldenring.wiki.fextralife.com/file/Elden-Ring/rain_of_fire_incantations_elden_ring_shadow_of_the_erdtree_dlc_wiki_guide_200px.png',
+    description: 'Tạo cơn mưa lửa đỏ giội xuống từ trên cao đốt cháy khu vực rộng lớn.',
+    category: 'incantations',
+    locationHint: 'Castle Ensis (Shadow of the Erdtree DLC - Giải đố tháp Salza)',
+    mapLocationUrl: 'https://mapgenie.io/elden-ring/maps/the-lands-between?search=Castle%20Ensis',
+  },
+  {
+    id: 'er-incantations-heal-from-afar',
+    name: 'Heal from Afar',
+    image: 'https://eldenring.wiki.fextralife.com/file/Elden-Ring/heal_from_afar_incantations_elden_ring_shadow_of_the_erdtree_dlc_wiki_guide_200px.png',
+    description: 'Bắn ra cầu phép thuật hồi lượng máu lớn tức thì cho đồng đội từ khoảng cách rất xa.',
+    category: 'incantations',
+    locationHint: 'Scadu Altus (Shadow of the Erdtree DLC - Nhặt dưới chân cây cổ thụ)',
+    mapLocationUrl: 'https://mapgenie.io/elden-ring/maps/the-lands-between?search=Scadu%20Altus',
+  },
+  {
+    id: 'er-incantations-roar-of-rugalea',
+    name: 'Roar of Rugalea',
+    image: 'https://eldenring.wiki.fextralife.com/file/Elden-Ring/roar_of_rugalea_incantations_elden_ring_shadow_of_the_erdtree_dlc_wiki_guide_200px.png',
+    description: 'Biến hình thành gấu khổng lồ rống lên tiếng gầm chấn động làm ngã gục mọi đối thủ.',
+    category: 'incantations',
+    locationHint: 'Rauh Base (Shadow of the Erdtree DLC - Hạ gục Rugalea the Great Red Bear)',
+    mapLocationUrl: 'https://mapgenie.io/elden-ring/maps/the-lands-between?search=Rugalea',
+  },
+  {
+    id: 'er-incantations-wrath-from-afar',
+    name: 'Wrath from Afar',
+    image: 'https://eldenring.wiki.fextralife.com/file/Elden-Ring/wrath_from_afar_incantations_elden_ring_shadow_of_the_erdtree_dlc_wiki_guide_200px.png',
+    description: 'Bắn cầu xung kích thánh nổ tung đẩy lùi kẻ thù từ khoảng cách xa.',
+    category: 'incantations',
+    locationHint: 'Scadu Altus (Shadow of the Erdtree DLC - Nhặt trong rương nhà tù ngầm)',
+    mapLocationUrl: 'https://mapgenie.io/elden-ring/maps/the-lands-between?search=Scadu%20Altus',
+  },
+];
+
 export async function fetchEldenRingCategory(
   endpoint: FextralifeCategory,
   limitPerPage: number = 100
@@ -518,9 +746,28 @@ export async function fetchEldenRingCategory(
       return [...parsedItems, ...extraBellBearings];
     }
 
+    if (endpoint === 'sorceries') {
+      const existingNames = new Set(parsedItems.map((i) => i.name.toLowerCase()));
+      const extraSorceries = ELDEN_RING_EXTRA_SORCERIES.filter(
+        (s) => !existingNames.has(s.name.toLowerCase())
+      );
+      return [...parsedItems, ...extraSorceries];
+    }
+
+    if (endpoint === 'incantations') {
+      const existingNames = new Set(parsedItems.map((i) => i.name.toLowerCase()));
+      const extraIncantations = ELDEN_RING_EXTRA_INCANTATIONS.filter(
+        (inc) => !existingNames.has(inc.name.toLowerCase())
+      );
+      return [...parsedItems, ...extraIncantations];
+    }
+
     return parsedItems;
   } catch {
-    return endpoint === 'items' ? ELDEN_RING_BELL_BEARINGS : [];
+    if (endpoint === 'items') return ELDEN_RING_BELL_BEARINGS;
+    if (endpoint === 'sorceries') return ELDEN_RING_EXTRA_SORCERIES;
+    if (endpoint === 'incantations') return ELDEN_RING_EXTRA_INCANTATIONS;
+    return [];
   }
 }
 
