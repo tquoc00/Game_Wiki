@@ -3,5 +3,5 @@
 3:I[50401,["/Game_Wiki/_next/static/chunks/373xgilu7zgr4.js","/Game_Wiki/_next/static/chunks/14mrh2-p_w84d.js","/Game_Wiki/_next/static/chunks/3hhfld0n_g3e8.js","/Game_Wiki/_next/static/chunks/0ctea8x38othj.js"],"default"]
 4:I[97367,["/Game_Wiki/_next/static/chunks/373xgilu7zgr4.js","/Game_Wiki/_next/static/chunks/14mrh2-p_w84d.js"],"OutletBoundary"]
 5:"$Sreact.suspense"
-0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"children":["$","$L3",null,{"mode":"create"}]}],[["$","script","script-0",{"src":"/Game_Wiki/_next/static/chunks/3hhfld0n_g3e8.js","async":true}],["$","script","script-1",{"src":"/Game_Wiki/_next/static/chunks/0ctea8x38othj.js","async":true}]],["$","$L4",null,{"children":["$","$5",null,{"name":"Next.MetadataOutlet","children":"$@6"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"2CAAyueGMlBgEefeeWDWz"}
+0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"children":["$","$L3",null,{"mode":"create"}]}],[["$","script","script-0",{"src":"/Game_Wiki/_next/static/chunks/3hhfld0n_g3e8.js","async":true}],["$","script","script-1",{"src":"/Game_Wiki/_next/static/chunks/0ctea8x38othj.js","async":true}]],["$","$L4",null,{"children":["$","$5",null,{"name":"Next.MetadataOutlet","children":"$@6"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"vQBpoBTVvfIRx1JUo7wXc"}
 6:null
