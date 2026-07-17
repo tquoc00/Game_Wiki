@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { EldenRingEntity, FextralifeCategory } from '@/lib/dataService';
 
 export interface FextralifeWikiData {
@@ -44,7 +44,12 @@ export function EldenRingWikiView({ initialData }: EldenRingWikiViewProps) {
   const [activeGroup, setActiveGroup] = useState<SectionGroup>('all');
   const [activeCategory, setActiveCategory] = useState<FextralifeCategory | 'all'>('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [visibleCount, setVisibleCount] = useState(48);
   const [failedImages, setFailedImages] = useState<Record<string, boolean>>({});
+
+  useEffect(() => {
+    setVisibleCount(48);
+  }, [activeGroup, activeCategory, searchQuery]);
 
   const handleImageError = (id: string) => {
     setFailedImages((prev) => ({ ...prev, [id]: true }));
@@ -52,6 +57,22 @@ export function EldenRingWikiView({ initialData }: EldenRingWikiViewProps) {
 
   const getAllEntities = (): EldenRingEntity[] => {
     return Object.values(initialData).flat();
+  };
+
+  const totalAllItems = getAllEntities().length;
+
+  const getCategoryCount = (cat: FextralifeCategory): number => {
+    return initialData[cat]?.length || 0;
+  };
+
+  const getGroupCount = (group: SectionGroup): number => {
+    if (group === 'all') return totalAllItems;
+    return (Object.keys(CATEGORY_META) as FextralifeCategory[]).reduce((acc, cat) => {
+      if (CATEGORY_META[cat].group === group) {
+        return acc + getCategoryCount(cat);
+      }
+      return acc;
+    }, 0);
   };
 
   const filteredEntities = getAllEntities().filter((entity) => {
@@ -67,6 +88,8 @@ export function EldenRingWikiView({ initialData }: EldenRingWikiViewProps) {
     return matchesSearch && matchesGroup && matchesCategory;
   });
 
+  const visibleEntities = filteredEntities.slice(0, visibleCount);
+
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 p-4 sm:p-8">
       {/* Header Fextralife Banner */}
@@ -75,7 +98,10 @@ export function EldenRingWikiView({ initialData }: EldenRingWikiViewProps) {
         
         <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold tracking-wider text-amber-400 bg-amber-950/60 border border-amber-500/30">
-            <span>⚔️ FEXTRALIFE STYLE INTEGRATED WIKI</span>
+            <span>⚔️ FEXTRALIFE STYLE FULL DATABASE</span>
+            <span className="bg-amber-500/20 px-2 py-0.5 rounded-full text-[11px] font-bold text-amber-300">
+              {totalAllItems.toLocaleString()} Dữ Liệu
+            </span>
           </div>
           <a
             href="https://mapgenie.io/elden-ring/maps/the-lands-between"
@@ -91,7 +117,7 @@ export function EldenRingWikiView({ initialData }: EldenRingWikiViewProps) {
           Bách Khoa Toàn Thư Elden Ring
         </h1>
         <p className="text-zinc-400 max-w-3xl text-sm sm:text-base leading-relaxed">
-          Hệ thống tra cứu vật phẩm, vũ khí, áo giáp, chiêu thức, bosses và vị trí chính xác trên bản đồ Lands Between theo phong cách thiết kế Fextralife Wiki.
+          Tra cứu đầy đủ {totalAllItems.toLocaleString()} vật phẩm, vũ khí, bộ áo giáp, khiên, bùa hộ mệnh, ma thuật, chiêu thức, bosses, nhân vật và địa danh trên toàn bộ bản đồ Lands Between.
         </p>
 
         {/* Search Input */}
@@ -116,7 +142,7 @@ export function EldenRingWikiView({ initialData }: EldenRingWikiViewProps) {
               : 'bg-zinc-900 text-zinc-400 border border-zinc-800 hover:border-zinc-700 hover:text-zinc-200'
           }`}
         >
-          🌐 Tất Cả Mục
+          🌐 Tất Cả Mục ({getGroupCount('all')})
         </button>
         <button
           onClick={() => { setActiveGroup('equipment'); setActiveCategory('all'); }}
@@ -126,7 +152,7 @@ export function EldenRingWikiView({ initialData }: EldenRingWikiViewProps) {
               : 'bg-zinc-900 text-zinc-400 border border-zinc-800 hover:border-zinc-700 hover:text-zinc-200'
           }`}
         >
-          ⚔️ Trang Bị & Chiến Đấu
+          ⚔️ Trang Bị & Chiến Đấu ({getGroupCount('equipment')})
         </button>
         <button
           onClick={() => { setActiveGroup('magic'); setActiveCategory('all'); }}
@@ -136,7 +162,7 @@ export function EldenRingWikiView({ initialData }: EldenRingWikiViewProps) {
               : 'bg-zinc-900 text-zinc-400 border border-zinc-800 hover:border-zinc-700 hover:text-zinc-200'
           }`}
         >
-          🔮 Ma Thuật & Vật Phẩm
+          🔮 Ma Thuật & Vật Phẩm ({getGroupCount('magic')})
         </button>
         <button
           onClick={() => { setActiveGroup('lore'); setActiveCategory('all'); }}
@@ -146,15 +172,15 @@ export function EldenRingWikiView({ initialData }: EldenRingWikiViewProps) {
               : 'bg-zinc-900 text-zinc-400 border border-zinc-800 hover:border-zinc-700 hover:text-zinc-200'
           }`}
         >
-          💀 Bosses & Vị Trí Cốt Truyện
+          💀 Bosses & Vị Trí Cốt Truyện ({getGroupCount('lore')})
         </button>
       </div>
 
       {/* Sub Category Badges Filter */}
-      <div className="max-w-7xl mx-auto mb-8 flex overflow-x-auto gap-2 pb-2">
+      <div className="max-w-7xl mx-auto mb-6 flex overflow-x-auto gap-2 pb-2">
         <button
           onClick={() => setActiveCategory('all')}
-          className={`px-3 py-1 rounded-lg text-xs font-medium whitespace-nowrap transition-all ${
+          className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all ${
             activeCategory === 'all'
               ? 'bg-zinc-800 text-zinc-100 border border-zinc-700'
               : 'text-zinc-400 hover:text-zinc-300'
@@ -165,26 +191,43 @@ export function EldenRingWikiView({ initialData }: EldenRingWikiViewProps) {
         {(Object.keys(CATEGORY_META) as FextralifeCategory[]).map((cat) => {
           const meta = CATEGORY_META[cat];
           if (activeGroup !== 'all' && meta.group !== activeGroup) return null;
+          const count = getCategoryCount(cat);
 
           return (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`px-3 py-1 rounded-lg text-xs font-medium whitespace-nowrap border transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap border transition-all ${
                 activeCategory === cat
                   ? 'border-amber-500/60 bg-amber-950/60 text-amber-300 shadow-sm'
                   : 'border-zinc-800 bg-zinc-900/60 text-zinc-400 hover:border-zinc-700 hover:text-zinc-200'
               }`}
             >
-              {meta.label}
+              {meta.label} <span className="opacity-70 text-[11px]">({count})</span>
             </button>
           );
         })}
       </div>
 
+      {/* Results Status Bar */}
+      <div className="max-w-7xl mx-auto mb-4 flex items-center justify-between text-xs text-zinc-400 font-medium">
+        <div>
+          Hiển thị <span className="text-amber-400 font-bold">{Math.min(visibleCount, filteredEntities.length)}</span> / <span className="text-zinc-200 font-bold">{filteredEntities.length}</span> kết quả
+          {searchQuery && <span> cho từ khóa "<span className="text-amber-300">{searchQuery}</span>"</span>}
+        </div>
+        {(searchQuery || activeCategory !== 'all' || activeGroup !== 'all') && (
+          <button
+            onClick={() => { setSearchQuery(''); setActiveCategory('all'); setActiveGroup('all'); }}
+            className="text-xs text-amber-400 hover:underline"
+          >
+            🔄 Xóa bộ lọc
+          </button>
+        )}
+      </div>
+
       {/* Item Display Grid */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-        {filteredEntities.map((entity) => {
+        {visibleEntities.map((entity) => {
           const meta = CATEGORY_META[entity.category];
           const hasError = failedImages[entity.id];
           const imgSrc = hasError || !entity.image ? FALLBACK_IMAGE : entity.image;
@@ -252,6 +295,24 @@ export function EldenRingWikiView({ initialData }: EldenRingWikiViewProps) {
         })}
       </div>
 
+      {/* Load More Pagination Controls */}
+      {visibleCount < filteredEntities.length && (
+        <div className="max-w-7xl mx-auto mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+          <button
+            onClick={() => setVisibleCount((prev) => prev + 48)}
+            className="w-full sm:w-auto px-6 py-3 rounded-xl bg-amber-500 text-zinc-950 font-bold text-xs uppercase tracking-wider hover:bg-amber-400 transition-all shadow-lg shadow-amber-500/20"
+          >
+            Tải Thêm +48 Vật Phẩm ({filteredEntities.length - visibleCount} còn lại)
+          </button>
+          <button
+            onClick={() => setVisibleCount(filteredEntities.length)}
+            className="w-full sm:w-auto px-6 py-3 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 font-semibold text-xs uppercase tracking-wider hover:bg-zinc-800 transition-all"
+          >
+            Hiển Thị Tất Cả ({filteredEntities.length})
+          </button>
+        </div>
+      )}
+
       {filteredEntities.length === 0 && (
         <div className="max-w-7xl mx-auto text-center py-16 text-zinc-500">
           Không tìm thấy vật phẩm hoặc thông tin phù hợp với bộ lọc hiện tại.
@@ -260,3 +321,4 @@ export function EldenRingWikiView({ initialData }: EldenRingWikiViewProps) {
     </div>
   );
 }
+
