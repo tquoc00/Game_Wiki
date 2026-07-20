@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { EldenRingEntity, FextralifeCategory } from '@/lib/dataService';
-import { Sparkles, MapPin, X, ExternalLink, ChevronRight, CheckCircle2, AlertCircle, Layers, Shield, Sword, Sparkle, Compass, User, BookOpen } from 'lucide-react';
+import { Sparkles, X, ChevronRight } from 'lucide-react';
 
 export interface FextralifeWikiData {
   weapons: EldenRingEntity[];
@@ -21,9 +21,6 @@ export interface FextralifeWikiData {
 interface EldenRingWikiViewProps {
   initialData: FextralifeWikiData;
 }
-
-const FALLBACK_IMAGE =
-  'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="%2371717a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>';
 
 type SectionGroup = 'all' | 'equipment' | 'magic' | 'lore';
 type ExpansionFilter = 'all' | 'Base Game' | 'Shadow of the Erdtree';
@@ -68,11 +65,8 @@ export function EldenRingWikiView({ initialData }: EldenRingWikiViewProps) {
   const allEntities = getAllEntities();
   const totalAllItems = allEntities.length;
 
-  // Audit calculations
   const baseGameCount = allEntities.filter((e) => e.expansion === 'Base Game' || !e.expansion).length;
   const dlcCount = allEntities.filter((e) => e.expansion === 'Shadow of the Erdtree').length;
-  const totalEstimatedUniverse = Object.values(CATEGORY_META).reduce((acc, c) => acc + c.totalEst, 0);
-  const totalEstimatedMissing = Math.max(0, totalEstimatedUniverse - totalAllItems);
 
   const getCategoryCount = (cat: FextralifeCategory): number => {
     return initialData[cat]?.length || 0;
@@ -88,7 +82,6 @@ export function EldenRingWikiView({ initialData }: EldenRingWikiViewProps) {
     }, 0);
   };
 
-  // Extract unique subcategories for current activeCategory or activeGroup
   const availableSubCategories = Array.from(
     new Set(
       allEntities
@@ -133,7 +126,7 @@ export function EldenRingWikiView({ initialData }: EldenRingWikiViewProps) {
         <div className="flex flex-wrap items-center justify-between gap-4 mb-4 relative z-10">
           <div className="flex flex-wrap items-center gap-2">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold tracking-wider text-amber-400 bg-amber-950/70 border border-amber-500/40 uppercase">
-              <Sparkles size={13} /> FEXTRALIFE STYLE ENCYCLOPEDIA
+              <Sparkles size={13} /> FEXTRALIFE ENCYCLOPEDIA
             </span>
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-cyan-300 bg-cyan-950/60 border border-cyan-500/40 uppercase">
               🏰 Base Game: {baseGameCount}
@@ -148,7 +141,7 @@ export function EldenRingWikiView({ initialData }: EldenRingWikiViewProps) {
               onClick={() => setShowAuditModal(true)}
               className="inline-flex items-center gap-1.5 text-xs font-bold uppercase text-amber-300 hover:text-amber-100 bg-amber-950/60 hover:bg-amber-900/80 border border-amber-500/40 px-3.5 py-2 rounded-xl transition duration-200 shadow-md cursor-pointer"
             >
-              📊 Báo Cáo Kiểm Trực Số Lượng
+              📊 Báo Cáo Kiểm Tra Số Lượng
             </button>
             <a
               href="https://mapgenie.io/elden-ring/maps/the-lands-between"
@@ -165,14 +158,14 @@ export function EldenRingWikiView({ initialData }: EldenRingWikiViewProps) {
           ⚔️ Bách Khoa Toàn Thư Elden Ring
         </h1>
         <p className="text-zinc-300 max-w-4xl text-xs sm:text-sm leading-relaxed font-sans">
-          Hệ thống tra cứu vật phẩm toàn diện theo chuẩn Fextralife Wiki: {totalAllItems.toLocaleString()} dữ liệu bao gồm cả <strong className="text-amber-400">Bản Game Gốc (Base Game)</strong> và <strong className="text-amber-400">Bản Mở Rộng Shadow of the Erdtree (DLC)</strong>. Phân loại chuẩn xác theo vũ khí, áo giáp, phép thuật, bùa hộ mệnh, trùm và vị trí trên bản đồ.
+          Tra cứu đầy đủ thông tin trang bị, vũ khí, bùa hộ mệnh, phép thuật và trùm trận đấu. Tự động tương thích hình ảnh và phòng chống chặn kết nối ảnh Fextralife.
         </p>
 
         {/* Search Input Bar */}
         <div className="mt-6 max-w-3xl relative">
           <input
             type="text"
-            placeholder="Tìm kiếm theo tên Tiếng Anh / Tiếng Việt (Milady, Rellana, Impenetrable Thorns, Scadutree...)"
+            placeholder="Tìm kiếm bùa hộ mệnh, vũ khí, phép thuật (Two-Handed, Turtle, Milady, Rellana, Impenetrable Thorns...)"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full bg-zinc-900/90 border border-zinc-700/80 rounded-2xl px-5 py-3.5 text-xs sm:text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500/50 shadow-inner"
@@ -190,7 +183,7 @@ export function EldenRingWikiView({ initialData }: EldenRingWikiViewProps) {
 
       {/* Expansion Filter Bar (Base Game vs DLC vs All) */}
       <div className="max-w-7xl mx-auto mb-6 bg-zinc-900/80 p-2.5 rounded-2xl border border-zinc-800 flex flex-wrap items-center gap-2">
-        <span className="text-xs font-bold text-zinc-400 uppercase px-3">Bản Game / Expansion:</span>
+        <span className="text-xs font-bold text-zinc-400 uppercase px-3">Phiên bản Game:</span>
         <button
           onClick={() => setActiveExpansion('all')}
           className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition duration-200 cursor-pointer ${
@@ -209,7 +202,7 @@ export function EldenRingWikiView({ initialData }: EldenRingWikiViewProps) {
               : 'bg-zinc-950 text-zinc-400 hover:text-zinc-200 border border-zinc-800'
           }`}
         >
-          🏰 Game Gốc (Base Game: {baseGameCount})
+          🏰 Game Gốc ({baseGameCount})
         </button>
         <button
           onClick={() => setActiveExpansion('Shadow of the Erdtree')}
@@ -233,7 +226,7 @@ export function EldenRingWikiView({ initialData }: EldenRingWikiViewProps) {
               : 'bg-zinc-900 text-zinc-400 border border-zinc-800 hover:border-zinc-700 hover:text-zinc-200'
           }`}
         >
-          🌐 Tất Cả Danh Mục ({getGroupCount('all')})
+          🌐 Tất Cả ({getGroupCount('all')})
         </button>
         <button
           onClick={() => { setActiveGroup('equipment'); setActiveCategory('all'); setActiveSubCategory('all'); }}
@@ -243,7 +236,7 @@ export function EldenRingWikiView({ initialData }: EldenRingWikiViewProps) {
               : 'bg-zinc-900 text-zinc-400 border border-zinc-800 hover:border-zinc-700 hover:text-zinc-200'
           }`}
         >
-          ⚔️ Trang Bị & Chiến Đấu ({getGroupCount('equipment')})
+          ⚔️ Trang Bị & Bùa Hộ Mệnh ({getGroupCount('equipment')})
         </button>
         <button
           onClick={() => { setActiveGroup('magic'); setActiveCategory('all'); setActiveSubCategory('all'); }}
@@ -253,7 +246,7 @@ export function EldenRingWikiView({ initialData }: EldenRingWikiViewProps) {
               : 'bg-zinc-900 text-zinc-400 border border-zinc-800 hover:border-zinc-700 hover:text-zinc-200'
           }`}
         >
-          🔮 Phép Thuật & Vật Phẩm ({getGroupCount('magic')})
+          🔮 Phép Thuật & Tro Tàn ({getGroupCount('magic')})
         </button>
         <button
           onClick={() => { setActiveGroup('lore'); setActiveCategory('all'); setActiveSubCategory('all'); }}
@@ -263,7 +256,7 @@ export function EldenRingWikiView({ initialData }: EldenRingWikiViewProps) {
               : 'bg-zinc-900 text-zinc-400 border border-zinc-800 hover:border-zinc-700 hover:text-zinc-200'
           }`}
         >
-          💀 Bosses & Cốt Truyện ({getGroupCount('lore')})
+          💀 Trùm & Địa Danh ({getGroupCount('lore')})
         </button>
       </div>
 
@@ -300,7 +293,7 @@ export function EldenRingWikiView({ initialData }: EldenRingWikiViewProps) {
         })}
       </div>
 
-      {/* SubCategory Fine-Tuning Chips (e.g., Light Greatsword, Great Katana, Bell Bearing, etc.) */}
+      {/* SubCategory Fine-Tuning Chips */}
       {availableSubCategories.length > 0 && (
         <div className="max-w-7xl mx-auto mb-6 flex overflow-x-auto gap-1.5 pb-2">
           <span className="text-[11px] font-bold text-zinc-500 uppercase self-center shrink-0 mr-1">Phân loại chi tiết:</span>
@@ -341,7 +334,7 @@ export function EldenRingWikiView({ initialData }: EldenRingWikiViewProps) {
             onClick={() => { setSearchQuery(''); setActiveCategory('all'); setActiveGroup('all'); setActiveExpansion('all'); setActiveSubCategory('all'); }}
             className="text-xs text-amber-400 hover:underline cursor-pointer flex items-center gap-1"
           >
-            🔄 Xóa toàn bộ bộ lọc
+            🔄 Xóa bộ lọc
           </button>
         )}
       </div>
@@ -351,7 +344,6 @@ export function EldenRingWikiView({ initialData }: EldenRingWikiViewProps) {
         {visibleEntities.map((entity) => {
           const meta = CATEGORY_META[entity.category];
           const hasError = failedImages[entity.id];
-          const imgSrc = hasError || !entity.image ? FALLBACK_IMAGE : entity.image;
           const isDlc = entity.expansion === 'Shadow of the Erdtree';
 
           return (
@@ -361,15 +353,23 @@ export function EldenRingWikiView({ initialData }: EldenRingWikiViewProps) {
               className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-zinc-800/80 bg-zinc-950/80 p-4 backdrop-blur-md transition-all duration-300 hover:border-amber-500/50 hover:bg-zinc-900/90 hover:shadow-xl hover:shadow-amber-950/20 cursor-pointer"
             >
               <div>
-                {/* Image Showcase */}
+                {/* Image Showcase with Hotlink Bypass */}
                 <div className="relative mb-3 flex h-44 w-full items-center justify-center overflow-hidden rounded-xl bg-zinc-900/90 p-3 border border-zinc-800/80">
-                  <img
-                    src={imgSrc}
-                    alt={entity.name}
-                    onError={() => handleImageError(entity.id)}
-                    className="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
-                    loading="lazy"
-                  />
+                  {hasError || !entity.image ? (
+                    <div className="flex flex-col items-center justify-center text-center p-2">
+                      <span className="text-3xl mb-1">{meta.icon}</span>
+                      <span className="text-[10px] font-bold text-amber-400 uppercase tracking-wider">{meta.label}</span>
+                    </div>
+                  ) : (
+                    <img
+                      src={entity.image}
+                      alt={entity.name}
+                      referrerPolicy="no-referrer"
+                      onError={() => handleImageError(entity.id)}
+                      className="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                  )}
                   {isDlc && (
                     <span className="absolute top-2 right-2 rounded-md bg-amber-500/90 text-zinc-950 px-2 py-0.5 text-[9px] font-black uppercase tracking-wider shadow">
                       ⚡ DLC
@@ -459,12 +459,21 @@ export function EldenRingWikiView({ initialData }: EldenRingWikiViewProps) {
 
             <div className="flex flex-col sm:flex-row gap-6">
               {/* Image Box */}
-              <div className="w-full sm:w-48 h-48 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center p-4 shrink-0">
-                <img
-                  src={failedImages[selectedEntity.id] || !selectedEntity.image ? FALLBACK_IMAGE : selectedEntity.image}
-                  alt={selectedEntity.name}
-                  className="max-h-full max-w-full object-contain"
-                />
+              <div className="w-full sm:w-48 h-48 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center p-4 shrink-0 overflow-hidden">
+                {failedImages[selectedEntity.id] || !selectedEntity.image ? (
+                  <div className="flex flex-col items-center justify-center text-center">
+                    <span className="text-4xl mb-2">{CATEGORY_META[selectedEntity.category].icon}</span>
+                    <span className="text-xs font-bold text-amber-400 uppercase">{CATEGORY_META[selectedEntity.category].label}</span>
+                  </div>
+                ) : (
+                  <img
+                    src={selectedEntity.image}
+                    alt={selectedEntity.name}
+                    referrerPolicy="no-referrer"
+                    onError={() => handleImageError(selectedEntity.id)}
+                    className="max-h-full max-w-full object-contain"
+                  />
+                )}
               </div>
 
               {/* Information */}
@@ -541,7 +550,7 @@ export function EldenRingWikiView({ initialData }: EldenRingWikiViewProps) {
         </div>
       )}
 
-      {/* Audit Modal (Báo cáo kiểm tra số lượng vật phẩm đã thêm vs còn thiếu) */}
+      {/* Audit Modal */}
       {showAuditModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-fadeIn">
           <div className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-3xl bg-zinc-950 border border-amber-500/40 p-6 sm:p-8 shadow-2xl text-zinc-100">
@@ -556,10 +565,9 @@ export function EldenRingWikiView({ initialData }: EldenRingWikiViewProps) {
               📊 Báo Cáo Kiểm Tra Số Lượng Vật Phẩm Elden Ring
             </h2>
             <p className="text-xs text-zinc-400 mb-6 font-sans">
-              Đánh giá chi tiết số lượng vật phẩm đã tích hợp trong hệ thống so với toàn bộ vũ trụ Elden Ring (Game Gốc & Shadow of the Erdtree DLC).
+              Đánh giá chi tiết số lượng vật phẩm đã tích hợp trong hệ thống so với toàn bộ vũ trụ Elden Ring.
             </p>
 
-            {/* General Overview Summary */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
               <div className="p-4 rounded-2xl bg-zinc-900 border border-zinc-800 text-center">
                 <span className="text-2xl font-black text-amber-400">{totalAllItems.toLocaleString()}</span>
@@ -575,7 +583,6 @@ export function EldenRingWikiView({ initialData }: EldenRingWikiViewProps) {
               </div>
             </div>
 
-            {/* Detailed Table Audit per Category */}
             <div className="overflow-x-auto rounded-2xl border border-zinc-800">
               <table className="w-full text-left text-xs font-sans">
                 <thead className="bg-zinc-900 text-zinc-300 uppercase font-bold border-b border-zinc-800">
@@ -606,10 +613,6 @@ export function EldenRingWikiView({ initialData }: EldenRingWikiViewProps) {
                   })}
                 </tbody>
               </table>
-            </div>
-
-            <div className="mt-6 p-4 rounded-2xl bg-amber-950/30 border border-amber-500/30 text-xs font-sans leading-relaxed text-amber-200">
-              💡 <strong>Ghi chú kiểm tra:</strong> Tất cả 308+ vũ khí, 559+ áo giáp, 69+ khiên, 91+ bùa hộ mệnh, 70+ ma thuật, 101+ phép thuật từ game gốc được fetch tự động từ server API. Hệ thống đã bổ sung thêm gói dữ liệu độc quyền <strong>Shadow of the Erdtree (DLC)</strong> bao gồm các hệ vũ khí mới (Light Greatswords, Great Katanas, Backhand Blades, Beast Claws, Hand-to-Hand Arts, Perfume Bottles) và các phép thuật tối cao.
             </div>
           </div>
         </div>
