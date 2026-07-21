@@ -19,7 +19,7 @@ const GAME_APP_DOCK = [
     name: 'Elden Ring',
     slug: 'elden-ring',
     tag: 'Action RPG',
-    iconUrl: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=300&h=300&fit=crop&q=80',
+    iconUrl: '/elden-ring-icon.png',
     stat: '45+',
     color: 'border-orange-500/40 text-orange-400 bg-orange-500/10',
   },

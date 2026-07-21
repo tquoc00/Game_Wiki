@@ -33,8 +33,8 @@ async function main() {
     {
       name: 'Elden Ring',
       slug: 'elden-ring',
-      logoUrl: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=100&h=100&fit=crop&q=80',
-      bannerUrl: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=1200&auto=format&fit=crop&q=80',
+      logoUrl: '/elden-ring-icon.png',
+      bannerUrl: '/elden-ring-icon.png',
       description: 'Hành động nhập vai Souls-like thế giới mở huyền thoại từ FromSoftware. Khám phá Vùng Đất Giữa (The Lands Between) để hồi phục Elden Ring.',
     },
     {
