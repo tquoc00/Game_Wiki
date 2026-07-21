@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
-import { BookOpen, Layers, Gamepad2, Sparkles, Star, Smartphone, Play, Compass } from 'lucide-react';
+import Navbar from '@/components/layout/Navbar';
+import { BookOpen, Layers, Gamepad2, Sparkles, Star, Smartphone, Play, Compass, ArrowLeft, Home } from 'lucide-react';
 
 export const revalidate = 3600;
 
@@ -26,36 +27,36 @@ const DEFAULT_GAME_APPS: GameApp[] = [
     name: 'Liên Minh Huyền Thoại',
     slug: 'lien-minh-huyen-thoai',
     categoryTag: 'MOBA 5v5',
-    badgeText: '170+ Tướng & Trang Bị',
+    badgeText: '870+ Tướng & Trang Bị',
     iconUrl: 'https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/Ahri.png',
     bannerUrl: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800&auto=format&fit=crop&q=60',
     description: 'Tra cứu thông tin của nhiều tựa game',
     accentColor: 'from-amber-500/20 to-amber-700/20 border-amber-500/40 text-amber-400',
-    _count: { articles: 170, categories: 5 },
+    _count: { articles: 879, categories: 5 },
   },
   {
     id: 'er',
     name: 'Elden Ring',
     slug: 'elden-ring',
     categoryTag: 'Action RPG',
-    badgeText: '45+ Trùm & Phép Thuật',
+    badgeText: '815+ Vật Phẩm & Bosses',
     iconUrl: '/elden-ring-icon.png',
     bannerUrl: '/elden-ring-icon.png',
     description: 'Tra cứu thông tin của nhiều tựa game',
     accentColor: 'from-orange-500/20 to-amber-700/20 border-orange-500/40 text-orange-400',
-    _count: { articles: 45, categories: 6 },
+    _count: { articles: 815, categories: 6 },
   },
   {
     id: 'wukong',
     name: 'Black Myth: Wukong',
     slug: 'black-myth-wukong',
     categoryTag: 'Action Soulslike',
-    badgeText: '80+ Yêu Quái & Pháp Bảo',
+    badgeText: '29+ Yêu Quái & Pháp Bảo',
     iconUrl: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=300&h=300&fit=crop&q=80',
     bannerUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&auto=format&fit=crop&q=60',
     description: 'Tra cứu thông tin của nhiều tựa game',
     accentColor: 'from-amber-600/20 to-yellow-800/20 border-amber-600/40 text-amber-300',
-    _count: { articles: 52, categories: 5 },
+    _count: { articles: 29, categories: 5 },
   },
   {
     id: 'tft',
@@ -81,7 +82,6 @@ export default async function WikiCatalogPage() {
     if (res.ok) {
       const data = await res.json();
       if (data.games && data.games.length > 0) {
-        // Map backend response if present
         gameApps = data.games.map((g: any, idx: number) => {
           const fallback = DEFAULT_GAME_APPS[idx % DEFAULT_GAME_APPS.length];
           return {
@@ -105,29 +105,10 @@ export default async function WikiCatalogPage() {
 
   return (
     <div className="min-h-screen bg-[#09090b] text-zinc-100 flex flex-col font-sans select-none">
-      {/* 1. Header Navbar */}
-      <header className="sticky top-0 z-50 bg-zinc-950/80 backdrop-blur-md border-b border-zinc-800/80 py-4 px-6">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500 to-indigo-600 text-white shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition-transform">
-              <Gamepad2 size={20} />
-            </div>
-            <span className="text-xl font-extrabold tracking-wider text-white uppercase md:text-2xl font-sans">
-              WI<span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400">GAKI</span>
-            </span>
-          </Link>
-          <nav className="flex items-center gap-4">
-            <Link
-              href="/"
-              className="flex items-center gap-2 rounded-xl bg-zinc-900 border border-zinc-800 px-4 py-2 text-xs font-bold text-zinc-300 hover:text-cyan-400 hover:border-cyan-500/40 transition duration-200"
-            >
-              <Compass size={15} /> TRANG CHỦ
-            </Link>
-          </nav>
-        </div>
-      </header>
+      {/* Global Modern Navbar */}
+      <Navbar />
 
-      {/* 2. Minimalist Phone Launcher Header */}
+      {/* Phone Launcher Header */}
       <section className="relative px-6 py-10 flex flex-col items-center text-center overflow-hidden border-b border-zinc-800/50">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[250px] rounded-full bg-cyan-500/10 blur-[130px] pointer-events-none" />
 
@@ -146,11 +127,9 @@ export default async function WikiCatalogPage() {
         </div>
       </section>
 
-      {/* 3. Smartphone App Icon Grid (Phone Screen Layout) */}
+      {/* Smartphone App Icon Grid */}
       <main className="max-w-5xl mx-auto w-full px-6 py-10 flex-1">
-        {/* Smartphone Screen Box Container */}
         <div className="rounded-3xl bg-zinc-950/60 border border-zinc-800/80 p-6 md:p-10 shadow-2xl relative overflow-hidden backdrop-blur-xl">
-          {/* Subtle Phone Screen Glow */}
           <div className="absolute -top-24 -left-24 w-72 h-72 bg-gradient-to-br from-cyan-500/10 to-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute -bottom-24 -right-24 w-72 h-72 bg-gradient-to-br from-purple-500/10 to-amber-500/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -159,7 +138,7 @@ export default async function WikiCatalogPage() {
             <div className="flex items-center gap-2">
               <Sparkles className="text-cyan-400" size={18} />
               <h2 className="text-sm font-extrabold text-zinc-200 uppercase tracking-widest">
-                DỰ DỤNG THƯ VIỆN GAME ({gameApps.length})
+                ỨNG DỤNG THƯ VIỆN GAME ({gameApps.length})
               </h2>
             </div>
             <span className="text-[11px] font-medium text-zinc-500">Chạm Icon để Mở thư viện</span>
@@ -173,7 +152,6 @@ export default async function WikiCatalogPage() {
                 href={`/wiki/${app.slug}`}
                 className="group flex flex-col items-center text-center w-full max-w-[100px] transition-transform duration-200 active:scale-95"
               >
-                {/* Smartphone Squircle App Icon */}
                 <div className="relative">
                   <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-[22%] bg-zinc-900 border border-zinc-700/70 shadow-lg shadow-black/60 overflow-hidden group-hover:scale-110 group-hover:border-cyan-400 group-hover:shadow-cyan-500/30 transition-all duration-300 flex items-center justify-center">
                     <img
@@ -184,18 +162,15 @@ export default async function WikiCatalogPage() {
                     />
                   </div>
 
-                  {/* Smartphone Red Notification Badge */}
                   <span className="absolute -top-1.5 -right-1.5 min-w-[20px] h-[20px] px-1 rounded-full bg-rose-600 text-[10px] font-black text-white flex items-center justify-center border-2 border-zinc-950 shadow-md">
                     {app._count?.articles ? `${app._count.articles}+` : 'NEW'}
                   </span>
                 </div>
 
-                {/* Smartphone Icon Title Label */}
                 <span className="mt-2 text-[12px] font-medium text-zinc-200 group-hover:text-cyan-400 group-hover:font-semibold line-clamp-2 leading-tight tracking-tight transition-colors drop-shadow">
                   {app.name}
                 </span>
 
-                {/* Button Action Label */}
                 <span className="mt-1 text-[9px] font-extrabold text-cyan-400 group-hover:text-white uppercase tracking-wider bg-cyan-950/50 group-hover:bg-cyan-500 border border-cyan-500/30 px-2 py-0.5 rounded-md transition-colors">
                   MỞ THƯ VIỆN
                 </span>
@@ -221,14 +196,14 @@ export default async function WikiCatalogPage() {
                 href="/wiki/lien-minh-huyen-thoai/champions"
                 className="text-[11px] font-bold text-cyan-400 hover:text-cyan-300 transition"
               >
-                170+ Tướng Riot &rarr;
+                870+ Tướng Riot &rarr;
               </Link>
             </div>
           </div>
         </div>
       </main>
 
-      {/* 4. Minimalist Footer */}
+      {/* Footer */}
       <footer className="border-t border-zinc-800/60 py-6 px-6 text-center text-xs text-zinc-500 bg-zinc-950">
         <p className="font-bold tracking-wider text-zinc-400 uppercase">WIGAKI - Tra cứu thông tin của nhiều tựa game</p>
         <p className="pt-1 text-zinc-600">&copy; 2026 Wigaki Việt Nam. All rights reserved.</p>

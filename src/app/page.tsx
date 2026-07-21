@@ -1,8 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
+import Navbar from '@/components/layout/Navbar';
 import { BookOpen, ArrowRight, ShieldCheck, Database, Users, Sparkles, Gamepad2, Cpu, Compass, Smartphone, Play, Star } from 'lucide-react';
 
-export const revalidate = 3600; // Static pre-render with hourly revalidation
+export const revalidate = 3600;
 
 const GAME_APP_DOCK = [
   {
@@ -11,7 +12,7 @@ const GAME_APP_DOCK = [
     slug: 'lien-minh-huyen-thoai',
     tag: 'MOBA 5v5',
     iconUrl: 'https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/Ahri.png',
-    stat: '170+',
+    stat: '870+',
     color: 'border-amber-500/40 text-amber-400 bg-amber-500/10',
   },
   {
@@ -20,7 +21,7 @@ const GAME_APP_DOCK = [
     slug: 'elden-ring',
     tag: 'Action RPG',
     iconUrl: '/elden-ring-icon.png',
-    stat: '45+',
+    stat: '815+',
     color: 'border-orange-500/40 text-orange-400 bg-orange-500/10',
   },
   {
@@ -29,7 +30,7 @@ const GAME_APP_DOCK = [
     slug: 'black-myth-wukong',
     tag: 'Soulslike',
     iconUrl: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=300&h=300&fit=crop&q=80',
-    stat: '80+',
+    stat: '29+',
     color: 'border-amber-600/40 text-amber-300 bg-amber-600/10',
   },
   {
@@ -77,27 +78,8 @@ export default async function HomePage() {
 
   return (
     <div className="min-h-screen bg-[#09090b] text-zinc-100 flex flex-col font-sans select-none">
-      {/* 1. Header Navbar */}
-      <header className="sticky top-0 z-50 bg-zinc-950/80 backdrop-blur-md border-b border-zinc-800/80 py-4 px-6">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500 to-indigo-600 text-white shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition-transform">
-              <Gamepad2 size={20} />
-            </div>
-            <span className="text-xl font-extrabold tracking-wider text-white uppercase md:text-2xl font-sans">
-              WI<span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400">GAKI</span>
-            </span>
-          </Link>
-          <nav className="flex items-center gap-4">
-            <Link
-              href="/wiki"
-              className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 px-4 py-2 text-xs font-bold text-white shadow-lg shadow-cyan-500/20 hover:scale-105 transition duration-200"
-            >
-              <Smartphone size={15} /> MỞ THƯ VIỆN
-            </Link>
-          </nav>
-        </div>
-      </header>
+      {/* 1. Global Navbar with Home, Back button & Search UX */}
+      <Navbar />
 
       {/* 2. Hero Section */}
       <section className="relative px-6 py-16 md:py-24 flex flex-col items-center text-center overflow-hidden border-b border-zinc-800/50">
@@ -119,58 +101,48 @@ export default async function HomePage() {
           <div className="pt-2 flex flex-wrap items-center justify-center gap-4">
             <Link
               href="/wiki"
-              className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-white shadow-xl shadow-cyan-500/20 hover:scale-105 transition duration-300"
+              className="flex items-center gap-2.5 rounded-2xl bg-gradient-to-r from-cyan-500 to-indigo-600 px-6 py-3.5 text-xs font-bold text-white shadow-xl shadow-cyan-500/25 hover:scale-105 hover:shadow-cyan-500/40 transition duration-300 uppercase tracking-wider"
             >
-              <Smartphone size={16} /> Mở Thư Viện Game
+              <Smartphone size={16} /> Mở Thư Viện Tra Cứu
             </Link>
+
             <Link
-              href="/wiki/elden-ring/quests"
-              className="inline-flex items-center gap-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-amber-500/50 hover:text-amber-400 px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-zinc-200 transition duration-300"
+              href="/wiki/elden-ring"
+              className="flex items-center gap-2 rounded-2xl bg-zinc-900 border border-zinc-800 px-6 py-3.5 text-xs font-bold text-zinc-300 hover:text-cyan-400 hover:border-cyan-500/40 transition duration-200 uppercase tracking-wider"
             >
-              <Sparkles size={16} className="text-amber-400" /> Questlines Elden Ring
-            </Link>
-            <Link
-              href="/wiki/lien-minh-huyen-thoai/champions"
-              className="inline-flex items-center gap-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-amber-500/50 hover:text-amber-400 px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-zinc-200 transition duration-300"
-            >
-              <Star size={16} className="text-amber-400" /> 170+ Tướng Riot
+              <Compass size={16} /> Elden Ring Hub
             </Link>
           </div>
         </div>
-
-        {/* Decorative divider */}
-        <div className="w-full max-w-lg h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent mt-16" />
       </section>
 
-      {/* 3. Mobile Smartphone App Launcher Grid (App Store Dock) */}
+      {/* 3. Smartphone App Icon Grid */}
       <section className="max-w-5xl mx-auto w-full px-6 py-12">
         <div className="rounded-3xl bg-zinc-950/60 border border-zinc-800/80 p-6 md:p-10 shadow-2xl relative overflow-hidden backdrop-blur-xl">
-          <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 pb-4 border-b border-zinc-800/60 gap-4">
-            <div>
-              <span className="text-[11px] font-bold text-cyan-400 uppercase tracking-widest block mb-1">
-                📱 MOBILE GAME LAUNCHER
-              </span>
-              <h2 className="text-xl md:text-2xl font-extrabold tracking-tight text-white uppercase text-left">
-                Tra cứu thông tin của nhiều tựa game
+          <div className="absolute -top-24 -left-24 w-72 h-72 bg-gradient-to-br from-cyan-500/10 to-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-24 -right-24 w-72 h-72 bg-gradient-to-br from-purple-500/10 to-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+
+          {/* Dock Header */}
+          <div className="flex items-center justify-between mb-8 pb-4 border-b border-zinc-800/60">
+            <div className="flex items-center gap-2">
+              <Sparkles className="text-cyan-400" size={18} />
+              <h2 className="text-sm font-extrabold text-zinc-200 uppercase tracking-widest">
+                DOCK ỨNG DỤNG TRA CỨU GAME
               </h2>
             </div>
-            <Link href="/wiki" className="group flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-cyan-400 hover:text-cyan-300 transition duration-200">
-              Mở Thư Viện đầy đủ
-              <ArrowRight size={14} className="transition-transform duration-200 group-hover:translate-x-1" />
-            </Link>
+            <span className="text-[11px] font-medium text-zinc-500">Chạm Icon để Mở</span>
           </div>
 
-          {/* Minimalist Smartphone Icon Grid */}
-          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-y-8 gap-x-4 md:gap-x-6 justify-items-center">
+          {/* Minimalist Phone Launcher Grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 justify-items-center">
             {GAME_APP_DOCK.map((app) => (
               <Link
                 key={app.id}
                 href={`/wiki/${app.slug}`}
-                className="group flex flex-col items-center text-center w-full max-w-[100px] transition-transform duration-200 active:scale-95"
+                className="group flex flex-col items-center text-center w-full max-w-[130px] transition-transform duration-200 active:scale-95"
               >
-                {/* Smartphone Squircle App Icon */}
                 <div className="relative">
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-[22%] bg-zinc-900 border border-zinc-700/70 shadow-lg shadow-black/60 overflow-hidden group-hover:scale-110 group-hover:border-cyan-400 group-hover:shadow-cyan-500/30 transition-all duration-300 flex items-center justify-center">
+                  <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-[24%] bg-zinc-900 border border-zinc-700/70 shadow-lg shadow-black/60 overflow-hidden group-hover:scale-110 group-hover:border-cyan-400 group-hover:shadow-cyan-500/30 transition-all duration-300 flex items-center justify-center">
                     <img
                       src={app.iconUrl}
                       alt={app.name}
@@ -179,20 +151,17 @@ export default async function HomePage() {
                     />
                   </div>
 
-                  {/* Smartphone Red Badge */}
-                  <span className="absolute -top-1.5 -right-1.5 min-w-[20px] h-[20px] px-1 rounded-full bg-rose-600 text-[10px] font-black text-white flex items-center justify-center border-2 border-zinc-950 shadow-md">
+                  <span className="absolute -top-1.5 -right-1.5 px-2 py-0.5 rounded-full bg-rose-600 text-[10px] font-black text-white flex items-center justify-center border-2 border-zinc-950 shadow-md">
                     {app.stat}
                   </span>
                 </div>
 
-                {/* Smartphone App Label */}
-                <span className="mt-2 text-[12px] font-medium text-zinc-200 group-hover:text-cyan-400 group-hover:font-semibold line-clamp-2 leading-tight tracking-tight transition-colors drop-shadow">
+                <span className="mt-2.5 text-[13px] font-semibold text-zinc-200 group-hover:text-cyan-400 line-clamp-1 leading-tight tracking-tight transition-colors">
                   {app.name}
                 </span>
 
-                {/* Button Action Label */}
-                <span className="mt-1 text-[9px] font-extrabold text-cyan-400 group-hover:text-white uppercase tracking-wider bg-cyan-950/50 group-hover:bg-cyan-500 border border-cyan-500/30 px-2 py-0.5 rounded-md transition-colors">
-                  MỞ THƯ VIỆN
+                <span className={`mt-1 text-[9px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-md border ${app.color}`}>
+                  {app.tag}
                 </span>
               </Link>
             ))}
@@ -200,94 +169,32 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 4. Core Features Section */}
-      <section className="max-w-7xl mx-auto w-full px-6 py-16 border-t border-zinc-800/50">
-        <div className="text-center mb-12">
-          <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-white uppercase">TÍNH NĂNG TRA CỨU HÀNG ĐẦU</h2>
-          <p className="text-xs text-zinc-400 mt-1 font-sans">Trực quan như App điện thoại native, tốc độ cao trên mọi nền tảng</p>
-        </div>
-
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          <div className="glass-card glass-card-hover p-6 rounded-2xl flex flex-col space-y-4 text-left">
-            <div className="w-11 h-11 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center">
-              <Smartphone className="text-cyan-400" size={22} />
-            </div>
-            <div className="space-y-1.5">
-              <h3 className="text-base font-bold text-white tracking-wide uppercase">GIAO DIỆN APP DI ĐỘNG</h3>
-              <p className="text-xs text-zinc-400 leading-relaxed font-sans">
-                Các Icon ứng dụng dạng bo góc squircle chuẩn iOS/Android giúp truy cập các tựa game yêu thích tức thì.
-              </p>
-            </div>
+      {/* 4. Stats Bar */}
+      <section className="border-y border-zinc-800/60 bg-zinc-950/40 py-10 px-6">
+        <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+          <div className="space-y-1">
+            <span className="text-2xl md:text-3xl font-black text-cyan-400">1,726+</span>
+            <p className="text-xs text-zinc-400 font-medium">Vật Phẩm & Tướng Supabase</p>
           </div>
-
-          <div className="glass-card glass-card-hover p-6 rounded-2xl flex flex-col space-y-4 text-left">
-            <div className="w-11 h-11 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center">
-              <ShieldCheck className="text-indigo-400" size={22} />
-            </div>
-            <div className="space-y-1.5">
-              <h3 className="text-base font-bold text-white tracking-wide uppercase">DỮ LIỆU ĐÃ XÁC THỰC</h3>
-              <p className="text-xs text-zinc-400 leading-relaxed font-sans">
-                Tất cả thông số vật phẩm và bộ kỹ năng được biên soạn chuẩn xác từ dữ liệu chính thức của Riot Games & nhà phát hành.
-              </p>
-            </div>
+          <div className="space-y-1">
+            <span className="text-2xl md:text-3xl font-black text-cyan-400">170+</span>
+            <p className="text-xs text-zinc-400 font-medium">Tướng League of Legends</p>
           </div>
-
-          <div className="glass-card glass-card-hover p-6 rounded-2xl flex flex-col space-y-4 text-left">
-            <div className="w-11 h-11 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center">
-              <Cpu className="text-purple-400" size={22} />
-            </div>
-            <div className="space-y-1.5">
-              <h3 className="text-base font-bold text-white tracking-wide uppercase">TRA CỨU TỐC ĐỘ CAO</h3>
-              <p className="text-xs text-zinc-400 leading-relaxed font-sans">
-                Tải trang mượt mà trên cả thiết bị di động và máy tính với kiến trúc tĩnh Static Generation tối ưu.
-              </p>
-            </div>
+          <div className="space-y-1">
+            <span className="text-2xl md:text-3xl font-black text-cyan-400">815+</span>
+            <p className="text-xs text-zinc-400 font-medium">Vật Phẩm Elden Ring DLC</p>
+          </div>
+          <div className="space-y-1">
+            <span className="text-2xl md:text-3xl font-black text-cyan-400">100%</span>
+            <p className="text-xs text-zinc-400 font-medium">Bản Quyền Dữ Liệu Việt Hóa</p>
           </div>
         </div>
       </section>
 
-      {/* 5. App Stats Section */}
-      <section className="max-w-7xl mx-auto w-full px-6 py-16 border-t border-zinc-800/50 mb-12">
-        <div className="grid gap-6 grid-cols-2 md:grid-cols-3">
-          <div className="glass-card p-6 rounded-2xl flex items-center gap-4">
-            <div className="w-11 h-11 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center shrink-0">
-              <Gamepad2 className="text-cyan-400" size={22} />
-            </div>
-            <div className="text-left">
-              <h4 className="text-2xl font-black text-white">{gameCount}</h4>
-              <p className="text-[11px] text-zinc-400 uppercase tracking-wider font-semibold">App Game Tra Cứu</p>
-            </div>
-          </div>
-
-          <div className="glass-card p-6 rounded-2xl flex items-center gap-4">
-            <div className="w-11 h-11 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center shrink-0">
-              <Database className="text-indigo-400" size={22} />
-            </div>
-            <div className="text-left">
-              <h4 className="text-2xl font-black text-white">170+ Tướng</h4>
-              <p className="text-[11px] text-zinc-400 uppercase tracking-wider font-semibold">Chỉ Số & Bài Viết</p>
-            </div>
-          </div>
-
-          <div className="glass-card p-6 rounded-2xl flex items-center gap-4">
-            <div className="w-11 h-11 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center shrink-0">
-              <Users className="text-purple-400" size={22} />
-            </div>
-            <div className="text-left">
-              <h4 className="text-2xl font-black text-white">100%</h4>
-              <p className="text-[11px] text-zinc-400 uppercase tracking-wider font-semibold">Miễn Phí & Tự Do</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 6. Footer */}
-      <footer className="mt-auto border-t border-zinc-800/60 py-10 px-6 text-center text-xs text-zinc-500 bg-zinc-950">
-        <div className="max-w-7xl mx-auto space-y-3">
-          <p className="font-bold text-zinc-400 tracking-wider">WIGAKI - NỀN TẢNG WIKI APP TRÒ CHƠI MULTI-PLATFORM</p>
-          <p className="max-w-md mx-auto leading-relaxed">Hệ thống tra cứu thông tin game mượt mà như App di động trên mọi thiết bị.</p>
-          <p className="pt-2 text-zinc-600">&copy; 2026 Wigaki. All rights reserved.</p>
-        </div>
+      {/* Footer */}
+      <footer className="border-t border-zinc-800/60 py-8 px-6 text-center text-xs text-zinc-500 bg-zinc-950">
+        <p className="font-bold tracking-wider text-zinc-400 uppercase">WIGAKI - Tra cứu thông tin của nhiều tựa game</p>
+        <p className="pt-1 text-zinc-600">&copy; 2026 Wigaki Việt Nam. All rights reserved.</p>
       </footer>
     </div>
   );
