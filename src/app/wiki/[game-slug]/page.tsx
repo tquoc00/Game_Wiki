@@ -20,7 +20,6 @@ export async function generateStaticParams() {
   ];
 }
 
-
 export default async function GameWikiListPage({
   params,
 }: {
@@ -52,16 +51,21 @@ export default async function GameWikiListPage({
       slug: 'elden-ring',
       description: 'Bách khoa toàn thư về trùm, vũ khí, phép thuật và nhiệm vụ trong Elden Ring.',
     },
+    'black-myth-wukong': {
+      id: 'wukong',
+      name: 'Black Myth: Wukong',
+      slug: 'black-myth-wukong',
+      description: 'Cẩm nang tra cứu Như Ý Kim Cô Bổng, Pháp Bảo, Linh Hồn Trảm Sát và Trùm Chương 1-6.',
+    },
     'tft': {
       id: 'tft',
-      name: 'Đấu Trường Chân Lý',
+      name: 'Đấu Trường Chân Lý (TFT)',
       slug: 'tft',
       description: 'Bảng xếp hạng đội hình Meta, Tộc/Hệ, Tướng và Công thức ghép đồ TFT mới nhất.',
     },
   };
 
   try {
-    // 1. Fetch game details
     const gameRes = await fetch(`http://localhost:5000/api/games/${gameSlug}`, {
       next: { revalidate: 3600 },
     });
@@ -74,7 +78,6 @@ export default async function GameWikiListPage({
     }
 
     if (gameInfo) {
-      // 2. Fetch scoped articles from backend
       try {
         const articlesQuery = new URLSearchParams({
           gameSlug,
@@ -93,10 +96,9 @@ export default async function GameWikiListPage({
           totalPages = data.pagination?.pages || 0;
         }
       } catch {
-        // Fallback for articles fetch fail
+        // Fallback
       }
 
-      // 3. Fetch categories to identify active category
       try {
         const categoriesRes = await fetch(`http://localhost:5000/api/categories?gameSlug=${gameSlug}`, {
           next: { revalidate: 3600 },
@@ -107,7 +109,7 @@ export default async function GameWikiListPage({
           const categoriesList = categoriesData.categories || [];
         }
       } catch {
-        // Fallback for categories fetch fail
+        // Fallback
       }
     }
   } catch (error) {
@@ -115,7 +117,6 @@ export default async function GameWikiListPage({
     gameInfo = DEFAULT_GAMES[gameSlug] || null;
   }
 
-  // Helper to format date
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('vi-VN', {
       year: 'numeric',
@@ -149,7 +150,7 @@ export default async function GameWikiListPage({
               <span className="text-zinc-600">&bull;</span>
               <span className="text-[11px] font-semibold tracking-wider text-zinc-400 uppercase">{gameInfo.name}</span>
             </div>
-            
+
             <h1 className="text-3xl font-extrabold tracking-tight text-white uppercase">
               {activeCategory ? activeCategory.name : search ? `Tìm kiếm: "${search}"` : `Thư viện ${gameInfo.name}`}
             </h1>
@@ -159,7 +160,7 @@ export default async function GameWikiListPage({
           </div>
           <div className="flex items-center gap-3">
             <span className="inline-flex items-center gap-1.5 rounded-xl bg-zinc-900 border border-zinc-800 px-3.5 py-1.5 text-xs font-medium text-cyan-400">
-              <Gamepad2 size={14} /> {totalCount} bài viết tra cứu
+              <Gamepad2 size={14} /> {totalCount || 'Supabase Data'} bài viết tra cứu
             </span>
           </div>
         </div>
@@ -217,6 +218,46 @@ export default async function GameWikiListPage({
         </div>
       )}
 
+      {/* Featured Banner for Black Myth: Wukong */}
+      {gameSlug === 'black-myth-wukong' && (
+        <div className="mb-8 rounded-2xl border border-amber-500/30 bg-gradient-to-r from-amber-950/40 via-zinc-900 to-zinc-950 p-6 shadow-xl relative overflow-hidden">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-2">
+                <span className="rounded-full bg-amber-500/20 border border-amber-500/40 px-2.5 py-0.5 text-[10px] font-bold text-amber-400 uppercase tracking-wider">
+                  Cẩm Nang Tây Du
+                </span>
+                <span className="text-xs text-amber-300 font-semibold">&bull; 29+ Bổng Pháp, Bảo Vật & Trùm</span>
+              </div>
+              <h2 className="text-xl font-extrabold text-white uppercase tracking-tight">🐒 Kho Dữ Liệu Black Myth: Wukong</h2>
+              <p className="text-xs text-zinc-400 max-w-2xl font-sans leading-relaxed">
+                Tra cứu chỉ số Như Ý Kim Cô Bổng, Tam Mũi Lưỡng Nhận Đao, Giáp Đại Thánh, Bảo Vật Hạt Châu Tránh Lửa và kỹ năng biến hình.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Featured Banner for TFT */}
+      {gameSlug === 'tft' && (
+        <div className="mb-8 rounded-2xl border border-purple-500/30 bg-gradient-to-r from-purple-950/40 via-zinc-900 to-zinc-950 p-6 shadow-xl relative overflow-hidden">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-2">
+                <span className="rounded-full bg-purple-500/20 border border-purple-500/40 px-2.5 py-0.5 text-[10px] font-bold text-purple-400 uppercase tracking-wider">
+                  Meta Tier List
+                </span>
+                <span className="text-xs text-purple-300 font-semibold">&bull; Set 13 / Set 14</span>
+              </div>
+              <h2 className="text-xl font-extrabold text-white uppercase tracking-tight">📊 Đội Hình Meta & Công Thức Đồ TFT</h2>
+              <p className="text-xs text-zinc-400 max-w-2xl font-sans leading-relaxed">
+                Tra cứu các đội hình leo rank Tier S (Jinx Nổi Loạn, Lux Học Viện...), công thức ghép đồ chuẩn và Tộc/Hệ mới nhất.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Search Input for Game Wiki */}
       <div className="max-w-md mb-8">
         <form action={`/wiki/${gameSlug}`} method="GET" className="relative">
@@ -251,86 +292,47 @@ export default async function GameWikiListPage({
           )}
         </div>
       ) : (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {articles.map((article) => (
-            <article
+            <div
               key={article.id}
-              className="glass-card glass-card-hover group flex flex-col overflow-hidden rounded-2xl h-full"
+              className="glass-card rounded-2xl p-6 flex flex-col justify-between group hover:border-cyan-500/40 transition duration-300"
             >
-              {/* Featured Image */}
-              <div className="relative h-44 w-full overflow-hidden bg-zinc-950 border-b border-zinc-800/80">
-                <img
-                  src={article.featuredImg || 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800&auto=format&fit=crop&q=60'}
-                  alt={article.title}
-                  className="h-full w-full object-cover opacity-80 transition-transform duration-500 group-hover:scale-105 group-hover:opacity-95"
-                  loading="lazy"
-                />
-                <div className="absolute top-3 left-3">
-                  <span className="flex items-center gap-1 rounded-lg bg-zinc-950/80 backdrop-blur-md px-2.5 py-1 text-[10px] font-bold text-cyan-400 border border-cyan-500/20 uppercase">
-                    <Tag size={10} />
-                    {article.category.name}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="inline-flex items-center gap-1 text-[11px] font-bold text-cyan-400 uppercase tracking-wider">
+                    <Tag size={12} />
+                    {article.category?.name || 'Tổng quan'}
                   </span>
-                </div>
-              </div>
-
-              {/* Card Body */}
-              <div className="flex flex-1 flex-col p-5 justify-between">
-                <div className="space-y-2">
-                  <h2 className="line-clamp-2 text-sm font-bold text-zinc-100 hover:text-cyan-400 transition-colors leading-snug uppercase tracking-wide">
-                    <Link href={`/wiki/${gameSlug}/${article.slug}`}>{article.title}</Link>
-                  </h2>
-                  <p className="line-clamp-3 text-xs text-zinc-400 leading-relaxed font-sans">
-                    {article.summary || 'Không có mô tả ngắn.'}
-                  </p>
+                  <span className="text-[11px] text-zinc-500">
+                    {formatDate(article.updatedAt || article.createdAt)}
+                  </span>
                 </div>
 
-                {/* Card Footer */}
-                <div className="mt-5 flex items-center justify-between border-t border-zinc-800/80 pt-3 text-[11px] text-zinc-400">
-                  <span className="flex items-center gap-1.5">
-                    <UserIcon size={11} className="text-cyan-400" />
-                    {article.author.username}
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <Calendar size={11} />
-                    {formatDate(article.updatedAt)}
-                  </span>
-                </div>
+                <h3 className="text-lg font-extrabold text-white group-hover:text-cyan-300 transition duration-200 line-clamp-2 uppercase">
+                  {article.title}
+                </h3>
+
+                <p className="text-xs text-zinc-400 line-clamp-3 leading-relaxed font-sans">
+                  {article.summary || article.content.replace(/<[^>]*>?/gm, '')}
+                </p>
               </div>
-            </article>
+
+              <div className="pt-6 mt-4 border-t border-zinc-800/60 flex items-center justify-between">
+                <span className="flex items-center gap-1.5 text-xs text-zinc-400">
+                  <UserIcon size={13} className="text-cyan-400" />
+                  {article.author?.username || 'Wigaki'}
+                </span>
+
+                <Link
+                  href={`/wiki/${gameSlug}/${article.slug}`}
+                  className="inline-flex items-center gap-1 text-xs font-bold text-cyan-400 group-hover:translate-x-1 transition duration-200 uppercase tracking-wider"
+                >
+                  Đọc tiếp <ArrowRight size={13} />
+                </Link>
+              </div>
+            </div>
           ))}
-        </div>
-      )}
-
-      {/* Pagination Controls */}
-      {totalPages > 1 && (
-        <div className="mt-12 flex items-center justify-center gap-6 font-sans">
-          <Link
-            href={`/wiki/${gameSlug}?page=${currentPage - 1}${search ? `&search=${encodeURIComponent(search)}` : ''}${category ? `&category=${encodeURIComponent(category)}` : ''}`}
-            className={`flex items-center gap-1.5 rounded-xl border border-zinc-800 px-4 py-2 text-xs font-semibold uppercase tracking-wider transition duration-300 ${
-              currentPage === 1
-                ? 'pointer-events-none text-zinc-700 bg-transparent border-zinc-800/40 cursor-not-allowed'
-                : 'text-zinc-200 hover:text-cyan-400 bg-zinc-900/80 hover:border-cyan-500/50'
-            }`}
-          >
-            <ArrowLeft size={13} />
-            Trước
-          </Link>
-
-          <span className="text-xs text-zinc-400">
-            Trang <strong className="text-cyan-400">{currentPage}</strong> / {totalPages}
-          </span>
-
-          <Link
-            href={`/wiki/${gameSlug}?page=${currentPage + 1}${search ? `&search=${encodeURIComponent(search)}` : ''}${category ? `&category=${encodeURIComponent(category)}` : ''}`}
-            className={`flex items-center gap-1.5 rounded-xl border border-zinc-800 px-4 py-2 text-xs font-semibold uppercase tracking-wider transition duration-300 ${
-              currentPage === totalPages
-                ? 'pointer-events-none text-zinc-700 bg-transparent border-zinc-800/40 cursor-not-allowed'
-                : 'text-zinc-200 hover:text-cyan-400 bg-zinc-900/80 hover:border-cyan-500/50'
-            }`}
-          >
-            Sau
-            <ArrowRight size={13} />
-          </Link>
         </div>
       )}
     </WikiLayoutShell>
